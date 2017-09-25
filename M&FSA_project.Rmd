@@ -7,22 +7,31 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-```
-
-```{r}
-knitr::opts_chunk$set(echo = TRUE)
-
-# Hello gang! 
-
-# Opting for first branch
-
-# Making first change to first branch
+df <- read.csv("Speed_Dating_Data.csv")
 
 ```
 
-```{r}
+``` {r}
+# In a world where nobody has time ... what does speed dating data reveal about us? 
+# Storyline: 
+# .. 
+```
+
+
+```{r open_dataset}
 knitr::opts_chunk$set(echo = TRUE)
 
-# Now checkign 
+dating_frame <- df[, c("samerace", "match", "order", "age_o", "expnum")]
+lookfor_frame <- df[, c("pf_o_att", "pf_o_sin", "pf_o_int", "pf_o_fun", "pf_o_amb", "pf_o_sha")]
+chosenfor <- 
+str(dating_frame)
+
+```
+
+```{r project_setup}
+knitr::opts_chunk$set(echo = TRUE)
+# comments 
+# interestingly, there is also a set of data about 
+
 
 ```
