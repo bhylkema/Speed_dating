@@ -1,0 +1,17 @@
+---
+title: "M&SFA"
+author: "Bouke"
+date: "9/25/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Hello gang! 
+
+```
