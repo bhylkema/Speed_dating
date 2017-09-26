@@ -11,28 +11,64 @@ df <- read.csv("Speed_Dating_Data.csv")
 
 ```
 
-``` {r}
+```{r Chapter_1_Introduction}
 # In a world where nobody has time ... what does speed dating data reveal about us? 
 # Storyline: 
 # .. 
+# This data set includes ..
+# and has been cleaned by taking steps .. 
 ```
-
 
 ```{r open_dataset}
 knitr::opts_chunk$set(echo = TRUE)
 
 dating_frame <- df[, c("samerace", "match", "order", "age_o", "expnum")]
 lookfor_frame <- df[, c("pf_o_att", "pf_o_sin", "pf_o_int", "pf_o_fun", "pf_o_amb", "pf_o_sha")]
-chosenfor <- 
-waves69 <- df[df$wave != c(6:9)]
-str(dating_frame)
+# race <- df$race
+# hist(race)
+```
+
+```{r Chapter_2_Descriptive_statistics}
+# Setting up the dataset 
+dfr <- df[df$wave != 6 | df$wave != 7, ] # We want to exclude waves 6-9 because their scores are different
+dating_frame <- df[, c("samerace", "match", "order", "age_o", "expnum")] # select all of the columns we will be investigating in this report 
+
+print(cat("Total sample size of the dataset is ", nrow(dfr), " and the number of variables totals", ncol(dfr)))
+ # provide an overview of the nr of observations 
+
+# Gender plot
+distribution <- table(dfr$gender) # generate a distribution table of 
+slices <- c(distribution[names(distribution) == 0], distribution[names(distribution) == 1]) 
+lbls <- c("Male", "Female")
+pie(slices, labels = lbls, main = "Pie Chart of Gender")
+print(mean(waves$gender)) 
+
+# Age histogram 
+print("The sample includes people aging in the range of .. to .. ")
+age_hist <- dfr$age
+hist(age_hist)
+
+# 
 
 ```
+
 
 ```{r project_setup}
 knitr::opts_chunk$set(echo = TRUE)
-# comments 
-# interestingly, there is also a set of data about 
+
+# Question 3: What do we want? (correlation analysis and hypothesis testing)
+# Distinguish between male and female 
+# Relevant variables: 1) gender; 2) wave (because it shows how points were given); 3) age (own, can be used to see if people of different ages score differently); 4) field_cd: code for degree background, use to identify which backgrounds have certain preferences; 5) race; 6) imprace: how important is it that person is of same race (1-10)?; 7) imprelig: importance of religion; 8) goal; 9) attr1_1, sinc1_1, intel1_1, fun1_1, amb1_1, shar1_1: these state what people look for in the same sex; 10a) attr3_1 for all 5 attributes: how do you think you score on 5 attributes (except shared interest) -> relate condifence level to what we want? can also use 10b) attr5_1 etc. and 10c) expnum; 11) career_c: gives a code for the type of career people pursue (some career typed people might be more interested in people that are ambiitous as well); 12) date: how frequently do you go on a date (1-7), can provide indication of 
+
+# to do in session 3: 1) think of real questions you want to ask to limit the number of variables;  2) list all variables and make a subset; 3) clean the data for your own variables; 4) start analysis phase 
 
 
 ```
+
+``` {r}
+# Comments: 
+# 1. Mention that the dataset is relatively old, and from the US 
+
+# 2: normalize the scores of the different waves to ensure everyone scored a total of 100 points.
+
+
