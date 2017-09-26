@@ -169,7 +169,8 @@ Q4_df_no <- subset(Q4_df, date_3 == "0")
 #action: plot 1_3 and 1_2 for Yes and plot 1_3 and 1_2 for No
 library(ggplot2)
 
-ggplot(Q4_df_yes, aes(x = attr1_2, y = attr1_3)) + geom_line()
+ggplot(Q4_df_yes, aes(x = attr1_2, y = attr1_3)) + geom_point() +geom_smooth(se=FALSE)
+ggplot(Q4_df_no, aes(x = attr1_2, y = attr1_3)) + geom_point() +geom_smooth(se=FALSE)
 
 
 ```
