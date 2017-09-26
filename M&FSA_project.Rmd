@@ -71,6 +71,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Question 4: Hypothesis - dating changes the preferences of people
 
+# Louis' comment
+
 #What do you look for in the opposite sex - right after speed-dating
 #Column names: attr1_2 sinc1_2 intel 1_2 fun1_2 amb1_2 shar1_2 
 
