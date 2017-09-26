@@ -113,6 +113,69 @@ no_date <- filter(my_eval, date_3 == 2)
 ```
 
 
+```{r Chapter_4: Hypothesis testing LOUIS}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Question 4: Hypothesis - dating changes the preferences of people
+
+
+#What do you look for in the opposite sex - right after speed-dating
+# Column names: attr1_2 sinc1_2 intel 1_2 fun1_2 amb1_2 shar1_2 
+
+#What do you look for in the opposite sex - after possible dating (4w later)
+# Column names: attr1_3 sinc1_3 intel1_3 fun1_3 amb1_3 shar1_3 
+
+#action:normalize above variables
+originset <- read.csv("Speed_Dating_Data.csv", header = TRUE)
+summary(originset)
+
+elements_2 = c("attr1_2", "sinc1_2", "intel1_2", "fun1_2", "amb1_2", "shar1_2")
+elements_3 = c("attr1_3", "sinc1_3", "intel1_3", "fun1_3", "amb1_3", "shar1_3")
+j = 1
+totalrow = dim(originset)[1]
+
+summary(originset[elements_2])  #check that the min and max is correct (clean)
+summary(originset[elements_3])  #check that the min and max is correct (clean)
+
+while (j <= totalrow) {  #repeat for each row
+  totalscore = 0  #compute total score for each row
+  for (i in elements_2){
+    totalscore = totalscore + originset[j,i]
+  }
+  for (i in elements_2){   #compute the normalised score for each elements
+    originset[j,i] = originset[j,i] * 100 / totalscore
+  }
+  for (k in elements_3){
+    totalscore = totalscore + originset[j,k]
+  }
+  for (k in elements_3){   #compute the normalised score for each elements
+    originset[j,i] = originset[j,k] * 100 / totalscore
+  }  
+  j = j + 1
+}
+
+# action:get all columns for 1_3, 1_2, date_3
+
+Q4_df <- originset[, c("attr1_2", "sinc1_2", "intel1_2", "fun1_2", "amb1_2", "shar1_2", "attr1_3", "sinc1_3", "intel1_3", "fun1_3", "amb1_3", "shar1_3", "date_3")]
+
+
+# Have you been on a date with any of your matches?
+# Variable: date_3 Yes=1, No=0
+
+#action:limit one dataset to Yes=1 and one to No=0
+Q4_df_yes <- subset(Q4_df, date_3 == "1")
+Q4_df_no <- subset(Q4_df, date_3 == "0")
+
+#action: plot 1_3 and 1_2 for Yes and plot 1_3 and 1_2 for No
+library(ggplot2)
+
+ggplot(Q4_df_yes, aes(x = attr1_2, y = attr1_3)) + geom_line()
+
+
+```
+
+
+
 ``` {r}
 # Comments: 
 # 1. Mention that the dataset is relatively old, and from the US 
