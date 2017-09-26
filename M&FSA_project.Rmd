@@ -24,6 +24,7 @@ knitr::opts_chunk$set(echo = TRUE)
 dating_frame <- df[, c("samerace", "match", "order", "age_o", "expnum")]
 lookfor_frame <- df[, c("pf_o_att", "pf_o_sin", "pf_o_int", "pf_o_fun", "pf_o_amb", "pf_o_sha")]
 chosenfor <- 
+waves69 <- df[df$wave != c(6:9)]
 str(dating_frame)
 
 ```
