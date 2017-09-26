@@ -71,7 +71,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Question 4: Hypothesis - dating changes the preferences of people
 
-# Louis' comment
+library(ggplot2)
+library(dplyr)
 
 #What do you look for in the opposite sex - right after speed-dating
 #Column names: attr1_2 sinc1_2 intel 1_2 fun1_2 amb1_2 shar1_2 
@@ -87,16 +88,25 @@ knitr::opts_chunk$set(echo = TRUE)
 #action:normalize above variables
 
 
-# action:get all columns for 1_3, 1_2, Date_3
+# action:get all columns for 1_3, 1_2, date_3
+my_eval <- select(df,attr1_2, sinc1_2, intel1_2, fun1_2, amb1_2, shar1_2,attr1_3, sinc1_3, intel1_3, fun1_3, amb1_3, shar1_3, date_3,id)
+
 
 
 # Have you been on a date with any of your matches?
-# Variable: Date_3 Yes=1, No=2
+# Variable: date_3 Yes=1, No=2
 
 #action:limit one dataset to Yes=1 and one to No=2
 
+had_date <- filter(my_eval,date_3 ==1)
 
-#action: plot 1_3 and 1_2 for Yes and plot 1_3 and 1_2 for No
+no_date <- filter(my_eval, date_3 == 2)
+
+#action:make column sums for both data sets
+
+
+#action: plot 1_3 and 1_2 for Yes and plot 1_3 and 1_2 for No - bar chart
+
 
 
 
