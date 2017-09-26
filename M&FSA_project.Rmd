@@ -65,6 +65,42 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```
 
+
+```{r Chapter_4: Hypothesis testing}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Question 4: Hypothesis - dating changes the preferences of people
+
+#What do you look for in the opposite sex - right after speed-dating
+#Column names: attr1_2 sinc1_2 intel 1_2 fun1_2 amb1_2 shar1_2 
+
+
+#action:normalize above variables
+
+
+#What do you look for in the opposite sex - after possible dating (4w later)
+# Column names: attr1_3 sinc1_3 intel1_3 fun1_3 amb1_3 shar1_3 
+
+
+#action:normalize above variables
+
+
+# action:get all columns for 1_3, 1_2, Date_3
+
+
+# Have you been on a date with any of your matches?
+# Variable: Date_3 Yes=1, No=2
+
+#action:limit one dataset to Yes=1 and one to No=2
+
+
+#action: plot 1_3 and 1_2 for Yes and plot 1_3 and 1_2 for No
+
+
+
+```
+
+
 ``` {r}
 # Comments: 
 # 1. Mention that the dataset is relatively old, and from the US 
