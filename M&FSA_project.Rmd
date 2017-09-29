@@ -251,4 +251,4 @@ ggplot(Q4_df_yes, aes(x = shar1_2, y = shar1_3),color='green') + geom_point() + 
 
 # 2: normalize the scores of the different waves to ensure everyone scored a total of 100 points.
 
-
+```
