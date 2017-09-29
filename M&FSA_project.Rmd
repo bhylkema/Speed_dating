@@ -113,7 +113,7 @@ no_date <- filter(my_eval, date_3 == 2)
 ```
 
 
-```{r Chapter_4: Hypothesis testing LOUIS}
+```{r Chapter_4: Hypothesis testing Marianne}
 knitr::opts_chunk$set(echo = TRUE)
 
 # Question 4: Hypothesis - dating changes the preferences of people
@@ -169,11 +169,79 @@ Q4_df_no <- subset(Q4_df, date_3 == "0")
 #action: plot 1_3 and 1_2 for Yes and plot 1_3 and 1_2 for No
 library(ggplot2)
 
-ggplot(Q4_df_yes, aes(x = attr1_2, y = attr1_3)) + geom_point() +geom_smooth(se=FALSE)
-ggplot(Q4_df_no, aes(x = attr1_2, y = attr1_3)) + geom_point() +geom_smooth(se=FALSE)
 
+#starting values: not different for sinc, fun and attr
+t.test(Q4_df_yes$attr1_2,Q4_df_no$attr1_2,alternative = "two.sided")
+t.test(Q4_df_yes$fun1_2,Q4_df_no$fun1_2,alternative = "two.sided")
+t.test(Q4_df_yes$shar1_2,Q4_df_no$shar1_2,alternative = "two.sided")
+t.test(Q4_df_yes$amb1_2,Q4_df_no$amb1_2,alternative = "two.sided")
+t.test(Q4_df_yes$sinc1_2,Q4_df_no$sinc1_2,alternative = "two.sided")
+t.test(Q4_df_yes$intel1_2,Q4_df_no$intel1_2,alternative = "two.sided")
+
+
+#same means: attr,sinc, intel means are different for: pos: fun,shar neg:amb
+#since we only had same means to begin with for sinc, fun and attr, there are only changes in intel and fun
+#two sided means that the sample mean is different from 0 (checking on both sides of 0)
+#if I get a p-value below 0.05, I reject the 0 hypothesis - meaning that the means are different
+#if I get a p-value above 0.05, I fail to reject the 0 hypothesis 
+t.test(Q4_df_yes$attr1_3,Q4_df_no$attr1_3,alternative = "two.sided")
+t.test(Q4_df_yes$fun1_3,Q4_df_no$fun1_3,alternative = "two.sided")
+t.test(Q4_df_yes$shar1_3,Q4_df_no$shar1_3,alternative = "two.sided")
+t.test(Q4_df_yes$amb1_3,Q4_df_no$amb1_3,alternative = "two.sided")
+t.test(Q4_df_yes$sinc1_3,Q4_df_no$sinc1_3,alternative = "two.sided")
+t.test(Q4_df_yes$intel1_3,Q4_df_no$intel1_3,alternative = "two.sided")
+
+
+#for those going on a date: importance of intelligence decreases and importance of fun increases if you went on a date
+ggplot(Q4_df,aes(x=fun1_2,y=fun1_3,colour=factor(date_3)))+geom_point(alpha=0.1)+
+  geom_smooth(data=Q4_df_no, aes(x=fun1_2, y=fun1_3), color='#FD5A31')+
+  geom_smooth(data=Q4_df_yes, aes(x=fun1_2, y=fun1_3), color='#4FCDE1')+
+  labs(title = "How important is a fun personality to you?", x = "After speeddating", y = "Four weeks later")+
+  scale_colour_discrete(name  ="Dating",
+                        breaks=c("0", "1"),
+                        labels=c("Have not dated", "Have dated"))
+
+
+ggplot(Q4_df,aes(x=intel1_2,y=intel1_3,colour=factor(date_3)))+geom_point(alpha=0.1)+
+  geom_smooth(data=Q4_df_no, aes(x=intel1_2, y=intel1_3), color='#FD5A31')+
+  geom_smooth(data=Q4_df_yes, aes(x=intel1_2, y=intel1_3), color='#4FCDE1')+
+  labs(title = "How important is intelligence to you?", x = "After speeddating", y = "Four weeks later")+
+  scale_colour_discrete(name  ="Dating",
+                        breaks=c("0", "1"),
+                        labels=c("Have not dated", "Have dated"))
+
+
+
+
+
+ggplot(Q4_df_yes, aes(x = attr1_2, y = attr1_3)) + geom_point() + geom_smooth()+
+  geom_smooth(data=Q4_df_no, aes(x=attr1_2, y=attr1_3), color='red')+
+  labs(title = "How important is attractiveness to you?", x = "After speeddating", y = "Four weeks later")
+
+ggplot(Q4_df_yes, aes(x = sinc1_2, y = sinc1_3),color='green') + geom_point() + geom_smooth()+
+  geom_smooth(data=Q4_df_no, aes(x=sinc1_2, y=sinc1_3), color='red')+
+  labs(title = "How important is sincerity to you?", x = "After speeddating", y = "Four weeks later")
+
+ggplot(Q4_df_yes, aes(x = intel1_2, y = intel1_3),color='green') + geom_point() + geom_smooth()+
+  geom_smooth(data=Q4_df_no, aes(x=intel1_2, y=intel1_3), color='red')+
+  labs(title = "How important is intelligence to you?", x = "After speeddating", y = "Four weeks later")
+
+ggplot(Q4_df_yes, aes(x = fun1_2, y = fun1_3),color='green') + geom_point() + geom_smooth()+
+  geom_smooth(data=Q4_df_no, aes(x=fun1_2, y=fun1_3), color='red')+
+  labs(title = "How important is a fun personality to you?", x = "After speeddating", y = "Four weeks later")
+
+ggplot(Q4_df_yes, aes(x = amb1_2, y = amb1_3),color='green') + geom_point() + geom_smooth()+
+  geom_smooth(data=Q4_df_no, aes(x=amb1_2, y=amb1_3), color='red')+
+  labs(title = "How important is ambition to you?", x = "After speeddating", y = "Four weeks later")
+
+ggplot(Q4_df_yes, aes(x = shar1_2, y = shar1_3),color='green') + geom_point() + geom_smooth()+
+  geom_smooth(data=Q4_df_no, aes(x=shar1_2, y=shar1_3), color='red')+
+  labs(title = "How important are shared interests to you?", x = "After speeddating", y = "Four weeks later")
+
+#same means: attr,sinc, intel means are different for: pos: fun,shar neg:amb
 
 ```
+
 
 
 
