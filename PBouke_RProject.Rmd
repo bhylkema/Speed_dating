@@ -213,15 +213,12 @@ for (z in c(1:4)){
 
 Caucasian respondents are looking for partners they deem attractive and intelligent. Asians prefer attractive, but sincere partners, while Latinos above all seek intelligence and rank attractiveness second. Africans agree with Caucasians. 
 
-A more sensitive subject may be the influence of someone's race on their choices. How important is it to the respondents that their speed-dating partner has the same racial background? This opinion could be rated on a scale from 1-10. As shown in the barchart, this seems to be an especially important condition for people with a North-American or European background, while Latinos are more indifferent. 
+A more sensitive subject may be the influence of someone's race on their choices. How important is it to the respondents that their speed-dating partner has the same racial background? This opinion could be rated on a scale from 1-10. As shown in the boxplot, this seems to be an especially important condition for people with a North-American or European background, while Latinos are more indifferent. 
 
 ```{r Race_importance}
-average_rimp <- matrix(c(1:4), nrow = 4, ncol = 1)
-rownames(average_rimp) <- race_names
-for (i in c(1:4)){
-race_nimp <- df[ which(df$race == i), ]
-average_rimp[i,1] <- mean(race_nimp$imprace, na.rm=TRUE)}
-barplot(average_rimp[,1], xlab = "Racial background", ylab = "Average score imprace")
+y <- df %>% select(race, imprace) %>% filter(race <= 4)
+p <- ggplot(data = y) + geom_boxplot(aes(x = race, y = imprace, group = race))
+p + scale_x_discrete(name ="Race", limits=c("African", "Caucasian", "Latino", "Asian"))
 ```
 
 And does the frequency with which people go on a date matter much? We define high dating frequency as all scores from 1:3, and low dating frequency as all scores from 4:7. 
