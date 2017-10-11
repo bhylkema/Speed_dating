@@ -61,7 +61,7 @@ ggplot(df,aes(x=factor(1),fill=factor(race)))+geom_bar(widght=1)+coord_polar("y"
 
 ```
 3. Age
-The distribution of age of the participants is mainly between 20 and 30. The mean is 26.36, which is very close to the median at 26, 
+The distribution of age of the participants is mainly between 20 and 30. It can be observed that the mean (26.36) is very close to the median (26.0). Thus, the distribution of ages among the participants are evenly divided in most participant cases with the presence of some outliers. 
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 # Age
