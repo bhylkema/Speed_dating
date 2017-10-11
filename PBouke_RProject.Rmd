@@ -28,7 +28,47 @@ The further contents of this report detail the findings of an exploratory study 
 5) What lessons can be taken from this analysis? 
 
 Chapter 2: Descriptive Statistics 
-(..)
+The dataset contained information about 552 subjects that formed part of the speed-dating experiment. Each one of them revealed aspects about themselfs before going on the dating rounds. In order to properly analyse the data and the raised hypothesis it is importante to  provide some context about the main  characteristics og the group of subjects.
+Therefore the following charts can give an illustrastion about the main profile in the sample uses for this dataset:
+1. Age
+The proportion of male and female attending the event is proportional, as expected due to the nature of the event.
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+#Gender
+gend <- df["gender"]
+#gend_data<- ordered(gend,levels=c(0,1),labels=c("Female","Male"))
+#levels=c(0,1)
+#labels=c("Female","Male")
+
+
+
+
+
+
+ggplot(df,aes(x=factor(1),fill=factor(gender)))+geom_bar(widght=1) +coord_polar("y")
+
+
+```
+
+2. Race
+The pie chart illustrates the representation of races in the group examined. At first glance, it becomes very clear that a very large majorityt of the group is European/Caucasian-American. Furthermore, a around a quarter of the group is Asian/Pacific Islander/Asian-American. Finally, the other race groups have similar proportions amongs them, representing alltogether just under a quarter of the total size of the group.
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+#Race
+
+
+ggplot(df)+geom_bar(aes(x=factor(race),fill=factor(race),show.legend=FALSE))+scale_fill_discrete(name="Races",breaks=c("1","2","3","4","5","6"),labels=c("Black/African American","European/Caucasian-American","Latino/Hispanic American","Asian/Pacific Islander/Asian-American","Native American","Other"))
+
+ggplot(df,aes(x=factor(1),fill=factor(race)))+geom_bar(widght=1)+coord_polar("y",start=0)
+
+```
+3. Age
+The distribution of age of the participants is mainly between 20 and 30. The mean is 26.36, which is very close to the median at 26, 
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+# Age
+ggplot(df)+geom_density(aes(x=age,fill=gender))+ geom_vline(xintercept=26.36, colour="blue")+ geom_vline(xintercept=26.00,)
+
+
+```
 
 ```{r Chapter_2_Descriptive_statistics}
 # Clean the data set 
