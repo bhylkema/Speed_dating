@@ -783,6 +783,54 @@ According to the results obtained by running linear regression  for each race on
 
 
 **Part Louis and Marianne**
+```{r Chapter_4: Normalization and dataset set up}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Setting up customized datasets
+
+originset <- read.csv("Speed_Dating_Data.csv", header = TRUE)
+summary(originset)
+
+elements_2 = c("attr1_2", "sinc1_2", "intel1_2", "fun1_2", "amb1_2", "shar1_2")
+elements_3 = c("attr1_3", "sinc1_3", "intel1_3", "fun1_3", "amb1_3", "shar1_3")
+j = 1
+totalrow = dim(originset)[1]
+
+summary(originset[elements_2])  #check that the min and max is correct (clean)
+summary(originset[elements_3])  #check that the min and max is correct (clean)
+
+# Let's normalize the variables as scoring vary for some waves
+while (j <= totalrow) {  #repeat for each row
+  totalscore = 0  #compute total score for each row
+  for (i in elements_2){
+    totalscore = totalscore + originset[j,i]
+  }
+  for (i in elements_2){   #compute the normalised score for each elements
+    originset[j,i] = originset[j,i] * 100 / totalscore
+  }
+  for (k in elements_3){
+    totalscore = totalscore + originset[j,k]
+  }
+  for (k in elements_3){   #compute the normalised score for each elements
+    originset[j,i] = originset[j,k] * 100 / totalscore
+  }  
+  j = j + 1
+}
+
+# We can create now a proper dataset for our Question 4
+
+Q4_df <- originset[, c("gender", "samerace", "income", "attr1_2", "sinc1_2", "intel1_2", "fun1_2", "amb1_2", "shar1_2", "attr1_3", "sinc1_3", "intel1_3", "fun1_3", "amb1_3", "shar1_3", "date_3")]
+
+Q4_df <- na.omit(Q4_df)
+
+# Eventually, let's split our new dataset in 2 parts: people who dated (yes) vs. those who didn't (no)
+Q4_df_yes <- subset(Q4_df, date_3 == "1")
+Q4_df_yes <- na.omit(Q4_df_yes) #removes NA
+
+Q4_df_no <- subset(Q4_df, date_3 == "0")
+Q4_df_no <- na.omit(Q4_df_no) #removes NA
+
+```
 ```{r Chapter_4: Preliminary analysis}
 
 # Let's see how men and women weight each criteria right after speed dating 
