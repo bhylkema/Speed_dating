@@ -1,0 +1,353 @@
+---
+title: "M&SFA"
+author: "Bouke"
+date: "9/25/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+df <- read.csv("Speed_Dating_Data.csv", header = TRUE)
+library(dplyr)
+df <- df[!duplicated(df$iid), ]
+```
+
+Chapter_1_Introduction
+In a world where people seek love yet nobody has time, speed-dating may seem to be an outcome. But, are people even aware of what they really want? And do they act upon their perceived preferences? Analysis of speed-dating data provides an insight into the decision-making process of potential lovers, and might be able to provide awareness of key success and failure factors in speed-dating. Ultimately, this analysis may provide for suggestions to date more effectively 
+
+From 2002-2004 professors of the Columbia Business School analysed speed-daters to evaluate these questions. 
+may reveal secrets of our behaviour.  And how can it help us make better decisions to 
+
+```{r}
+# 
+# Storyline: 
+# .. 
+# This data set includes ..
+# and has been cleaned by taking steps .. 
+
+# This report is built up as follows: .. 
+
+# To do's: a) make sure plots are properly sized; b) change into ggplot?; c) write introduction; d)
+
+```
+
+
+```{r Chapter_2_Descriptive_statistics}
+# Clean the data set 
+# First clean our preferences data set
+columns <- c("attr1_1", "sinc1_1", "intel1_1", "fun1_1", "amb1_1", "shar1_1")
+elements <- c("attr", "sinc", "intel", "fun", "amb", "shar")
+j = 1
+totalrow = dim(df)[1]
+
+# summary(df[elements])  #check that the min and max is correct (clean)
+
+while (j <= totalrow) {  #repeat for each row
+  totalscore = 0  #compute total score for each row
+  for (i in columns){
+    totalscore = totalscore + df[j,i]
+  }
+  for (i in columns){   #compute the normalised score for each elements
+    df[j,i] = df[j,i] * 100 / totalscore
+  }  
+  j = j + 1
+}
+
+# Other cleaning activity .. 
+
+```
+
+```{r DESCRIPTIVE_STATISTICS}
+# provide an overview of the nr of observations 
+# print(cat("Total sample size of the dataset is ", nrow(dfr), " and the number of variables totals", ncol(dfr)))
+
+# Gender plot
+distribution <- table(df$gender) # generate a distribution table of 
+slices <- c(distribution[names(distribution) == 0], distribution[names(distribution) == 1]) 
+lbls <- c("Male", "Female")
+pie(slices, labels = lbls, main = "Pie Chart of Gender")
+
+# Age histogram 
+print("The sample includes people aging in the range of .. to .. ")
+age_hist <- df$age
+hist(age_hist)
+
+# Histogram of race and of same racial preference, 0 being not important and 10 being very important 
+race_hist <- df$race_o
+hist(race_hist, breaks=seq(0,6,by=1))
+
+imprace_hist <- df$imprace
+hist(imprace_hist, breaks=seq(0,10,by=1))
+abline(v=2.5,col="red")
+table(df$race)
+
+print("The average score for importance of dating someone of the same race is in between 2 and 3. It is interesting to see whether or not people that score below average indeed more often match with people that are not of the same race, and vice versa.")
+
+```
+
+The first question that arises when questioning whether (main question) is to consider the preferences of the surveyed population in advance of the speed-dating experiment. The population is segmented based on the charactestics from the previous sections, namely: a) Gender; b) Age; c) Race; d) Dating frequency; e) Goal of dating; and f) the confidence level of participants. The preferences in these segments are evaluated and compared, to see whether there are any interesting differences between the segments. In the next section these insights will be used to evaluate the question whether people actually act on their stated preferences, or whether, generally speaking, people tend to display different behaviour once faced with actual persons.
+
+The first object of interest are the preferences of men and women. 
+
+```{r Gender}
+library('reshape')
+library('ggplot2')
+library('tidyr')
+# Prepare data and storage method 
+female <- df[ which(df$gender == 0), ]
+male <- df[ which(df$gender == 1), ]
+
+gender_matrix <- matrix(c(1:12), nrow = 6, ncol = 2)
+rownames(gender_matrix) <- columns
+colnames(gender_matrix) <- c("Female", "Male")
+
+# Calculate average values 
+for (i in columns){
+  gender_matrix[i,1] <- mean(female[,i], na.rm=TRUE)
+  gender_matrix[i,2] <- mean(male[,i], na.rm=TRUE)
+}
+rownames(gender_matrix) <- elements
+print(gender_matrix)
+
+# Plot the average attribute values per attribute by race 
+par(mfrow=c(1,2))
+barplot(gender_matrix[,1], xlab = "Attribute", ylab = "Average score in attribute", main = "Female", ylim = c(0,30))
+barplot(gender_matrix[,2], xlab = "Attribute", ylab = "Average score in attribute", main = "Male", ylim = c(0,30))
+```
+
+It seems that there are some interesting differences between men and women. On average, women think the most important trait of a potential partner is intelligence, while deviding points approximately equally amongst attractiveness, sincerity, and fun. Men place very significant importance on looks, giving on average 27 points to this attribute that women gave only 18. Intelligence and fun approximately share second place, while ambition is hardly at all considered important! 
+
+Are there more differences between men and women? Do guys and girls think equally about looking for people from the same race, and are there any differences when the age is considered?
+
+```{r Gender_and_race}
+age <- 26
+y_female <- female[ which(female$age <= age), ]
+o_female <- female[ which(female$age > age), ]
+y_male <- male[ which(male$age <= age), ]
+o_male <- male[ which(male$age > age), ]
+
+racepref_matrix <- matrix(data = c(1:4), nrow = 2, ncol = 2)
+racepref_matrix[1,1] <- mean(y_female$imprace, na.rm = TRUE)
+racepref_matrix[2,1] <- mean(o_female$imprace, na.rm = TRUE)
+racepref_matrix[1,2] <- mean(y_male$imprace, na.rm = TRUE)
+racepref_matrix[2,2] <- mean(o_male$imprace, na.rm = TRUE)
+colnames(racepref_matrix) <- c('Female', 'Male')
+rownames(racepref_matrix) <- c('Young', 'Old')
+print(racepref_matrix)
+
+par(mfrow=c(1,2))
+barplot(racepref_matrix[,1], xlab = "Age", ylab = "Average score in importance of race", main = "Female", ylim = c(0,5))
+barplot(racepref_matrix[,2], xlab = "Age", ylab = "Average score in importance of race", main = "Male", ylim = c(0,5))
+```
+
+Young females seem to have a relatively much stronger preference for partners of the same race than the rest of the surveyed population, rating this trait with a full point higher on average. 
+
+Looking at the differences in between the older and younger half of the population, it seems that age has little influence on the preferences of people:
+
+```{r Age}
+age <- 25
+young <- df[ which(df$age < age), ]
+old <- df[ which(df$age >= age), ]
+# Do people that date frequently have different preferences than people that do not ?
+age_matrix <- matrix(c(1:12), nrow = 6, ncol = 2)
+columns <- c("attr1_1", "sinc1_1", "intel1_1", "fun1_1", "amb1_1", "shar1_1")
+rownames(age_matrix) <- columns
+colnames(age_matrix) <- c("Young", "Old")
+
+for (i in columns){
+  age_matrix[i,1] <- mean(young[,i], na.rm=TRUE)
+  age_matrix[i,2] <- mean(old[,i], na.rm=TRUE)
+}
+rownames(age_matrix) <- elements
+print(age_matrix)
+
+# Plot the average attribute values per attribute by race 
+par(mfrow=c(1,2))
+barplot(age_matrix[,1], xlab = "Attribute", ylab = "Average score in attribute", main = "Young", ylim = c(0,25))
+barplot(age_matrix[,2], xlab = "Attribute", ylab = "Average score in attribute", main = "Old", ylim = c(0,25))
+```
+
+Does one's racial background influence their preferences for a certain partner? 
+
+```{r Race_preferences}
+# Furthermore, we are interested in the variation in main preferences over race 
+# Generate a matrix with the mean values for attribute scores for each race 
+race_att_matrix <- matrix(c(1:24), nrow = 6, ncol = 4)
+rownames(race_att_matrix) <- columns
+colnames(race_att_matrix) <- race_names
+
+for (y in c(1:4)){
+  race_df <- df[ which(df$race == y), ]
+  for (i in columns){
+    race_att_matrix[i,y] <- mean(race_df[,i], na.rm=TRUE)}
+}
+print(race_att_matrix)
+
+# Plot the average attribute values per attribute by race 
+par(mfrow=c(3,2))
+for (z in c(1:6)){
+  barplot(race_att_matrix[z,], xlab = "Race", ylab = "Average score in attribute", ylim = c(0, 25), main = elements[z])
+}
+
+# Plot the average attribute values by attribute per race 
+rownames(race_att_matrix) <- elements
+par(mfrow=c(2,2))
+for (z in c(1:4)){
+  barplot(race_att_matrix[,z], xlab = "Attribute", ylab = "Average score in attribute", ylim = c(0, 25), main = race_names[z])
+}
+```
+
+Caucasian respondents are looking for partners they deem attractive and intelligent. Asians prefer attractive, but sincere partners, while Latinos above all seek intelligence and rank attractiveness second. Africans agree with Caucasians. 
+
+A more sensitive subject may be the influence of someone's race on their choices. How important is it to the respondents that their speed-dating partner has the same racial background? This opinion could be rated on a scale from 1-10. As shown in the barchart, this seems to be an especially important condition for people with a North-American or European background, while Latinos are more indifferent. 
+
+```{r Race_importance}
+average_rimp <- matrix(c(1:4), nrow = 4, ncol = 1)
+race_names <-  c("African", "Caucasian", "Latino", "Asian")
+rownames(average_rimp) <- race_names
+for (i in c(1:4)){
+race_nimp <- df[ which(df$race == i), ]
+average_rimp[i,1] <- mean(race_nimp$imprace, na.rm=TRUE)}
+barplot(average_rimp[,1], xlab = "Racial background", ylab = "Average score imprace")
+```
+
+And does the frequency with which people go on a date matter much? We define high dating frequency as all scores from 1:3, and low dating frequency as all scores from 4:7. 
+
+```{r Dating_rate}
+# Next plot is dating rate. 
+cut_off <- 3
+low_date <- df[ which(df$date >= cut_off), ]
+high_date <- df[ which(df$date < cut_off), ]
+# Do people that date frequently have different preferences than people that do not ?
+date_matrix <- matrix(c(1:12), nrow = 6, ncol = 2)
+rownames(date_matrix) <- columns
+colnames(date_matrix) <- c("Infrequent dater", "Frequent dater")
+
+for (i in columns){
+  date_matrix[i,1] <- mean(low_date[,i], na.rm=TRUE)
+  date_matrix[i,2] <- mean(high_date[,i], na.rm=TRUE)
+}
+print(date_matrix)
+rownames(date_matrix) <- elements
+
+# Plot the average attribute values per attribute by race 
+par(mfrow=c(1,2))
+barplot(date_matrix[,1], xlab = "Attribute", ylab = "Average score in attribute", main = "Infrequent dater", ylim = c(0,30))
+barplot(date_matrix[,2], xlab = "Attribute", ylab = "Average score in attribute", main = "Frequent dater", ylim = c(0,30))
+# 
+```
+
+This is interesting! People that date often rate attractiveness a lot higher .. by 8 points! But what is the influence of the purpose of someone's participation? Respondents were asked to state the goal of their participation from the following list: 
+(..)
+
+```{r Serious_relationship}
+
+# Look for preference differences between people who say they are looking for a serious relationship goal = 4, and people who come for a fun night out (goal = 1) or for being able to say they did it (goal = 5)
+serious <- df[ which(df$goal == 4), ]
+not_serious <- df[ which(df$goal == 1), ]
+# Do people that date frequently have different preferences than people that do not ?
+serious_matrix <- matrix(c(1:12), nrow = 6, ncol = 2)
+rownames(date_matrix) <- columns
+colnames(date_matrix) <- c("Serious", "Not serious")
+
+for (i in columns){
+  date_matrix[i,1] <- mean(serious[,i], na.rm=TRUE)
+  date_matrix[i,2] <- mean(not_serious[,i], na.rm=TRUE)
+}
+print(date_matrix)
+# We do not see significant differences, except for a higher sincerity score of about 3. 
+```
+
+Not surprisingly, people that indicate they have a serious purpose with speed-dating are more likely to value sincerity in their partner. It will be interesting to see whether this holds up once they actually make their decisions for matches. 
+
+```{r}
+# Comments: transforming the rows for visualisation
+# gender_matrix <- melt(as.data.frame(gender_matrix)) 
+# gather(gender_matrix, key, -female) %>% separate(key, c("attr", "sinc", "intel", "fun", "amb", "shar"))
+# gender_matrix
+# ggplot(data=)) + geom_bar(aes(x = female, ))
+
+```
+
+
+```{r Chapter_4: Hypothesis testing LOUIS}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Question 4: Hypothesis - dating changes the preferences of people
+
+
+#What do you look for in the opposite sex - right after speed-dating
+# Column names: attr1_2 sinc1_2 intel 1_2 fun1_2 amb1_2 shar1_2 
+
+#What do you look for in the opposite sex - after possible dating (4w later)
+# Column names: attr1_3 sinc1_3 intel1_3 fun1_3 amb1_3 shar1_3 
+
+#action:normalize above variables
+originset <- read.csv("Speed_Dating_Data.csv", header = TRUE)
+summary(originset)
+
+elements_2 = c("attr1_2", "sinc1_2", "intel1_2", "fun1_2", "amb1_2", "shar1_2")
+elements_3 = c("attr1_3", "sinc1_3", "intel1_3", "fun1_3", "amb1_3", "shar1_3")
+j = 1
+totalrow = dim(originset)[1]
+
+summary(originset[elements_2])  #check that the min and max is correct (clean)
+summary(originset[elements_3])  #check that the min and max is correct (clean)
+
+while (j <= totalrow) {  #repeat for each row
+  totalscore = 0  #compute total score for each row
+  for (i in elements_2){
+    totalscore = totalscore + originset[j,i]
+  }
+  for (i in elements_2){   #compute the normalised score for each elements
+    originset[j,i] = originset[j,i] * 100 / totalscore
+  }
+  for (k in elements_3){
+    totalscore = totalscore + originset[j,k]
+  }
+  for (k in elements_3){   #compute the normalised score for each elements
+    originset[j,i] = originset[j,k] * 100 / totalscore
+  }  
+  j = j + 1
+}
+
+# action:get all columns for 1_3, 1_2, date_3
+
+Q4_df <- originset[, c("attr1_2", "sinc1_2", "intel1_2", "fun1_2", "amb1_2", "shar1_2", "attr1_3", "sinc1_3", "intel1_3", "fun1_3", "amb1_3", "shar1_3", "date_3")]
+
+
+# Have you been on a date with any of your matches?
+# Variable: date_3 Yes=1, No=0
+
+#action:limit one dataset to Yes=1 and one to No=0
+Q4_df_yes <- subset(Q4_df, date_3 == "1")
+Q4_df_no <- subset(Q4_df, date_3 == "0")
+
+#action: plot 1_3 and 1_2 for Yes and plot 1_3 and 1_2 for No
+library(ggplot2)
+
+ggplot(Q4_df_yes, aes(x = attr1_2, y = attr1_3)) + geom_point() +geom_smooth(se=FALSE)
+ggplot(Q4_df_no, aes(x = attr1_2, y = attr1_3)) + geom_point() +geom_smooth(se=FALSE)
+
+
+```
+
+
+
+``` {r}
+#>>>>>>> 70485f3d6267994711f894d382eb1639f18609d0
+# Comments: 
+# 1. Mention that the dataset is relatively old, and from the US 
+# 2: normalize the scores of the different waves to ensure everyone scored a total of 100 points.
+
+# Proposed groups based on: 
+# Gender: Male / female 
+# Bins for age: 0-26; 27-60 (this separates the age groups about half-half)
+# Race: Black/African American=1 ; 	European/Caucasian-American=2 ;	Latino/Hispanic American=3 ; 	Asian/Pacific Islander/Asian-American=4 ; [5 has 0 responses, 6 is difficult to work with]
+# Confidence < - we still have to define this one, but can be something like low / high. 
+# Dating frequency: low / high 
+
+
+
+
+```
