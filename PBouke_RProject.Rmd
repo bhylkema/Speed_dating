@@ -177,7 +177,7 @@ kable(mtrx)
 ggplot(data = mtrx) + geom_col(aes(x = Attribute, y = Score)) + facet_grid(~ Age_group)
 ```
 
-Does one's racial background influence their preferences for a certain partner? 
+Does one's racial background influence their preferences for a certain partner? The next plot displays the average score of each race for each of the attributes, grouped by attribute. In this way it is easy to see which racial background places high or low importance on each of these attributes relative to the other racial backgrounds.
 
 ```{r Race_preferences}
 # Furthermore, we are interested in the variation in main preferences over race 
@@ -193,7 +193,10 @@ for (y in c(1:4)){
     race_att_matrix[i,y] <- mean(race_df[,i], na.rm=TRUE)}
 }
 print(race_att_matrix)
+```
+However, to understand how each race evaluates the various attributes against other attributes it is also useful to look at the data in the following way: 
 
+```{r Race_preferences2}
 # Plot the average attribute values per attribute by race 
 par(mfrow=c(3,2))
 for (z in c(1:6)){
@@ -249,8 +252,7 @@ ggplot(data = mtrx) + geom_col(aes(x = Attribute, y = Score)) + facet_grid(~ Dat
 # 
 ```
 
-This is interesting! People that date often rate attractiveness a lot higher .. by 8 points! But what is the influence of the purpose of someone's participation? Respondents were asked to state the goal of their participation from the following list: 
-(..)
+This is interesting! People that date often rate attractiveness a lot higher .. by 8 points! But what is the influence of the purpose of someone's participation? Respondents were asked to state the goal of their participation from the following list:
 
 ```{r Serious_relationship}
 
