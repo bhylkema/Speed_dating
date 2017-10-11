@@ -231,20 +231,7 @@ kable(serious_matrix)
 
 Not surprisingly, people that indicate they have a serious purpose with speed-dating are more likely to value sincerity in their partner. It will be interesting to see whether this holds up once they actually make their decisions for matches. 
 
-```{r}
-# Comments: transforming the rows for visualisation
-# gender_matrix <- melt(as.data.frame(gender_matrix)) 
-# gather(gender_matrix, key, -female) %>% separate(key, c("attr", "sinc", "intel", "fun", "amb", "shar"))
-# gender_matrix
-# ggplot(data=)) + geom_bar(aes(x = female, ))
 
-```
-
-
-
-
-
-```
 ###Do We Know What We Want In Choosing Our Dating Partners?###
 
 ###Approach###
