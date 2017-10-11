@@ -272,7 +272,7 @@ kable(serious_matrix)
 Not surprisingly, people that indicate they have a serious purpose with speed-dating are more likely to value sincerity in their partner. It will be interesting to see whether this holds up once they actually make their decisions for matches. 
 
 
-###Do We Know What We Want In Choosing Our Dating Partners?###
+###Section 2: Do We Know What We Want In Choosing Our Dating Partners?###
 
 ###Approach###
 
@@ -367,30 +367,6 @@ nomatchfemale = filter(nomatchset, gender=="Female")
 
 ####1. Ambitious Attribute####
 
-**Correlation Tests of Attribute Scored by Male Participants for Matched (Decision = 1) Outcome**
-
-```{r echo=FALSE, warning=FALSE, message=FALSE}
-cor.test(matchedmale$amb, matchedmale$amb1_1, alternative = "two.sided")
-```
-
-**Correlation Tests of Attribute Scored by Female Participants for Matched (Decision = 1) Outcome**
-
-```{r echo=FALSE, warning=FALSE, message=FALSE}
-cor.test(matchedfemale$amb, matchedfemale$amb1_1, alternative = "two.sided")
-```
-
-**Correlation Tests of Attribute Scored by Male Participants for No Match (Decision = 0) Outcome**
-
-```{r echo=FALSE, warning=FALSE, message=FALSE}
-cor.test(nomatchmale$amb, nomatchmale$amb1_1, alternative = "two.sided")
-```
-
-**Correlation Tests of Attribute Scored by Female Participants for No Match (Decision = 0) Outcome**
-
-```{r echo=FALSE, warning=FALSE, message=FALSE}
-cor.test(nomatchfemale$amb, nomatchfemale$amb1_1, alternative = "two.sided")
-```
-
 **Plots of Attribute Scored by Participants for Matched (Decision = 1) and No Match Outcomes**
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
@@ -408,30 +384,6 @@ ggplot(nomatchset, aes(y=amb1_1, x=amb, color = factor(gender)))+
 From the plots and the correlation tests, where there is a match (decision to meet = 1), there is a positive but weak correlationship for the Ambitious (Amb) attribute for both genders, with female placing a higher weightage for Ambitious compared to male.  However, in the plot where there is no match (decision to meet = 0), male showed that they are not meeting those who have lower Ambitious score than what they were looking for but the correlation is weak.  Female is not consistent here as they have rejected those who met their expectation but the correlation is also weak.  Other attributes may have played more strongly in their decisions.
 
 ####2. Intelligent Attribute####
-
-**Correlation Tests of Attribute Scored by Male Participants for Matched (Decision = 1) Outcome**
-
-```{r echo=FALSE, warning=FALSE, message=FALSE}
-cor.test(matchedmale$intel, matchedmale$intel1_1, alternative = "two.sided")
-```
-
-**Correlation Tests of Attribute Scored by Female Participants for Matched (Decision = 1) Outcome**
-
-```{r echo=FALSE, warning=FALSE, message=FALSE}
-cor.test(matchedfemale$intel, matchedfemale$intel1_1, alternative = "two.sided")
-```
-
-**Correlation Tests of Attribute Scored by Male Participants for No Match (Decision = 0) Outcome**
-
-```{r echo=FALSE, warning=FALSE, message=FALSE}  
-cor.test(nomatchmale$intel, nomatchmale$intel1_1, alternative = "two.sided")
-```
-
-**Correlation Tests of Attribute Scored by Female Participants for No Match (Decision = 0) Outcome**
-
-```{r echo=FALSE, warning=FALSE, message=FALSE}
-cor.test(nomatchfemale$intel, nomatchfemale$intel1_1, alternative = "two.sided")
-```
 
 **Plots of Attribute Scored by Participants for Matched (Decision = 1) and No Match (Decision = 0) Outcomes**
 
@@ -453,30 +405,6 @@ From the correlation tests and scatter plots for Intelligent attribute (Intel), 
 
 ####3. Shared Interest Attribute####
 
-**Correlation Tests of Attribute Scored by Male Participants for Matched (Decision = 1) Outcome**
-
-```{r echo = FALSE, warning=FALSE, message=FALSE}
-cor.test(matchedmale$shar, matchedmale$shar1_1, alternative = "two.sided")
-```
-
-**Correlation Tests of Attribute Scored by Female Participants for Matched (Decision = 1) Outcome**
-
-```{r echo=FALSE, warning=FALSE, message=FALSE}
-cor.test(matchedfemale$shar, matchedfemale$shar1_1, alternative = "two.sided")
-```
-
-**Correlation Tests of Attribute Scored by Male Participants for No Match (Decision = 0) Outcome**
-
-```{r echo = FALSE, warning=FALSE, message=FALSE}
-cor.test(nomatchmale$shar, nomatchmale$shar1_1, alternative = "two.sided")
-```
-
-**Correlation Tests of Attribute Scored by Female Participants for No Match (Decision = 0) Outcome**
-
-```{r echo=FALSE, warning=FALSE, message=FALSE}
-cor.test(nomatchfemale$shar, nomatchfemale$shar1_1, alternative = "two.sided")
-```
-
 **Plots of Attribute Scored by Participants for Matched (Decision = 1) and No Match (Decision = 0) Outcomes**
 
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
@@ -496,30 +424,6 @@ ggplot(nomatchset, aes(y=shar1_1, x=shar, color = factor(gender)))+
 From the scatter plots, we see that there is a moderate correlationship for Shared Interests (Shar) attribute for female participants in choosing their dating partners.  There is no correlationship for Shared Interest attribute for male participants.  Neither is there any correlationship for both male and female participants in not choosing their dating partners based on Shared Interest attribute. 
 
 ####4. Fun Attribute####
-
-**Correlation Tests of Attribute Scored by Male Participants for Matched (Decision = 1) Outcome**
-
-```{r echo = FALSE, warning=FALSE, message=FALSE}
-cor.test(matchedmale$fun, matchedmale$fun1_1, alternative = "two.sided")
-```
-
-**Correlation Tests of Attribute Scored by Female Participants for Matched (Decision = 1) Outcome**
-
-```{r echo=FALSE, warning=FALSE, message=FALSE}
-cor.test(matchedfemale$fun, matchedfemale$fun1_1, alternative = "two.sided")
-```
-
-**Correlation Tests of Attribute Scored by Male Participants for No Match (Decision = 0) Outcome**
-
-```{r echo = FALSE, warning=FALSE, message=FALSE}
-cor.test(nomatchmale$fun, nomatchmale$fun1_1, alternative = "two.sided")
-```
-
-**Correlation Tests of Attribute Scored by Female Participants for No Match (Decision = 0) Outcome**
-
-```{r echo=FALSE, warning=FALSE, message=FALSE}
-cor.test(nomatchfemale$fun, nomatchfemale$fun1_1, alternative = "two.sided")
-```
 
 **Plots of Attribute Scored by Participants for Matched (Decision = 1) and No Match (Decision = 0) Outcomes**
 
@@ -541,30 +445,6 @@ From the correlation tests and scatter plots, both genders showed that there is 
 
 ####5. Attractive Attribute####
 
-**Correlation Tests of Attribute Scored by Male Participants for Matched (Decision = 1) Outcome**
-
-```{r echo = FALSE, warning=FALSE, message=FALSE}
-cor.test(matchedmale$attr, matchedmale$attr1_1, alternative = "two.sided")
-```
-
-**Correlation Tests of Attribute Scored by Female Participants for Matched (Decision = 1) Outcome**
-
-```{r echo=FALSE, warning=FALSE, message=FALSE}
-cor.test(matchedfemale$attr, matchedfemale$attr1_1, alternative = "two.sided")
-```
-
-**Correlation Tests of Attribute Scored by Male Participants for No Match (Decision = 0) Outcome**
-
-```{r echo = FALSE, warning=FALSE, message=FALSE}
-cor.test(nomatchmale$attr, nomatchmale$attr1_1, alternative = "two.sided")
-```
-
-**Correlation Tests of Attribute Scored by Female Participants for No Match (Decision = 0) Outcome**
-
-```{r echo=FALSE, warning=FALSE, message=FALSE}
-cor.test(nomatchfemale$attr, nomatchfemale$attr1_1, alternative = "two.sided")
-```
-
 **Plots of Attribute Scored by Participants for Matched (Decision = 1) and No Match (Decision = 0) Outcomes**
 
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
@@ -584,30 +464,6 @@ ggplot(nomatchset, aes(y=attr1_1, x=attr, color = factor(gender)))+
 When comes to being attractive, male participants are rather consistent in chosing someone being attractive and rejecting someone being less attractive than what they have preferred but the correlationship is weak.  However, famale participants are less concerned about their partner being attractive as there is almost zero correlationship showed by the relatively flat lines for both accepting or rejecting someone. 
 
 ####6. Sincere Attribute####
-
-**Correlation Tests of Attribute Scored by Male Participants for Matched (Decision = 1) Outcome**
-
-```{r echo = FALSE, warning=FALSE, message=FALSE}
-cor.test(matchedmale$sinc, matchedmale$sinc1_1, alternative = "two.sided")
-```
-
-**Correlation Tests of Attribute Scored by Female Participants for Matched (Decision = 1) Outcome**
-
-```{r echo=FALSE, warning=FALSE, message=FALSE}
-cor.test(matchedfemale$sinc, matchedfemale$sinc1_1, alternative = "two.sided")
-```
-
-**Correlation Tests of Attribute Scored by Male Participants for No Match (Decision = 0) Outcome**
-
-```{r echo = FALSE, warning=FALSE, message=FALSE}
-cor.test(nomatchmale$sinc, nomatchmale$sinc1_1, alternative = "two.sided")
-```
-
-**Correlation Tests of Attribute Scored by Female Participants for No Match (Decision = 0) Outcome**
-
-```{r echo=FALSE, warning=FALSE, message=FALSE}
-cor.test(nomatchfemale$sinc, nomatchfemale$sinc1_1, alternative = "two.sided")
-```
 
 **Plots of Attribute Scored by Participants for Matched (Decision = 1) and No Match (Decision = 0) Outcomes**
 
