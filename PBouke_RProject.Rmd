@@ -93,7 +93,7 @@ while (j <= totalrow) {  #repeat for each row
 }
 ```
 
-Chapter 3: What do people want? 
+###What do people want?####
 
 The first question that arises when questioning whether (main question) is to consider the preferences of the surveyed population in advance of the speed-dating experiment. The population is segmented based on the charactestics from the previous sections, namely: a) Gender; b) Age; c) Race; d) Dating frequency; e) Goal of dating; and f) the confidence level of participants. The preferences in these segments are evaluated and compared, to see whether there are any interesting differences between the segments. In the next section these insights will be used to evaluate the question whether people actually act on their stated preferences, or whether, generally speaking, people tend to display different behaviour once faced with actual persons.
 
