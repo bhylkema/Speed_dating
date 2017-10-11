@@ -351,3 +351,375 @@ ggplot(Q4_df_no, aes(x = attr1_2, y = attr1_3)) + geom_point() +geom_smooth(se=F
 
 
 ```
+###Do We Know What We Want In Choosing Our Dating Partners?###
+
+###Approach###
+
+We want to evaluate whether people know what they are looking for in choosing a partner.  In another words, we want to compare the responses between what participants gave before the dating event, and what participants chose during the dating event.
+
+Participants are asked what they are looking for in the opposite sex before the dating event.  They evaluated 6 attributes:  attractive ('attr'), sincere ('sinc'), intellent ('intel'), fun ('fun'), ambitious ('amb'), and shared interests ('shar').  
+
+Different waves of participants were asked to rate these 6 attributes in 2 different scoring methodologies:
+
+1.  Distribute 100 points across 6 attributes, giving more points to those attributes they deemed more important in a potential date, and fewer points to these attributes that are less important in a potential date.
+
+2.  Rate the importance of each attribute in a potential date on a scale of 1 to 10 with 1 being not at all important and 10 being extremely important.
+
+In order to do a proper comparison, we normalise all the ratings by getting a Total Score which is the sum of all the scores for all 6 attributes, and multiply each rating by the Normalisation Ratio = 100 / Total Score.
+
+For this evaluation, we examinates 2 sets of attributes:
+
+1.  Scoring before the dating event:  attr1_1, sinc1_1, intel1_1, fun1_1, amb1_1, shar1_1
+2.  Scoring after meeting each potential date:  attr, sinc, intel, fun, amb, shar
+
+Scatter plots of each attributes are presented below comparing the scoring before and after meeting each potential date.
+
+In addition, correlation test is done for each attributes to check whether there is any difference between the scoring before and after meeting each potential date.
+
+We investigate the results according to gender and race which the following classifications:
+
+**Gender**
+
++ Male:  Gender = 1
++ Female:  Gender = 0
+
+**Race**
+
++ Black/African American: Race = 1
++ European/Caucasian-American: Race = 2
++ Latino/Hispanic American:  Race = 3
++ Asian/Pacific Islander/Asian-American:  Race = 4
++ Native American:  Race = 5
++ Other:  Race = 6
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+
+originset <- read.csv("Speed_Dating_Data.csv", header = TRUE)
+
+elements = c("attr", "sinc", "intel", "fun", "amb", "shar")
+j = 1
+totalrow = dim(originset)[1]
+
+while (j <= totalrow) {  #repeat for each row
+  totalscore = 0  #compute total score for each row
+  for (i in elements){
+    totalscore = totalscore + originset[j,i]
+  }
+  for (i in elements){   #compute the normalised score for each elements
+    originset[j,i] = originset[j,i] * 100 / totalscore
+  }  
+  j = j + 1
+}
+
+elements = c("attr1_1", "sinc1_1", "intel1_1", "fun1_1", "amb1_1", "shar1_1")
+j = 1
+totalrow = dim(originset)[1]
+
+while (j <= totalrow) {  #repeat for each row
+  totalscore = 0  #compute total score for each row
+  for (i in elements){
+    totalscore = totalscore + originset[j,i]
+  }
+  for (i in elements){   #compute the normalised score for each elements
+    originset[j,i] = originset[j,i] * 100 / totalscore
+  }  
+  j = j + 1
+}
+
+originset$gender = ifelse(originset$gender==0, "Female", "Male")
+```
+
+###Plots, Tests and Analysis of each Attribute by each Gender###
+
+```{r echo = FALSE}
+matchedset <- filter(originset, dec==1)
+nomatchset <- filter(originset, dec==0)
+
+matchedmale = filter(matchedset, gender=="Male")
+matchedfemale = filter(matchedset, gender=="Female")
+
+nomatchmale = filter(nomatchset, gender=="Male")
+nomatchfemale = filter(nomatchset, gender=="Female")
+```
+
+####1. Ambitious Attribute####
+
+**Correlation Tests of Attribute Scored by Male Participants for Matched (Decision = 1) Outcome**
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+cor.test(matchedmale$amb, matchedmale$amb1_1, alternative = "two.sided")
+```
+
+**Correlation Tests of Attribute Scored by Female Participants for Matched (Decision = 1) Outcome**
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+cor.test(matchedfemale$amb, matchedfemale$amb1_1, alternative = "two.sided")
+```
+
+**Correlation Tests of Attribute Scored by Male Participants for No Match (Decision = 0) Outcome**
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+cor.test(nomatchmale$amb, nomatchmale$amb1_1, alternative = "two.sided")
+```
+
+**Correlation Tests of Attribute Scored by Female Participants for No Match (Decision = 0) Outcome**
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+cor.test(nomatchfemale$amb, nomatchfemale$amb1_1, alternative = "two.sided")
+```
+
+**Plots of Attribute Scored by Participants for Matched (Decision = 1) and No Match Outcomes**
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(matchedset, aes(y=amb1_1, x=amb, color = factor(gender)))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title="People who said 'YES' to meeting again", x="What people actually scored AMBITIOUS on the scorecard ", y="What people intially said about AMBITIOUS")
+
+ggplot(nomatchset, aes(y=amb1_1, x=amb, color = factor(gender)))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title="People who said 'NO' to meeting again", x="What people actually scored AMBITIOUS on the scorecard ", y="What people intially said about AMBITIOUS")
+```
+
+From the plots and the correlation tests, where there is a match (decision to meet = 1), there is a positive but weak correlationship for the Ambitious (Amb) attribute for both genders, with female placing a higher weightage for Ambitious compared to male.  However, in the plot where there is no match (decision to meet = 0), male showed that they are not meeting those who have lower Ambitious score than what they were looking for but the correlation is weak.  Female is not consistent here as they have rejected those who met their expectation but the correlation is also weak.  Other attributes may have played more strongly in their decisions.
+
+####2. Intelligent Attribute####
+
+**Correlation Tests of Attribute Scored by Male Participants for Matched (Decision = 1) Outcome**
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+cor.test(matchedmale$intel, matchedmale$intel1_1, alternative = "two.sided")
+```
+
+**Correlation Tests of Attribute Scored by Female Participants for Matched (Decision = 1) Outcome**
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+cor.test(matchedfemale$intel, matchedfemale$intel1_1, alternative = "two.sided")
+```
+
+**Correlation Tests of Attribute Scored by Male Participants for No Match (Decision = 0) Outcome**
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}  
+cor.test(nomatchmale$intel, nomatchmale$intel1_1, alternative = "two.sided")
+```
+
+**Correlation Tests of Attribute Scored by Female Participants for No Match (Decision = 0) Outcome**
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+cor.test(nomatchfemale$intel, nomatchfemale$intel1_1, alternative = "two.sided")
+```
+
+**Plots of Attribute Scored by Participants for Matched (Decision = 1) and No Match (Decision = 0) Outcomes**
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(matchedset, aes(y=intel1_1, x=intel, color = factor(gender)))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title="People who said 'YES' to meeting again", x="What people actually scored INTELLIGENT on the scorecard ", y="What people intially said about INTELLIGENT")
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(nomatchset, aes(y=intel1_1, x=intel, color = factor(gender)))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title="People who said 'NO' to meeting again", x="What people actually scored INTELLIGENT on the scorecard ", y="What people intially said about INTELLIGENT")
+```
+
+From the correlation tests and scatter plots for Intelligent attribute (Intel), we can see that all the lines are almost horizontal, meaning there is no correlation between what people wanted and what people chose.  This could mean that people did not put much weight in intelligent attribute in choosing their dates.
+
+####3. Shared Interest Attribute####
+
+**Correlation Tests of Attribute Scored by Male Participants for Matched (Decision = 1) Outcome**
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+cor.test(matchedmale$shar, matchedmale$shar1_1, alternative = "two.sided")
+```
+
+**Correlation Tests of Attribute Scored by Female Participants for Matched (Decision = 1) Outcome**
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+cor.test(matchedfemale$shar, matchedfemale$shar1_1, alternative = "two.sided")
+```
+
+**Correlation Tests of Attribute Scored by Male Participants for No Match (Decision = 0) Outcome**
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+cor.test(nomatchmale$shar, nomatchmale$shar1_1, alternative = "two.sided")
+```
+
+**Correlation Tests of Attribute Scored by Female Participants for No Match (Decision = 0) Outcome**
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+cor.test(nomatchfemale$shar, nomatchfemale$shar1_1, alternative = "two.sided")
+```
+
+**Plots of Attribute Scored by Participants for Matched (Decision = 1) and No Match (Decision = 0) Outcomes**
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+ggplot(matchedset, aes(y=shar1_1, x=shar, color = factor(gender)))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title="People who said 'YES' to meeting again", x="What people actually scored SHARED INTERESTS on the scorecard ", y="What people intially said about SHARED INTERESTS")
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(nomatchset, aes(y=shar1_1, x=shar, color = factor(gender)))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title="People who said 'NO' to meeting again", x="What people actually scored SHARED INTERESTS on the scorecard ", y="What people intially said about SHARED INTERESTS")
+```
+
+From the scatter plots, we see that there is a moderate correlationship for Shared Interests (Shar) attribute for female participants in choosing their dating partners.  There is no correlationship for Shared Interest attribute for male participants.  Neither is there any correlationship for both male and female participants in not choosing their dating partners based on Shared Interest attribute. 
+
+####4. Fun Attribute####
+
+**Correlation Tests of Attribute Scored by Male Participants for Matched (Decision = 1) Outcome**
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+cor.test(matchedmale$fun, matchedmale$fun1_1, alternative = "two.sided")
+```
+
+**Correlation Tests of Attribute Scored by Female Participants for Matched (Decision = 1) Outcome**
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+cor.test(matchedfemale$fun, matchedfemale$fun1_1, alternative = "two.sided")
+```
+
+**Correlation Tests of Attribute Scored by Male Participants for No Match (Decision = 0) Outcome**
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+cor.test(nomatchmale$fun, nomatchmale$fun1_1, alternative = "two.sided")
+```
+
+**Correlation Tests of Attribute Scored by Female Participants for No Match (Decision = 0) Outcome**
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+cor.test(nomatchfemale$fun, nomatchfemale$fun1_1, alternative = "two.sided")
+```
+
+**Plots of Attribute Scored by Participants for Matched (Decision = 1) and No Match (Decision = 0) Outcomes**
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+ggplot(matchedset, aes(y=fun1_1, x=fun, color = factor(gender)))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title="People who said 'YES' to meeting again", x="What people actually scored FUN on the scorecard ", y="What people intially said about FUN")
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(nomatchset, aes(y=fun1_1, x=fun, color = factor(gender)))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title="People who said 'NO' to meeting again", x="What people actually scored FUN on the scorecard ", y="What people intially said about FUN")
+```
+
+From the correlation tests and scatter plots, both genders showed that there is a positive but very weak correlationship between what they wanted their partners to be fun and what they eventually chose.  Similarly, there is a weak negative correlationship in deciding not to meet a potential date.  In another words, both genders showed that they are rather consistent, thought weak, in their choice of a potential date when the other party meets their desired level of being fun.
+
+####5. Attractive Attribute####
+
+**Correlation Tests of Attribute Scored by Male Participants for Matched (Decision = 1) Outcome**
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+cor.test(matchedmale$attr, matchedmale$attr1_1, alternative = "two.sided")
+```
+
+**Correlation Tests of Attribute Scored by Female Participants for Matched (Decision = 1) Outcome**
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+cor.test(matchedfemale$attr, matchedfemale$attr1_1, alternative = "two.sided")
+```
+
+**Correlation Tests of Attribute Scored by Male Participants for No Match (Decision = 0) Outcome**
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+cor.test(nomatchmale$attr, nomatchmale$attr1_1, alternative = "two.sided")
+```
+
+**Correlation Tests of Attribute Scored by Female Participants for No Match (Decision = 0) Outcome**
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+cor.test(nomatchfemale$attr, nomatchfemale$attr1_1, alternative = "two.sided")
+```
+
+**Plots of Attribute Scored by Participants for Matched (Decision = 1) and No Match (Decision = 0) Outcomes**
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+ggplot(matchedset, aes(y=attr1_1, x=attr, color = factor(gender)))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title="People who said 'YES' to meeting again", x="What people actually scored ATTRACTIVE on the scorecard ", y="What people intially said about ATTRACTIVE")
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(nomatchset, aes(y=attr1_1, x=attr, color = factor(gender)))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title="People who said 'NO' to meeting again", x="What people actually scored ATTRACTIVE on the scorecard ", y="What people intially said about ATTRACTIVE")
+```
+
+When comes to being attractive, male participants are rather consistent in chosing someone being attractive and rejecting someone being less attractive than what they have preferred but the correlationship is weak.  However, famale participants are less concerned about their partner being attractive as there is almost zero correlationship showed by the relatively flat lines for both accepting or rejecting someone. 
+
+####6. Sincere Attribute####
+
+**Correlation Tests of Attribute Scored by Male Participants for Matched (Decision = 1) Outcome**
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+cor.test(matchedmale$sinc, matchedmale$sinc1_1, alternative = "two.sided")
+```
+
+**Correlation Tests of Attribute Scored by Female Participants for Matched (Decision = 1) Outcome**
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+cor.test(matchedfemale$sinc, matchedfemale$sinc1_1, alternative = "two.sided")
+```
+
+**Correlation Tests of Attribute Scored by Male Participants for No Match (Decision = 0) Outcome**
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+cor.test(nomatchmale$sinc, nomatchmale$sinc1_1, alternative = "two.sided")
+```
+
+**Correlation Tests of Attribute Scored by Female Participants for No Match (Decision = 0) Outcome**
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+cor.test(nomatchfemale$sinc, nomatchfemale$sinc1_1, alternative = "two.sided")
+```
+
+**Plots of Attribute Scored by Participants for Matched (Decision = 1) and No Match (Decision = 0) Outcomes**
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+ggplot(matchedset, aes(y=sinc1_1, x=sinc, color = factor(gender)))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title="People who said 'YES' to meeting again", x="What people actually scored SINCERE on the scorecard ", y="What people intially said about SINCERE")
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(nomatchset, aes(y=sinc1_1, x=sinc, color = factor(gender)))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title="People who said 'YES' to meeting again", x="What people actually scored SINCERE on the scorecard ", y="What people intially said about SINCERE")
+```
+
+Male participants have shown slight positive correlationship in their preferance and their final choice of date for those they perceived to be sincere.  Surprisingly, females are relatively indifference in their decisions based on sincerity.
+
+###Linear Modelling of Decision###
+
+**Linear Model for Decision by Male Participants**
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+maleset <- filter(originset, gender=="Male")
+femaleset <- filter(originset, gender=="Female")
+m <- lm(formula = dec ~ fun + attr + shar, data = maleset)
+summary(m)
+```
+
+**Linear Model for Decision by Female Participants**
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+f <- lm(formula = dec ~ fun + attr + shar, data = femaleset)
+summary(f)
+```
+
+We attempt to create a model for the decision taken by male and female participants respectively.  After removing attributes with high p-values, we are left with Fun, Attractive and Shared Interest attributes for both male and female paricipants.  However, the adjusted R-square of both models are low.  There may be other variables that determine the final decision for choosing someone to date.  We could carry out further analysis of the self-preception score and check how the relative score of the potential date may affect the choice and create a better model for decision.
