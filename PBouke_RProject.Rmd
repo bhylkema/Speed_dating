@@ -943,7 +943,7 @@ while (j <= totalrow) {  #repeat for each row
 
 # creating dataset with relevant columns
 
-Q4_df <- originset[, c("attr1_2", "sinc1_2", "intel1_2", "fun1_2", "amb1_2", "shar1_2", "attr1_3", "sinc1_3", "intel1_3", "fun1_3", "amb1_3", "shar1_3", "date_3")]
+Q4_df <- originset[, c("gender", "attr1_2", "sinc1_2", "intel1_2", "fun1_2", "amb1_2", "shar1_2", "attr1_3", "sinc1_3", "intel1_3", "fun1_3", "amb1_3", "shar1_3", "date_3")]
 
 
 # Have you been on a date with any of your matches?
