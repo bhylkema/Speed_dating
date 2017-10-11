@@ -1,6 +1,6 @@
 ---
-title: "M&SFA"
-author: "Bouke"
+title: "What can be learned from speed dating data?"
+author: "Team A: Eng Kiat Siah, Jimena Zumaeta, Mehmet Batuhan Ozcan, Marianne Buck, Louis Montagut, Bouke Hylkema"
 date: "9/25/2017"
 output: html_document
 ---
@@ -14,7 +14,7 @@ library(knitr)
 df <- df[!duplicated(df$iid), ]
 ```
 
-Chapter_1_Introduction
+###Introduction###
 In a world where people seek love yet nobody has time, speed-dating seems to be a useful outcome. As people are known to judge the feasibility of a potential romance in a span of mere moments, getting exposure of a few minutes to a large number of people allows for efficient dating. But, are people even aware of what they really want? And do they act upon their perceived preferences? Analysis of speed-dating data provides an insight into the decision-making process of potential lovers, and might be able to provide awareness of key success and failure factors in speed-dating. Ultimately, such analysis may provide for suggestions to date more effectively. 
 
 From 2002-2004 professors of the Columbia Business School analysed speed-daters to evaluate these questions. Respondents were asked to fill out a questionaire in which they were asked to divide 100 points over six attributes of attractiveness, to indicate their perceived importance of each attribute. These attributes are: attractiveness, sincerity, intelligence, fun, ambition, and shared interests. Furthermore, respondents provided details about their demographics, the perceived importance of someone's racial background, their dating frequency, and the goal of participating in speed-dating events. Over the course of time over 550 respondents were monitored.
@@ -27,7 +27,8 @@ The further contents of this report detail the findings of an exploratory study 
 4) How did people follow-up and adapt to the speed-dating night?
 5) What lessons can be taken from this analysis? 
 
-Chapter 2: Descriptive Statistics 
+##Section 1##
+###Chapter 2: Descriptive Statistics### 
 The dataset contained information about 552 subjects that formed part of the speed-dating experiment. Each one of them revealed aspects about themselfs before going on the dating rounds. In order to properly analyse the data and the raised hypothesis it is importante to  provide some context about the main  characteristics og the group of subjects.
 Therefore the following charts can give an illustrastion about the main profile in the sample uses for this dataset:
 1. Age
