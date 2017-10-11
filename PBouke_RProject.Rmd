@@ -740,3 +740,134 @@ summary(m5)
 ```
 
 According to the results obtained by running linear regression  for each race on different attributes,being fun,attractive and having shared interests play a more significant role in partner selection compare to the other attributes withing all the races except the Black African Americans where intelligence replaces the "fun" attribute.
+
+
+**Part Louis and Marianne**
+
+Now we will examine if what people want remains consistent over a longer period of time.
+
+For this our Hypothesis is that what you look for in the opposite sex doesn't change over time depending on if you went on dates or not.
+
+```{r Chapter_4: Normalize columns and prepare data needed for analysis}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(ggplot2)
+library(dplyr)
+#What do you look for in the opposite sex - right after speed-dating
+# Column names: attr1_2 sinc1_2 intel 1_2 fun1_2 amb1_2 shar1_2 
+
+#What do you look for in the opposite sex - after possible dating (4 weeks later)
+# Column names: attr1_3 sinc1_3 intel1_3 fun1_3 amb1_3 shar1_3 
+
+#normalize above columns
+originset <- read.csv("Speed_Dating_Data.csv", header = TRUE)
+summary(originset)
+
+elements_2 = c("attr1_2", "sinc1_2", "intel1_2", "fun1_2", "amb1_2", "shar1_2")
+elements_3 = c("attr1_3", "sinc1_3", "intel1_3", "fun1_3", "amb1_3", "shar1_3")
+j = 1
+totalrow = dim(originset)[1]
+
+summary(originset[elements_2])  #check that the min and max is correct (clean)
+summary(originset[elements_3])  #check that the min and max is correct (clean)
+
+while (j <= totalrow) {  #repeat for each row
+  totalscore = 0  #compute total score for each row
+  for (i in elements_2){
+    totalscore = totalscore + originset[j,i]
+  }
+  for (i in elements_2){   #compute the normalised score for each elements
+    originset[j,i] = originset[j,i] * 100 / totalscore
+  }
+  for (k in elements_3){
+    totalscore = totalscore + originset[j,k]
+  }
+  for (k in elements_3){   #compute the normalised score for each elements
+    originset[j,i] = originset[j,k] * 100 / totalscore
+  }  
+  j = j + 1
+}
+
+# creating dataset with relevant columns
+
+Q4_df <- originset[, c("attr1_2", "sinc1_2", "intel1_2", "fun1_2", "amb1_2", "shar1_2", "attr1_3", "sinc1_3", "intel1_3", "fun1_3", "amb1_3", "shar1_3", "date_3")]
+
+
+# Have you been on a date with any of your matches?
+# Variable: date_3 Yes=1, No=0
+
+#limit one dataset to Yes=1 and one to No=0
+Q4_df_yes <- subset(Q4_df, date_3 == "1")
+Q4_df_no <- subset(Q4_df, date_3 == "0")
+
+
+```
+
+For this we use a T-Test to check, wether the means for both data sets of people who went to dates and people who didn't go on dates are the same before the 4 weeks period. 
+We find that our T-Test confirms same means for the attributes of attractiveness, fun and sincerity.
+For shared interests, ambition and intelligence, the mean of the two subsets of people who went to dates and those who didn't is not the same to begin with.
+
+When conducting a T-Test for the means of the different attributes after 4 weeks, depending on wether someone has dated or not, we find that the means are now different for intelligence (vs. the same before) and the same for fun (vs. different before).
+This shows that overall the mean for what we look for in the opposite sex have been influenced by dating for the attributes of intelligence and a fun personality.
+
+```{r Chapter_4: T-Test for attributes over time}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(ggplot2)
+
+#two sided means that the sample mean is different from 0 (checking on both sides of 0)
+#if I get a p-value below 0.05, I reject the 0 hypothesis - meaning that the means are different
+#if I get a p-value above 0.05, I fail to reject the 0 hypothesis 
+
+#starting values: not different for sinc, fun and attr - different for: shar,amb and intel
+t.test(Q4_df_yes$attr1_2,Q4_df_no$attr1_2,alternative = "two.sided")
+t.test(Q4_df_yes$fun1_2,Q4_df_no$fun1_2,alternative = "two.sided")
+t.test(Q4_df_yes$shar1_2,Q4_df_no$shar1_2,alternative = "two.sided")
+t.test(Q4_df_yes$amb1_2,Q4_df_no$amb1_2,alternative = "two.sided")
+t.test(Q4_df_yes$sinc1_2,Q4_df_no$sinc1_2,alternative = "two.sided")
+t.test(Q4_df_yes$intel1_2,Q4_df_no$intel1_2,alternative = "two.sided")
+
+
+#same means: attr,sinc, intel - means are different for: pos: fun,shar neg:amb
+#since we only had same means to begin with for sinc, fun and attr, there are only changes in intel and fun
+
+t.test(Q4_df_yes$attr1_3,Q4_df_no$attr1_3,alternative = "two.sided")
+t.test(Q4_df_yes$fun1_3,Q4_df_no$fun1_3,alternative = "two.sided")
+t.test(Q4_df_yes$shar1_3,Q4_df_no$shar1_3,alternative = "two.sided")
+t.test(Q4_df_yes$amb1_3,Q4_df_no$amb1_3,alternative = "two.sided")
+t.test(Q4_df_yes$sinc1_3,Q4_df_no$sinc1_3,alternative = "two.sided")
+t.test(Q4_df_yes$intel1_3,Q4_df_no$intel1_3,alternative = "two.sided")
+
+
+```
+
+
+
+By plotting the data, we can see that people who have gone on dates tend to value intelligence less and a fun personality more than people who didn't go on dates within the 4 week period.
+
+
+```{r Chapter_4: Plotting the affected attributes}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+
+#for those going on a date: importance of intelligence decreases and importance of fun increases if you went on a date
+ggplot(Q4_df,aes(x=fun1_2,y=fun1_3,colour=factor(date_3)))+geom_point(alpha=0.1)+
+  geom_smooth(data=Q4_df_no, aes(x=fun1_2, y=fun1_3), color='#FD5A31')+
+  geom_smooth(data=Q4_df_yes, aes(x=fun1_2, y=fun1_3), color='#4FCDE1')+
+  labs(title = "How important is a fun personality to you?", x = "After speeddating", y = "Four weeks later")+
+  scale_colour_discrete(name  ="Dating",
+                        breaks=c("0", "1"),
+                        labels=c("Have not dated", "Have dated"))
+
+
+ggplot(Q4_df,aes(x=intel1_2,y=intel1_3,colour=factor(date_3)))+geom_point(alpha=0.1)+
+  geom_smooth(data=Q4_df_no, aes(x=intel1_2, y=intel1_3), color='#FD5A31')+
+  geom_smooth(data=Q4_df_yes, aes(x=intel1_2, y=intel1_3), color='#4FCDE1')+
+  labs(title = "How important is intelligence to you?", x = "After speeddating", y = "Four weeks later")+
+  scale_colour_discrete(name  ="Dating",
+                        breaks=c("0", "1"),
+                        labels=c("Have not dated", "Have dated"))
+
+```
+Looking at this, we can take away from it what we knew all along - that the most important thing when dating is having fun while doing it. We can conclude from the data, that dating might help us reflect on what we really look for in the other gender and therefore help bring us closer to understand what we really want.
