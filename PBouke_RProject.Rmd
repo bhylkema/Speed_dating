@@ -743,6 +743,71 @@ According to the results obtained by running linear regression  for each race on
 
 
 **Part Louis and Marianne**
+```{r Chapter_4: Preliminary analysis}
+
+# Let's see how men and women weight each criteria right after speed dating 
+library(ggplot2)
+
+#Attractiveness: how is it weighted right after speed-dating for men vs. women
+ggplot(Q4_df, aes(x = factor(gender), y = attr1_2, fill = factor(gender))) +
+  geom_boxplot() +
+  scale_fill_hue(l=60, c=40) +
+  scale_y_continuous(limits = c(0,100)) +
+  labs(x = "Gender", y = "Attractiveness", title = "Attractiveness criteria after speed-dating: men vs. women")
+
+#Intelligence: how is it weighted right after speed-dating for men vs. women
+ggplot(Q4_df, aes(x = factor(gender), y = intel1_2, fill = factor(gender))) +
+  geom_boxplot() +
+  scale_fill_hue(l=60, c=40) +
+    scale_y_continuous(limits = c(0,100)) +
+  labs(x = "Gender", y = "Intelligence", title = "Intelligence criteria after speed-dating: men vs. women")
+
+#Ambition: how is it weighted right after speed-dating for men vs. women
+ggplot(Q4_df, aes(x = factor(gender), y = amb1_2, fill = factor(gender))) +
+  geom_boxplot() +
+  scale_fill_hue(l=60, c=40) +
+    scale_y_continuous(limits = c(0,100)) +
+  labs(x = "Gender", y = "Ambition", title = "Ambition criteria after speed-dating: men vs. women")
+
+#Fun: how is it weighted right after speed-dating for men vs. women
+ggplot(Q4_df, aes(x = factor(gender), y = fun1_2, fill = factor(gender))) +
+  geom_boxplot() +
+  scale_fill_hue(l=60, c=40) +
+    scale_y_continuous(limits = c(0,100)) +
+  labs(x = "Gender", y = "Fun", title = "Fun criteria after speed-dating: men vs. women")
+
+#Shared Interests: how is it weighted right after speed-dating for men vs. women
+ggplot(Q4_df, aes(x = factor(gender), y = shar1_2, fill = factor(gender))) +
+  geom_boxplot() +
+  scale_fill_hue(l=60, c=40) +
+    scale_y_continuous(limits = c(0,100)) +
+  labs(x = "Gender", y = "Shared Interests", title = "Shared Interests criteria after speed-dating: men vs. women")
+
+#Sincerity: how is it weighted right after speed-dating for men vs. women
+ggplot(Q4_df, aes(x = factor(gender), y = sinc1_2, fill = factor(gender))) +
+  geom_boxplot() +
+  scale_fill_hue(l=60, c=40) +
+    scale_y_continuous(limits = c(0,100)) +
+  labs(x = "Gender", y = "Sincerity", title = "Sincerity criteria after speed-dating: men vs. women")
+
+cat("Right after the speed-dating, when asked about what they look for in the opposite sex:\
+- Men and women gave similar results for Intelligence, Fun, Sincerity and Shared Interests \
+- But significant differences remained for Attractiveness and Ambition \
+  
+Indeed, for Attractiveness, the 25% most demanding men gave at least a 35/100 grade for \ attractiveness vs. 25/100 for women.
+  
+Something even more striking is that 25% of men gave a 0/100 grade for ambition after the\ speed-dating experience")
+
+```
+
+
+
+```{r Chapter_4: Hypothesis}
+
+# Hypothesis: Dating changes the preferences of people?
+
+
+```
 
 Now we will examine if what people want remains consistent over a longer period of time.
 
@@ -871,3 +936,288 @@ ggplot(Q4_df,aes(x=intel1_2,y=intel1_3,colour=factor(date_3)))+geom_point(alpha=
 
 ```
 Looking at this, we can take away from it what we knew all along - that the most important thing when dating is having fun while doing it. We can conclude from the data, that dating might help us reflect on what we really look for in the other gender and therefore help bring us closer to understand what we really want.
+
+Let's now also look at how this varies for the different genders.
+
+
+```{r Q4 Tests of means for Intelligence}
+
+#Compute means of Intelligence criteria for men and women who dated and didn't at:
+# time2 = right after speed-dating
+# time3 = 4 weeks later
+
+intel_no_men_before <- Q4_df_no[(Q4_df_no$gender == "1"), "intel1_2" ]
+intel_no_men_after <- Q4_df_no[(Q4_df_no$gender == "1"), "intel1_3" ]
+
+intel_yes_men_before <- Q4_df_yes[(Q4_df_yes$gender == "1"), "intel1_2" ]
+intel_yes_men_after <- Q4_df_yes[(Q4_df_yes$gender == "1"), "intel1_3" ]
+
+mean1 <- mean(intel_no_men_before <- Q4_df_no[(Q4_df_no$gender == "1"), "intel1_2" ])
+mean2 <- mean(intel_no_men_after <- Q4_df_no[(Q4_df_no$gender == "1"), "intel1_3" ])
+
+mean3 <- mean(intel_no_men_before <- Q4_df_no[(Q4_df_no$gender == "1"), "intel1_2" ])
+mean4 <- mean(Q4_df_yes[(Q4_df_yes$gender == "1"), "intel1_3" ])
+
+
+# Test if the Average Intelligence Score given by men differ, whether they date or not
+intel_no_men_after <- Q4_df_no[(Q4_df_no$gender == "1"), "intel1_3" ]
+intel_yes_men_after <- Q4_df_yes[(Q4_df_yes$gender == "1"), "intel1_3" ]
+t.test(intel_no_men_after, intel_yes_men_after)
+
+# Test if the Average Intelligence Score given by women differ, whether they date or not
+intel_no_women_after <- Q4_df_no[(Q4_df_no$gender == "0"), "intel1_3" ]
+intel_yes_women_after <- Q4_df_yes[(Q4_df_yes$gender == "0"), "intel1_3" ]
+t.test(intel_no_women_after, intel_yes_women_after)
+
+# How the Average Intelligence Score given by men changes, for those who haven't date
+intel_no_men_before <- Q4_df_no[(Q4_df_no$gender == "1"), "intel1_2" ]
+intel_no_men_after <- Q4_df_no[(Q4_df_yes$gender == "1"), "intel1_3" ]
+t.test(intel_no_men_before, intel_no_men_after)
+
+# How the Average Intelligence Score given by men changes, for those who haven't date
+intel_yes_men_before <- Q4_df_yes[(Q4_df_yes$gender == "1"), "intel1_2" ]
+intel_yes_men_after <- Q4_df_yes[(Q4_df_yes$gender == "1"), "intel1_3" ]
+t.test(intel_yes_men_before, intel_yes_men_after)
+
+
+```
+
+
+```{r Q4 Tests of means for Attractiveness}
+
+# Test if the Average Attractivenes Score given by men differ, whether they date or not
+attr_no_men_after <- Q4_df_no[(Q4_df_no$gender == "1"), "attr1_3" ]
+attr_yes_men_after <- Q4_df_yes[(Q4_df_yes$gender == "1"), "attr1_3" ]
+t.test(attr_no_men_after, attr_yes_men_after)
+
+# Test if the Average Attractivenes Score given by women differ, whether they date or not
+attr_no_women_after <- Q4_df_no[(Q4_df_no$gender == "0"), "attr1_3" ]
+attr_yes_women_after <- Q4_df_yes[(Q4_df_yes$gender == "0"), "attr1_3" ]
+t.test(attr_no_women_after, attr_yes_women_after)
+
+
+```
+
+
+```{r Tests of means for Fun}
+
+# Test if the Average Fun Score given by men differ, whether they date or not
+fun_no_men_after <- Q4_df_no[(Q4_df_no$gender == "1"), "fun1_3" ]
+fun_yes_men_after <- Q4_df_yes[(Q4_df_yes$gender == "1"), "fun1_3" ]
+t.test(fun_no_men_after, fun_yes_men_after)
+
+# Test if the Average Fun Score given by women differ, whether they date or not
+fun_no_women_after <- Q4_df_no[(Q4_df_no$gender == "0"), "fun1_3" ]
+fun_yes_women_after <- Q4_df_yes[(Q4_df_yes$gender == "0"), "fun1_3" ]
+t.test(fun_no_women_after, fun_yes_women_after)
+
+```
+
+
+```{r Tests of means for Ambition}
+
+# Test if the Average Ambition Score given by men differ, whether they date or not
+amb_no_men_after <- Q4_df_no[(Q4_df_no$gender == "1"), "amb1_3" ]
+amb_yes_men_after <- Q4_df_yes[(Q4_df_yes$gender == "1"), "amb1_3" ]
+t.test(amb_no_men_after, amb_yes_men_after)
+
+# Test if the Average Ambition Score given by women differ, whether they date or not
+amb_no_women_after <- Q4_df_no[(Q4_df_no$gender == "0"), "amb1_3" ]
+amb_yes_women_after <- Q4_df_yes[(Q4_df_yes$gender == "0"), "amb1_3" ]
+t.test(amb_no_women_after, amb_yes_women_after)
+
+
+
+```
+
+
+```{r Tests of means for Sincerity}
+
+# Test if the Average Sincerity Score given by men differ, whether they date or not
+sinc_no_men_after <- Q4_df_no[(Q4_df_no$gender == "1"), "sinc1_3" ]
+sinc_yes_men_after <- Q4_df_yes[(Q4_df_yes$gender == "1"), "sinc1_3" ]
+t.test(sinc_no_men_after, sinc_yes_men_after)
+
+# Test if the Average Sincerity Score given by women differ, whether they date or not
+sinc_no_women_after <- Q4_df_no[(Q4_df_no$gender == "0"), "sinc1_3" ]
+sinc_yes_women_after <- Q4_df_yes[(Q4_df_yes$gender == "0"), "sinc1_3" ]
+t.test(sinc_no_women_after, sinc_yes_women_after)
+
+```
+
+
+
+```{r Tests of means for Shared Interests}
+
+# Test if the Average Shared Interests Score given by men differ, whether they date or not
+shar_no_men_after <- Q4_df_no[(Q4_df_no$gender == "1"), "shar1_3" ]
+shar_yes_men_after <- Q4_df_yes[(Q4_df_yes$gender == "1"), "shar1_3" ]
+t.test(shar_no_men_after, shar_yes_men_after)
+
+# Test if the Average Shared Interests Score given by women differ, whether they date or not
+shar_no_women_after <- Q4_df_no[(Q4_df_no$gender == "0"), "shar1_3" ]
+shar_yes_women_after <- Q4_df_yes[(Q4_df_yes$gender == "0"), "shar1_3" ]
+t.test(shar_no_women_after, shar_yes_women_after)
+
+```
+
+
+
+
+```{r Attractiveness Criteria Q4 Louis}
+
+library(ggplot2)
+
+#Let's plot the evolution of the attractiveness criteria function of the gender and:
+#   - if people dated 4 weeks later
+#   - if people didn't date 4 weeks later
+
+attr_yes <- ggplot(Q4_df_yes, aes(x = attr1_2, y = attr1_3, col = factor(gender))) + 
+    geom_point() + 
+    geom_smooth(method = "lm") + 
+    labs(col = "Gender") +
+  ggtitle("Evolution of the attractiveness criteria for people who dated")
+
+attr_no <- ggplot(Q4_df_no, aes(x = attr1_2, y = attr1_3, col = factor(gender))) + 
+    geom_point() + 
+    geom_smooth(method = "lm") + 
+    labs(col = "Gender") +
+  ggtitle("Evolution of the attractiveness criteria for people who didn't date")
+
+attr_yes
+attr_no
+
+```
+
+```{r Intelligence Analysis Q4 Louis}
+
+library(ggplot2)
+
+#Let's plot the evolution of the intelligence criteria function of the gender and:
+#   - if people dated 4 weeks later
+#   - if people didn't date 4 weeks later
+
+intel_yes <- ggplot(Q4_df_yes, aes(x = intel1_2, y = intel1_3, col = factor(gender))) + 
+    geom_point() + 
+    geom_smooth(method = "lm") + 
+    labs(col = "Gender") +
+  ggtitle("Evolution of the intelligence criteria for people who dated")
+
+intel_no <- ggplot(Q4_df_no, aes(x = intel1_2, y = intel1_3, col = factor(gender))) + 
+    geom_point() + 
+    geom_smooth(method = "lm") + 
+    labs(col = "Gender") +
+  ggtitle("Evolution of the intelligence criteria for people who didn't date")
+
+intel_yes
+intel_no
+
+```
+
+```{r Sincerity Analysis Q4 Louis}
+
+library(ggplot2)
+
+#Let's plot the evolution of the sincerity criteria function of the gender and:
+#   - if people dated 4 weeks later
+#   - if people didn't date 4 weeks later
+
+sinc_yes <- ggplot(Q4_df_yes, aes(x = sinc1_2, y = sinc1_3, col = factor(gender))) + 
+    geom_point() + 
+    geom_smooth(method = "lm") + 
+    labs(col = "Gender") +
+  ggtitle("Evolution of the sincerity criteria for people who dated")
+
+sinc_no <- ggplot(Q4_df_no, aes(x = sinc1_2, y = sinc1_3, col = factor(gender))) + 
+    geom_point() + 
+    geom_smooth(method = "lm") + 
+    labs(col = "Gender") +
+  ggtitle("Evolution of the sincerity criteria for people who didn't date")
+
+sinc_yes
+sinc_no
+
+
+```
+
+
+```{r Fun Analysis Q4 Louis}
+
+library(ggplot2)
+
+#Let's plot the evolution of the fun criteria function of the gender and:
+#   - if people dated 4 weeks later
+#   - if people didn't date 4 weeks later
+
+fun_yes <- ggplot(Q4_df_yes, aes(x = fun1_2, y = fun1_3, col = factor(gender))) + 
+    geom_point() + 
+    geom_smooth(method = "lm") + 
+    labs(col = "Gender") +
+  ggtitle("Evolution of the fun criteria for people who dated")
+
+fun_no <- ggplot(Q4_df_no, aes(x = fun1_2, y = fun1_3, col = factor(gender))) + 
+    geom_point() + 
+    geom_smooth(method = "lm") + 
+    labs(col = "Gender") +
+  ggtitle("Evolution of the fun criteria for people who didn't date")
+
+fun_yes
+fun_no
+
+```
+
+
+```{r Ambition Analysis Q4 Louis}
+
+library(ggplot2)
+
+#Let's plot the evolution of the ambition criteria function of the gender and:
+#   - if people dated 4 weeks later
+#   - if people didn't date 4 weeks later
+
+amb_yes <- ggplot(Q4_df_yes, aes(x = amb1_2, y = amb1_3, col = factor(gender))) + 
+    geom_point() + 
+    geom_smooth(method = "lm") + 
+    labs(col = "Gender") +
+  ggtitle("Evolution of the ambition criteria for people who dated")
+
+amb_no <- ggplot(Q4_df_no, aes(x = amb1_2, y = amb1_3, col = factor(gender))) + 
+    geom_point() + 
+    geom_smooth(method = "lm") + 
+    labs(col = "Gender") +
+  ggtitle("Evolution of the sincerity ambition for people who didn't date")
+
+amb_yes
+amb_no
+
+```
+
+
+```{r Shared Interests Analysis Q4 Louis}
+
+library(ggplot2)
+
+#Let's plot the evolution of the shared interests criteria function of the gender and:
+#   - if people dated 4 weeks later
+#   - if people didn't date 4 weeks later
+
+shar_yes <- ggplot(Q4_df_yes, aes(x = shar1_2, y = shar1_3, col = factor(gender))) + 
+    geom_point() + 
+    geom_smooth(method = "lm") + 
+    labs(col = "Gender") +
+  ggtitle("Evolution of the ambition criteria for people who dated")
+
+shar_no <- ggplot(Q4_df_no, aes(x = shar1_2, y = shar1_3, col = factor(gender))) + 
+    geom_point() + 
+    geom_smooth(method = "lm") + 
+    labs(col = "Gender") +
+  ggtitle("Evolution of the sincerity ambition for people who didn't date")
+
+shar_yes
+shar_no
+
+```
+
+
+
+``` {r}
