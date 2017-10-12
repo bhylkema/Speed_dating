@@ -1,6 +1,6 @@
 ---
 title: "What can be learned from speed dating data?"
-author: "Team A: Eng Kiat Siah, Jimena Zumaeta, Mehmet Batuhan Ozcan, Marianne Buck, Louis Montagut, Bouke Hylkema"
+author: "Group A: Eng Kiat Siah, Jimena Zumaeta, Mehmet Batuhan Ozcan, Marianne Buck, Louis Montagut, Bouke Hylkema"
 date: "9/25/2017"
 output: html_document
 ---
