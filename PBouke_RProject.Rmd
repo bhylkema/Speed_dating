@@ -232,13 +232,13 @@ mtrx[1:6,1] <- 'Low_rate'
 mtrx[7:12,1] <- 'High_rate' 
 
 for (i in 1:6){
-  mtrx[i,3] <- mean(low_date[,columns[i]], na.rm=TRUE)
-  mtrx[i+6,3] <- mean(high_date[,columns[i]], na.rm=TRUE)
+  mtrx[i,3] <- round(mean(low_date[,columns[i]], na.rm=TRUE), 2)
+  mtrx[i+6,3] <- round(mean(high_date[,columns[i]], na.rm=TRUE), 2)
 }
-kable(mtrx)
 
 # Plot the average attribute values per attribute by race 
-ggplot(data = mtrx) + geom_col(aes(x = Attribute, y = Score)) + facet_grid(~ Dating_rate)
+ggplot(data = mtrx, aes(x = Attribute, y = Score)) + geom_col() + geom_text(aes(label = Score),
+              position = position_stack(vjust = .5)) + facet_grid(~ Dating_rate)
 # 
 ```
 
