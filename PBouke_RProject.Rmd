@@ -621,12 +621,18 @@ From the analysis of both genders, we see that there is very weak correlationshi
 According to the results obtained by anlayzing the each race on different attributes, being fun, attractive and having shared interests play a more significant role in partner selection compare to the other attributes within all the races except the Black African Americans where intelligence replaced the "fun" attribute. It is also interesting to note that, some parameters occupied more important places among the "YESSERS!" then they did among "NOERS!". Or in a similar manner, some parameters gained more importance among different races not while choosing the partner but, while refusing them.
 
 
-**Part Louis and Marianne**
-```{r Chapter_4: Normalization and dataset set up}
-knitr::opts_chunk$set(echo = TRUE)
+##Section 3: How did people follow-up and adapt to the speed-dating night?##
 
-# Setting up customized datasets
+Approach: from now on, let's examine if what people think they want can be influenced by real-life dating. Indeed, if you were given 4 minutes to get a date, you might overvalue or undervalue some attributes. Having the opportunity, or not, to meet in a restaurant with the people you matched for instance might lead you to reconsider your views about what you look for in the opposite sex.
 
+First, as described and executed in previous chapters we first have to normalize the provided responses in regards to what people look for in the opposite sex depending on the wave. This insures that we are comparing the same total scores across the attribute columns.
+
+
+```{r Section_3: Normalize columns and prepare data needed for analysis,include=FALSE,message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(ggplot2)
+library(dplyr)
 originset <- read.csv("Speed_Dating_Data.csv", header = TRUE)
 summary(originset)
 
@@ -662,25 +668,13 @@ Q4_df <- originset[, c("gender", "samerace", "income", "attr1_2", "sinc1_2", "in
 
 Q4_df <- na.omit(Q4_df)
 
-# Eventually, let's split our new dataset in 2 parts: people who dated (yes) vs. those who didn't (no)
-Q4_df_yes <- subset(Q4_df, date_3 == "1")
-Q4_df_yes <- na.omit(Q4_df_yes) #removes NA
-
-Q4_df_no <- subset(Q4_df, date_3 == "0")
-Q4_df_no <- na.omit(Q4_df_no) #removes NA
-
 ```
-```{r Chapter_4: Preliminary analysis}
 
-# Let's see how men and women weight each criteria right after speed dating 
-library(ggplot2)
+Let us show you some primary results revealing how men and women weighted each attribute right after having speed dated.
 
-#Attractiveness: how is it weighted right after speed-dating for men vs. women
-ggplot(Q4_df, aes(x = factor(gender), y = attr1_2, fill = factor(gender))) +
-  geom_boxplot() +
-  scale_fill_hue(l=60, c=40) +
-  scale_y_continuous(limits = c(0,100)) +
-  labs(x = "Gender", y = "Attractiveness", title = "Attractiveness criteria after speed-dating: men vs. women")
+
+```{r Chapter_4: How men and women weighted each criteria after the speed-dating experience, echo=FALSE,message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(echo=FALSE)
 
 #Intelligence: how is it weighted right after speed-dating for men vs. women
 ggplot(Q4_df, aes(x = factor(gender), y = intel1_2, fill = factor(gender))) +
@@ -688,13 +682,6 @@ ggplot(Q4_df, aes(x = factor(gender), y = intel1_2, fill = factor(gender))) +
   scale_fill_hue(l=60, c=40) +
     scale_y_continuous(limits = c(0,100)) +
   labs(x = "Gender", y = "Intelligence", title = "Intelligence criteria after speed-dating: men vs. women")
-
-#Ambition: how is it weighted right after speed-dating for men vs. women
-ggplot(Q4_df, aes(x = factor(gender), y = amb1_2, fill = factor(gender))) +
-  geom_boxplot() +
-  scale_fill_hue(l=60, c=40) +
-    scale_y_continuous(limits = c(0,100)) +
-  labs(x = "Gender", y = "Ambition", title = "Ambition criteria after speed-dating: men vs. women")
 
 #Fun: how is it weighted right after speed-dating for men vs. women
 ggplot(Q4_df, aes(x = factor(gender), y = fun1_2, fill = factor(gender))) +
@@ -717,93 +704,84 @@ ggplot(Q4_df, aes(x = factor(gender), y = sinc1_2, fill = factor(gender))) +
     scale_y_continuous(limits = c(0,100)) +
   labs(x = "Gender", y = "Sincerity", title = "Sincerity criteria after speed-dating: men vs. women")
 
-cat("Right after the speed-dating, when asked about what they look for in the opposite sex:\
-- Men and women gave similar results for Intelligence, Fun, Sincerity and Shared Interests \
-- But significant differences remained for Attractiveness and Ambition \
-  
-Indeed, for Attractiveness, the 25% most demanding men gave at least a 35/100 grade for \ attractiveness vs. 25/100 for women.
-  
-Something even more striking is that 25% of men gave a 0/100 grade for ambition after the\ speed-dating experience")
+```
+
+
+```{r Chapter_4: How men and women weighted each criteria after the speed-dating experience (significant differences), echo=TRUE,message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(echo=TRUE)
+
+#Attractiveness: how is it weighted right after speed-dating for men vs. women
+ggplot(Q4_df, aes(x = factor(gender), y = attr1_2, fill = factor(gender))) +
+  geom_boxplot() +
+  scale_fill_hue(l=60, c=40) +
+  scale_y_continuous(limits = c(0,100)) +
+  labs(x = "Gender", y = "Attractiveness", title = "Attractiveness criteria after speed-dating: men vs. women")
+
+#Ambition: how is it weighted right after speed-dating for men vs. women
+ggplot(Q4_df, aes(x = factor(gender), y = amb1_2, fill = factor(gender))) +
+  geom_boxplot() +
+  scale_fill_hue(l=60, c=40) +
+    scale_y_continuous(limits = c(0,100)) +
+  labs(x = "Gender", y = "Ambition", title = "Ambition criteria after speed-dating: men vs. women")
 
 ```
 
 
+Right after the speed-dating, when asked about what they looked for in the opposite sex:
+- Men and women gave similar results for Intelligence, Fun, Sincerity and Shared Interests 
+- But significant differences remained for Attractiveness and Ambition 
+  
+Indeed, for Attractiveness, the 25% most demanding men gave at least a 35/100 grade for  attractiveness vs. 25/100 for women.
+  
+Something even more striking is that 25% of men gave a 0/100 grade for ambition after the speed-dating experience. 
 
-```{r Chapter_4: Hypothesis}
+This looks a bit "cliché", but the speed-dating experience confirms it: men are more demanding than women when it comes to physical attributes, and they do not fancy ambitious women particularly.
 
-# Hypothesis: Dating changes the preferences of people?
+Let's recap:
+If you are a man trying speed-dating, chances are you would rank the following attributes in this order when it comes to the women you would have met:
+1) Physical attractiveness
+2) Fun
+3) Intelligence
+4) Sincerity
+5) Ambition
+6) Shared Interests
 
+If you are a woman, below is what you would have valued for men:
+1) Intelligence
+2) Sincerity
+3) Physical attractiveness
+4) Fun
+5) Ambition
+6) Shared Interests
 
-```
+In other words, if you are a woman, you'd better be Jessica Alba-like: attractive, fun and intelligent (yes, she founded the Honest Company that is now worth more than $1B).
+If you are a man, being an attractive and sincere geek must be enough to get some matches. Always remember this statement from Sheryl Sandberg: "You should marry the nerds and the good guys".
 
-Now we will examine if what people want remains consistent over a longer period of time.
+Speaking about long-term, it is time to see whether dating in real-life (meaning after the speed-dating experience) influences the genders differently.
 
-For this our Hypothesis is that what you look for in the opposite sex doesn't change over time depending on if you went on dates or not.
+**3.1 How is what we believe we want influenced by real-life dating?**
 
-```{r Chapter_4: Normalize columns and prepare data needed for analysis}
-knitr::opts_chunk$set(echo = TRUE)
+For examining if what people want remains consistent over a longer period of time, the Hypothesis is that what you look for in the opposite sex doesn't change over time depending on if you went on dates or not.
 
-library(ggplot2)
-library(dplyr)
-#What do you look for in the opposite sex - right after speed-dating
-# Column names: attr1_2 sinc1_2 intel 1_2 fun1_2 amb1_2 shar1_2 
+Therefore the data set is divided into two groups of people who dated after the speed-dating and those who didn't.
 
-#What do you look for in the opposite sex - after possible dating (4 weeks later)
-# Column names: attr1_3 sinc1_3 intel1_3 fun1_3 amb1_3 shar1_3 
+```{r Section_3: Prepare two sub datasets for further analysis,include=FALSE,message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
 
-#normalize above columns
-originset <- read.csv("Speed_Dating_Data.csv", header = TRUE)
-summary(originset)
-
-elements_2 = c("attr1_2", "sinc1_2", "intel1_2", "fun1_2", "amb1_2", "shar1_2")
-elements_3 = c("attr1_3", "sinc1_3", "intel1_3", "fun1_3", "amb1_3", "shar1_3")
-j = 1
-totalrow = dim(originset)[1]
-
-summary(originset[elements_2])  #check that the min and max is correct (clean)
-summary(originset[elements_3])  #check that the min and max is correct (clean)
-
-while (j <= totalrow) {  #repeat for each row
-  totalscore = 0  #compute total score for each row
-  for (i in elements_2){
-    totalscore = totalscore + originset[j,i]
-  }
-  for (i in elements_2){   #compute the normalised score for each elements
-    originset[j,i] = originset[j,i] * 100 / totalscore
-  }
-  for (k in elements_3){
-    totalscore = totalscore + originset[j,k]
-  }
-  for (k in elements_3){   #compute the normalised score for each elements
-    originset[j,i] = originset[j,k] * 100 / totalscore
-  }  
-  j = j + 1
-}
-
-# creating dataset with relevant columns
-
-Q4_df <- originset[, c("gender", "attr1_2", "sinc1_2", "intel1_2", "fun1_2", "amb1_2", "shar1_2", "attr1_3", "sinc1_3", "intel1_3", "fun1_3", "amb1_3", "shar1_3", "date_3")]
-
-
-# Have you been on a date with any of your matches?
-# Variable: date_3 Yes=1, No=0
-
-#limit one dataset to Yes=1 and one to No=0
+# Let's split our new dataset in 2 parts: people who dated (yes) vs. those who didn't (no)
 Q4_df_yes <- subset(Q4_df, date_3 == "1")
-Q4_df_no <- subset(Q4_df, date_3 == "0")
+Q4_df_yes <- na.omit(Q4_df_yes) #removes NA
 
+Q4_df_no <- subset(Q4_df, date_3 == "0")
+Q4_df_no <- na.omit(Q4_df_no) #removes NA
 
 ```
 
-For this we use a T-Test to check, wether the means for both data sets of people who went to dates and people who didn't go on dates are the same before the 4 weeks period. 
-We find that our T-Test confirms same means for the attributes of attractiveness, fun and sincerity.
-For shared interests, ambition and intelligence, the mean of the two subsets of people who went to dates and those who didn't is not the same to begin with.
+For both of those subsets we use a T-Test to check, whether the means for both data sets of people who went to dates and people who didn't go on dates are the same before the 4 week period and after the 4 week period. 
 
-When conducting a T-Test for the means of the different attributes after 4 weeks, depending on wether someone has dated or not, we find that the means are now different for intelligence (vs. the same before) and the same for fun (vs. different before).
-This shows that overall the mean for what we look for in the opposite sex have been influenced by dating for the attributes of intelligence and a fun personality.
 
-```{r Chapter_4: T-Test for attributes over time}
-knitr::opts_chunk$set(echo = TRUE)
+```{r Section_3: T-Test for attributes over time before,include=FALSE,message=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
 
 library(ggplot2)
 
@@ -813,33 +791,48 @@ library(ggplot2)
 
 #starting values: not different for sinc, fun and attr - different for: shar,amb and intel
 t.test(Q4_df_yes$attr1_2,Q4_df_no$attr1_2,alternative = "two.sided")
-t.test(Q4_df_yes$fun1_2,Q4_df_no$fun1_2,alternative = "two.sided")
 t.test(Q4_df_yes$shar1_2,Q4_df_no$shar1_2,alternative = "two.sided")
 t.test(Q4_df_yes$amb1_2,Q4_df_no$amb1_2,alternative = "two.sided")
 t.test(Q4_df_yes$sinc1_2,Q4_df_no$sinc1_2,alternative = "two.sided")
+```
+
+```{r Section_3: T-Test for attributes over time for significant attributes before,message=FALSE,echo=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
 t.test(Q4_df_yes$intel1_2,Q4_df_no$intel1_2,alternative = "two.sided")
+t.test(Q4_df_yes$fun1_2,Q4_df_no$fun1_2,alternative = "two.sided")
+```
 
-
+```{r Section_3: T-Test for attributes over time after,include=FALSE,message=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
 #same means: attr,sinc, intel - means are different for: pos: fun,shar neg:amb
 #since we only had same means to begin with for sinc, fun and attr, there are only changes in intel and fun
 
 t.test(Q4_df_yes$attr1_3,Q4_df_no$attr1_3,alternative = "two.sided")
-t.test(Q4_df_yes$fun1_3,Q4_df_no$fun1_3,alternative = "two.sided")
 t.test(Q4_df_yes$shar1_3,Q4_df_no$shar1_3,alternative = "two.sided")
 t.test(Q4_df_yes$amb1_3,Q4_df_no$amb1_3,alternative = "two.sided")
 t.test(Q4_df_yes$sinc1_3,Q4_df_no$sinc1_3,alternative = "two.sided")
-t.test(Q4_df_yes$intel1_3,Q4_df_no$intel1_3,alternative = "two.sided")
-
-
 ```
 
-
-
-By plotting the data, we can see that people who have gone on dates tend to value intelligence less and a fun personality more than people who didn't go on dates within the 4 week period.
-
-
-```{r Chapter_4: Plotting the affected attributes}
+```{r Section_3: T-Test for attributes over time for significant attributes after,message=FALSE,echo=TRUE}
 knitr::opts_chunk$set(echo = TRUE)
+t.test(Q4_df_yes$intel1_3,Q4_df_no$intel1_3,alternative = "two.sided")
+t.test(Q4_df_yes$fun1_3,Q4_df_no$fun1_3,alternative = "two.sided")
+```
+
+What we find before the 4 week period is that our T-Test confirms same means for both subsets in regards to the attributes of attractiveness, fun and sincerity.
+However for shared interests, ambition and intelligence, the mean of the two subsets of people who went to dates and those who didn't is not the same to begin with.
+
+When we compare this to a T-Test for the means of the different attributes after 4 weeks, depending on wether someone has dated or not, we find that the means are now different for intelligence (vs. the same before) and the same for fun (vs. different before).
+This shows that overall the means for what we look for in the opposite sex have changed by dating for the attributes of intelligence and a fun personality.
+
+
+Let's make these results more visible in a chart:
+
+By plotting the data, we can see that people who have gone on dates tend to value intelligence less, and a fun personality will be more important for people who did not go on dates within the 4 week period.
+
+
+```{r Section_3: Plotting the affected attributes,echo=FALSE,message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(echo=FALSE)
 
 
 
@@ -862,289 +855,107 @@ ggplot(Q4_df,aes(x=intel1_2,y=intel1_3,colour=factor(date_3)))+geom_point(alpha=
                         labels=c("Have not dated", "Have dated"))
 
 ```
-Looking at this, we can take away from it what we knew all along - that the most important thing when dating is having fun while doing it. We can conclude from the data, that dating might help us reflect on what we really look for in the other gender and therefore help bring us closer to understand what we really want.
-
-Let's now also look at how this varies for the different genders.
 
 
-```{r Q4 Tests of means for Intelligence}
+The graphs indicate that dating might help us reflect on what we really look for in the other gender and therefore help bring us closer to understand what we really want.
 
-#Compute means of Intelligence criteria for men and women who dated and didn't at:
-# time2 = right after speed-dating
-# time3 = 4 weeks later
+To better understand these results and the meaning we can derive from it we will now continue by looking at how this differs depending on the gender.
 
-intel_no_men_before <- Q4_df_no[(Q4_df_no$gender == "1"), "intel1_2" ]
-intel_no_men_after <- Q4_df_no[(Q4_df_no$gender == "1"), "intel1_3" ]
+**3.2 Does dating influence the genders differently?**
 
-intel_yes_men_before <- Q4_df_yes[(Q4_df_yes$gender == "1"), "intel1_2" ]
-intel_yes_men_after <- Q4_df_yes[(Q4_df_yes$gender == "1"), "intel1_3" ]
+Overall, the analysis revealed that:
+- physical attractiveness, ambition, sincerity and shared interests are not altered by real-life dating
+- intelligence is slightly less valued by people going on dates
+- fun is higher valued by people who did not date
 
-mean1 <- mean(intel_no_men_before <- Q4_df_no[(Q4_df_no$gender == "1"), "intel1_2" ])
-mean2 <- mean(intel_no_men_after <- Q4_df_no[(Q4_df_no$gender == "1"), "intel1_3" ])
+Now, let's dive deeper and see if these global conclusions are applicable to both men and women. To do so, let's do some plotting:
 
-mean3 <- mean(intel_no_men_before <- Q4_df_no[(Q4_df_no$gender == "1"), "intel1_2" ])
-mean4 <- mean(Q4_df_yes[(Q4_df_yes$gender == "1"), "intel1_3" ])
+```{r Section_3: Do men and women change their minds whether they date or not, echo=FALSE,message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(echo=FALSE)
 
+dating <- c("0" = "Did not date",
+            "1" = "Dated")
 
-# Test if the Average Intelligence Score given by men differ, whether they date or not
-intel_no_men_after <- Q4_df_no[(Q4_df_no$gender == "1"), "intel1_3" ]
-intel_yes_men_after <- Q4_df_yes[(Q4_df_yes$gender == "1"), "intel1_3" ]
-t.test(intel_no_men_after, intel_yes_men_after)
+#Attractiveness after speed-dating vs. 4 weeks later
+ggplot(Q4_df, aes(x = attr1_2, y = attr1_3, col = factor(gender))) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  labs(x = "Attractiveness after speed-dating", y = "Attractiveness 4 weeks later", col = "Gender") +
+  facet_grid(~date_3, labeller = as_labeller(dating))
 
-# Test if the Average Intelligence Score given by women differ, whether they date or not
-intel_no_women_after <- Q4_df_no[(Q4_df_no$gender == "0"), "intel1_3" ]
-intel_yes_women_after <- Q4_df_yes[(Q4_df_yes$gender == "0"), "intel1_3" ]
-t.test(intel_no_women_after, intel_yes_women_after)
+#Ambition after speed-dating vs. 4 weeks later
+ggplot(Q4_df, aes(x = amb1_2, y = amb1_3, col = factor(gender))) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  labs(x = "Ambition after speed-dating", y = "Ambition 4 weeks later", col = "Gender") +
+  facet_grid(~date_3, labeller = as_labeller(dating))
 
-# How the Average Intelligence Score given by men changes, for those who haven't date
-intel_no_men_before <- Q4_df_no[(Q4_df_no$gender == "1"), "intel1_2" ]
-intel_no_men_after <- Q4_df_no[(Q4_df_yes$gender == "1"), "intel1_3" ]
-t.test(intel_no_men_before, intel_no_men_after)
+#Shared Interests after speed-dating vs. 4 weeks later
+ggplot(Q4_df, aes(x = shar1_2, y = shar1_3, col = factor(gender))) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  labs(x = "Shared Interests after speed-dating", y = "Shared Interests 4 weeks later", col = "Gender") +
+  facet_grid(~date_3, labeller = as_labeller(dating))
 
-# How the Average Intelligence Score given by men changes, for those who haven't date
-intel_yes_men_before <- Q4_df_yes[(Q4_df_yes$gender == "1"), "intel1_2" ]
-intel_yes_men_after <- Q4_df_yes[(Q4_df_yes$gender == "1"), "intel1_3" ]
-t.test(intel_yes_men_before, intel_yes_men_after)
-
-
-```
-
-
-```{r Q4 Tests of means for Attractiveness}
-
-# Test if the Average Attractivenes Score given by men differ, whether they date or not
-attr_no_men_after <- Q4_df_no[(Q4_df_no$gender == "1"), "attr1_3" ]
-attr_yes_men_after <- Q4_df_yes[(Q4_df_yes$gender == "1"), "attr1_3" ]
-t.test(attr_no_men_after, attr_yes_men_after)
-
-# Test if the Average Attractivenes Score given by women differ, whether they date or not
-attr_no_women_after <- Q4_df_no[(Q4_df_no$gender == "0"), "attr1_3" ]
-attr_yes_women_after <- Q4_df_yes[(Q4_df_yes$gender == "0"), "attr1_3" ]
-t.test(attr_no_women_after, attr_yes_women_after)
-
+#Sincerity after speed-dating vs. 4 weeks later
+ggplot(Q4_df, aes(x = sinc1_2, y = sinc1_3, col = factor(gender))) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  labs(x = "Sincerity after speed-dating", y = "Sincerity 4 weeks later", col = "Gender") +
+  facet_grid(~date_3, labeller = as_labeller(dating))
 
 ```
 
+```{r Section_3: Do men and women change their minds whether they date or not (significant changes), echo=FALSE,message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(echo=FALSE)
 
-```{r Tests of means for Fun}
+#Intelligence after speed-dating vs. 4 weeks later
+ggplot(Q4_df, aes(x = intel1_2, y = intel1_3, col = factor(gender))) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  labs(x = "Intelligence after speed-dating", y = "Intelligence 4 weeks later", col = "Gender") +
+  facet_grid(~date_3, labeller = as_labeller(dating))
 
-# Test if the Average Fun Score given by men differ, whether they date or not
-fun_no_men_after <- Q4_df_no[(Q4_df_no$gender == "1"), "fun1_3" ]
-fun_yes_men_after <- Q4_df_yes[(Q4_df_yes$gender == "1"), "fun1_3" ]
-t.test(fun_no_men_after, fun_yes_men_after)
-
-# Test if the Average Fun Score given by women differ, whether they date or not
-fun_no_women_after <- Q4_df_no[(Q4_df_no$gender == "0"), "fun1_3" ]
-fun_yes_women_after <- Q4_df_yes[(Q4_df_yes$gender == "0"), "fun1_3" ]
-t.test(fun_no_women_after, fun_yes_women_after)
-
-```
-
-
-```{r Tests of means for Ambition}
-
-# Test if the Average Ambition Score given by men differ, whether they date or not
-amb_no_men_after <- Q4_df_no[(Q4_df_no$gender == "1"), "amb1_3" ]
-amb_yes_men_after <- Q4_df_yes[(Q4_df_yes$gender == "1"), "amb1_3" ]
-t.test(amb_no_men_after, amb_yes_men_after)
-
-# Test if the Average Ambition Score given by women differ, whether they date or not
-amb_no_women_after <- Q4_df_no[(Q4_df_no$gender == "0"), "amb1_3" ]
-amb_yes_women_after <- Q4_df_yes[(Q4_df_yes$gender == "0"), "amb1_3" ]
-t.test(amb_no_women_after, amb_yes_women_after)
-
-
+#Fun after speed-dating vs. 4 weeks later
+ggplot(Q4_df, aes(x = fun1_2, y = fun1_3, col = factor(gender))) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  labs(x = "Fun after speed-dating", y = "Fun 4 weeks later", col = "Gender") +
+  facet_grid(~date_3, labeller = as_labeller(dating))
 
 ```
 
+For both men and women, whether you dated or not does not have a perceptible influence on attractiveness, ambition, sincerity and shared interests.
 
-```{r Tests of means for Sincerity}
+However, there are some significant changes for intelligence and fun... though not the way we expected it!
 
-# Test if the Average Sincerity Score given by men differ, whether they date or not
-sinc_no_men_after <- Q4_df_no[(Q4_df_no$gender == "1"), "sinc1_3" ]
-sinc_yes_men_after <- Q4_df_yes[(Q4_df_yes$gender == "1"), "sinc1_3" ]
-t.test(sinc_no_men_after, sinc_yes_men_after)
+Indeed, our results show that:
+- Men who did not date put more weight on intelligence if they previously rated it low (<20/100)
+- However, men who did not date rated intelligence significantly lower if they previously rated it high (>20/100). This means that demanding men who did not have the opportunity to date chose to sacrifice intelligence first.
+- Overall, men who dated gave more importance to intelligence that those who did not, while women who dated gave less importance to intelligence than those who did not.
+Furthermore, we saw that people who had dates valued slightly less intelligence than those who did not, and this is something applicable to women too. However, it is worth noticing that this trend is reversed for men!
 
-# Test if the Average Sincerity Score given by women differ, whether they date or not
-sinc_no_women_after <- Q4_df_no[(Q4_df_no$gender == "0"), "sinc1_3" ]
-sinc_yes_women_after <- Q4_df_yes[(Q4_df_yes$gender == "0"), "sinc1_3" ]
-t.test(sinc_no_women_after, sinc_yes_women_after)
+There are interesting results for the fun criteria too: our previous analysis made us say that fun was higher rated by people who did not date, and this trend is actually lead by men!
 
-```
-
+As a conclusion, dating or not dating will not have much influence if you are a woman. Nonetheless, if you are a man, not having the opportunity to date might create some frustration, pushing you to lower your expectations in terms of intelligence while increasing the weight you grant to fun.
 
 
-```{r Tests of means for Shared Interests}
+** CONCLUSION **
 
-# Test if the Average Shared Interests Score given by men differ, whether they date or not
-shar_no_men_after <- Q4_df_no[(Q4_df_no$gender == "1"), "shar1_3" ]
-shar_yes_men_after <- Q4_df_yes[(Q4_df_yes$gender == "1"), "shar1_3" ]
-t.test(shar_no_men_after, shar_yes_men_after)
+All right, there has already been quite a lot of analyses so far. Not only you have gained insights on the six attributes described previously, but also on the influence of age or race when choosing partners. You might feel like: "Great, now let's take a step back and recap each question raised at the beginning of this insightful document".
 
-# Test if the Average Shared Interests Score given by women differ, whether they date or not
-shar_no_women_after <- Q4_df_no[(Q4_df_no$gender == "0"), "shar1_3" ]
-shar_yes_women_after <- Q4_df_yes[(Q4_df_yes$gender == "0"), "shar1_3" ]
-t.test(shar_no_women_after, shar_yes_women_after)
+We heard you, and consequently, it is time to review all our findings of this fictionnal fast-paced world where speed-dating is king.
 
-```
+- What are the respondents looking for? (Bouke/Jimena)
 
+- Do people act on their stated preferences during the dating experiments? (Jerry/Batu)
 
+- How did people follow-up and adapt to the speed-dating night?
+First, scoreboard cards collected right after the speed-dating experiment revealed different preferences whether you are a man or a woman. To put it simply:
+If you are a woman, you'd better be Jessica Alba-like: attractive, fun and intelligent (yes, she founded the Honest Company that is now worth more than $1B).
+If you are a man, being an attractive and sincere geek must be enough to get some matches. Always remember this statement from Sheryl Sandberg: "You should marry the nerds and the good guys".
 
+In addition, further potential dating with people you matched will influence only the importance granted to intelligence and fun. On the one hand, if your conversion ratio is good, intelligence will not be a key factor. In other words, if you are a Tinder star, intelligence might not be something you really care about when dating people. On the other hand, if you were not part of the lucky ones, you will value a fun personality higher. This means that busy people like us, Business Analytics students, who do not have the time to go on dates (because we prefer R) will look for funnier people (thus, no chance to meet an Investment banker in our case)
 
-```{r Attractiveness Criteria Q4 Louis}
+Eventually, if these general trends are confirmed for women, there exist some interesting and specific results when it comes to men. Not only men who do not date will give more importance to fun, but also they will decrease significantly the weight given to intelligence if they rated it high previously. In other words, if you tried speed-dating with high expectations, and then have some dating issues, chances are low that you will look for a quantum physics female researcher at M.I.T.
 
-library(ggplot2)
-
-#Let's plot the evolution of the attractiveness criteria function of the gender and:
-#   - if people dated 4 weeks later
-#   - if people didn't date 4 weeks later
-
-attr_yes <- ggplot(Q4_df_yes, aes(x = attr1_2, y = attr1_3, col = factor(gender))) + 
-    geom_point() + 
-    geom_smooth(method = "lm") + 
-    labs(col = "Gender") +
-  ggtitle("Evolution of the attractiveness criteria for people who dated")
-
-attr_no <- ggplot(Q4_df_no, aes(x = attr1_2, y = attr1_3, col = factor(gender))) + 
-    geom_point() + 
-    geom_smooth(method = "lm") + 
-    labs(col = "Gender") +
-  ggtitle("Evolution of the attractiveness criteria for people who didn't date")
-
-attr_yes
-attr_no
-
-```
-
-```{r Intelligence Analysis Q4 Louis}
-
-library(ggplot2)
-
-#Let's plot the evolution of the intelligence criteria function of the gender and:
-#   - if people dated 4 weeks later
-#   - if people didn't date 4 weeks later
-
-intel_yes <- ggplot(Q4_df_yes, aes(x = intel1_2, y = intel1_3, col = factor(gender))) + 
-    geom_point() + 
-    geom_smooth(method = "lm") + 
-    labs(col = "Gender") +
-  ggtitle("Evolution of the intelligence criteria for people who dated")
-
-intel_no <- ggplot(Q4_df_no, aes(x = intel1_2, y = intel1_3, col = factor(gender))) + 
-    geom_point() + 
-    geom_smooth(method = "lm") + 
-    labs(col = "Gender") +
-  ggtitle("Evolution of the intelligence criteria for people who didn't date")
-
-intel_yes
-intel_no
-
-```
-
-```{r Sincerity Analysis Q4 Louis}
-
-library(ggplot2)
-
-#Let's plot the evolution of the sincerity criteria function of the gender and:
-#   - if people dated 4 weeks later
-#   - if people didn't date 4 weeks later
-
-sinc_yes <- ggplot(Q4_df_yes, aes(x = sinc1_2, y = sinc1_3, col = factor(gender))) + 
-    geom_point() + 
-    geom_smooth(method = "lm") + 
-    labs(col = "Gender") +
-  ggtitle("Evolution of the sincerity criteria for people who dated")
-
-sinc_no <- ggplot(Q4_df_no, aes(x = sinc1_2, y = sinc1_3, col = factor(gender))) + 
-    geom_point() + 
-    geom_smooth(method = "lm") + 
-    labs(col = "Gender") +
-  ggtitle("Evolution of the sincerity criteria for people who didn't date")
-
-sinc_yes
-sinc_no
-
-
-```
-
-
-```{r Fun Analysis Q4 Louis}
-
-library(ggplot2)
-
-#Let's plot the evolution of the fun criteria function of the gender and:
-#   - if people dated 4 weeks later
-#   - if people didn't date 4 weeks later
-
-fun_yes <- ggplot(Q4_df_yes, aes(x = fun1_2, y = fun1_3, col = factor(gender))) + 
-    geom_point() + 
-    geom_smooth(method = "lm") + 
-    labs(col = "Gender") +
-  ggtitle("Evolution of the fun criteria for people who dated")
-
-fun_no <- ggplot(Q4_df_no, aes(x = fun1_2, y = fun1_3, col = factor(gender))) + 
-    geom_point() + 
-    geom_smooth(method = "lm") + 
-    labs(col = "Gender") +
-  ggtitle("Evolution of the fun criteria for people who didn't date")
-
-fun_yes
-fun_no
-
-```
-
-
-```{r Ambition Analysis Q4 Louis}
-
-library(ggplot2)
-
-#Let's plot the evolution of the ambition criteria function of the gender and:
-#   - if people dated 4 weeks later
-#   - if people didn't date 4 weeks later
-
-amb_yes <- ggplot(Q4_df_yes, aes(x = amb1_2, y = amb1_3, col = factor(gender))) + 
-    geom_point() + 
-    geom_smooth(method = "lm") + 
-    labs(col = "Gender") +
-  ggtitle("Evolution of the ambition criteria for people who dated")
-
-amb_no <- ggplot(Q4_df_no, aes(x = amb1_2, y = amb1_3, col = factor(gender))) + 
-    geom_point() + 
-    geom_smooth(method = "lm") + 
-    labs(col = "Gender") +
-  ggtitle("Evolution of the sincerity ambition for people who didn't date")
-
-amb_yes
-amb_no
-
-```
-
-
-```{r Shared Interests Analysis Q4 Louis}
-
-library(ggplot2)
-
-#Let's plot the evolution of the shared interests criteria function of the gender and:
-#   - if people dated 4 weeks later
-#   - if people didn't date 4 weeks later
-
-shar_yes <- ggplot(Q4_df_yes, aes(x = shar1_2, y = shar1_3, col = factor(gender))) + 
-    geom_point() + 
-    geom_smooth(method = "lm") + 
-    labs(col = "Gender") +
-  ggtitle("Evolution of the ambition criteria for people who dated")
-
-shar_no <- ggplot(Q4_df_no, aes(x = shar1_2, y = shar1_3, col = factor(gender))) + 
-    geom_point() + 
-    geom_smooth(method = "lm") + 
-    labs(col = "Gender") +
-  ggtitle("Evolution of the sincerity ambition for people who didn't date")
-
-shar_yes
-shar_no
-
-```
-
-
-
-``` {r}
