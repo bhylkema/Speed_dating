@@ -144,7 +144,6 @@ racepref_matrix[2,2] <- mean(o_male$imprace, na.rm = TRUE)
 colnames(racepref_matrix) <- c('Female', 'Male')
 rownames(racepref_matrix) <- c('Young', 'Old')
 
-
 par(mfrow=c(1,2))
 barplot(racepref_matrix[,1], xlab = "Age", ylab = "Average score in importance of race", main = "Female", ylim = c(0,5))
 barplot(racepref_matrix[,2], xlab = "Age", ylab = "Average score in importance of race", main = "Male", ylim = c(0,5))
@@ -173,10 +172,10 @@ for (i in 1:6){
   mtrx[i,3] <- mean(young[,columns[i]], na.rm=TRUE)
   mtrx[i+6,3] <- mean(old[,columns[i]], na.rm=TRUE)
 }
-kable(mtrx)
 
 # Plot the average attribute values per attribute by race 
 ggplot(data = mtrx) + geom_col(aes(x = Attribute, y = Score)) + facet_grid(~ Age_group)
+kable(mtrx)
 ```
 
 Does one's racial background influence their preferences for a certain partner? The next plot displays the average score of each race for each of the attributes, grouped by attribute. In this way it is easy to see which racial background places high or low importance on each of these attributes relative to the other racial backgrounds.
@@ -194,16 +193,18 @@ for (y in c(1:4)){
   for (i in columns){
     race_att_matrix[i,y] <- mean(race_df[,i], na.rm=TRUE)}
 }
-print(race_att_matrix)
-```
-However, to understand how each race evaluates the various attributes against other attributes it is also useful to look at the data in the following way: 
+#print(race_att_matrix)
 
-```{r Race_preferences2}
 # Plot the average attribute values per attribute by race 
 par(mfrow=c(3,2))
 for (z in c(1:6)){
   barplot(race_att_matrix[z,], xlab = "Race", ylab = "Average score in attribute", ylim = c(0, 25), main = elements[z])
 }
+
+```
+However, to understand how each race evaluates the various attributes against other attributes it is also useful to look at the data in the following way: 
+
+```{r Race_preferences2}
 
 # Plot the average attribute values by attribute per race 
 rownames(race_att_matrix) <- elements
