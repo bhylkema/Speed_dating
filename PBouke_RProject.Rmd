@@ -143,11 +143,12 @@ racepref_matrix[1,2] <- mean(y_male$imprace, na.rm = TRUE)
 racepref_matrix[2,2] <- mean(o_male$imprace, na.rm = TRUE)
 colnames(racepref_matrix) <- c('Female', 'Male')
 rownames(racepref_matrix) <- c('Young', 'Old')
-kable(racepref_matrix)
+
 
 par(mfrow=c(1,2))
 barplot(racepref_matrix[,1], xlab = "Age", ylab = "Average score in importance of race", main = "Female", ylim = c(0,5))
 barplot(racepref_matrix[,2], xlab = "Age", ylab = "Average score in importance of race", main = "Male", ylim = c(0,5))
+kable(racepref_matrix)
 ```
 
 Young females seem to have a relatively much stronger preference for partners of the same race than the rest of the surveyed population, rating this trait with a full point higher on average. 
