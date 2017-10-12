@@ -31,36 +31,95 @@ The further contents of this report detail the findings of an exploratory study 
 ###Descriptive Statistics### 
 The dataset contained information about 552 subjects that formed part of the speed-dating experiment. Each one of them revealed aspects about themselfs before going on the dating rounds. In order to properly analyse the data and the raised hypothesis it is importante to  provide some context about the main  characteristics og the group of subjects.
 Therefore the following charts can give an illustrastion about the main profile in the sample uses for this dataset:
-1. Age
-The proportion of male and female attending the event is proportional, as expected due to the nature of the event.
-```{r echo=FALSE, message=FALSE,warning=FALSE}
-#Gender
-gend <- df["gender"]
-#gend_data<- ordered(gend,levels=c(0,1),labels=c("Female","Male"))
-#levels=c(0,1)
-#labels=c("Female","Male")
 
-ggplot(df,aes(x=factor(1),fill=factor(gender)))+geom_bar(widght=1) +coord_polar("y")
+1. Gender
+
+
+The proportion of males and females attending the event is proportional, as expected due to the nature of the event.
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+
+gend <- df["gender"]
+
+
+
+
+n_f=nrow(subset(df, gender == "0"))
+n_m=nrow(subset(df, gender == "1"))
+
+
+pie_df <- data.frame(
+  name = c("Female", "Male"),
+  val = c(n_f, n_m))
+
+
+pie_gender <-ggplot(pie_df,aes(x="",y=val,fill=name))+ geom_bar(width=1,stat="identity") + coord_polar("y",start=0)
+
+pie_gender
+
+blank_theme <- theme_minimal()+
+  theme(
+  axis.title.x = element_blank(),
+  axis.title.y = element_blank(),
+  panel.border = element_blank(),
+  panel.grid=element_blank(),
+  axis.ticks = element_blank(),
+  plot.title=element_text(size=14, face="bold")
+  )
+
+library(scales)
+
+pie_gender2 <- pie_gender + scale_fill_brewer("Gender") +  blank_theme +   theme(axis.text.x=element_blank()) +   geom_text(aes(y = val/2 + c(0, cumsum(val)[-length(val)]), label = percent(round(val/sum(val),3))))
+pie_gender2
+
+
+
 ```
 
 2. Race
 The pie chart illustrates the representation of races in the group examined. At first glance, it becomes very clear that a very large majorityt of the group is European/Caucasian-American. Furthermore, a around a quarter of the group is Asian/Pacific Islander/Asian-American. Finally, the other race groups have similar proportions amongs them, representing alltogether just under a quarter of the total size of the group.
 ```{r echo=FALSE, message=FALSE,warning=FALSE}
-#Race
-ggplot(df)+geom_bar(aes(x=factor(race),fill=factor(race),show.legend=FALSE))+scale_fill_discrete(name="Races",breaks=c("1","2","3","4","5","6"),labels=c("Black/African American","European/Caucasian-American","Latino/Hispanic American","Asian/Pacific Islander/Asian-American","Native American","Other"))
 
-ggplot(df,aes(x=factor(1),fill=factor(race)))+geom_bar(widght=1)+coord_polar("y",start=0)
+
+n_b=nrow(subset(df, race == "1"))
+n_e=nrow(subset(df, race == "2"))
+n_l=nrow(subset(df, race == "3"))
+n_a=nrow(subset(df, race == "4"))
+#n_n=nrow(subset(df, race == "5"))
+n_o=nrow(subset(df, race == "6"))
+
+
+pie_df_race <- data.frame(
+  name = c("Black/African American", "European/Caucasian-American","Latino/Hispanic American","Asian/Pacific Islander/Asian-American","Other"),
+  val = c(n_b,n_e,n_l,n_a,n_o))
+
+
+library(scales)
+blank_theme <- theme_minimal()+
+  theme(
+  axis.title.x = element_blank(),
+  axis.title.y = element_blank(),
+  panel.border = element_blank(),
+  panel.grid=element_blank(),
+  axis.ticks = element_blank(),
+  plot.title=element_text(size=14, face="bold")
+  )
+
+pie_races <-ggplot(pie_df_race,aes(x="",y=val,fill=name))+ geom_bar(width=1,stat="identity") + coord_polar("y",start=0)
+
+val = c(n_b,n_e,n_l,n_a,n_o)
+type<-percent(round(val/sum(val),2))
+
+pie_races2 <- pie_races + scale_fill_brewer("Races") +  blank_theme +   theme(axis.text.x=element_blank()) + geom_text(aes(y = val, label = type),position=position_stack(vjust=0.5))
+pie_races2
+
 
 ```
 3. Age
-The distribution of age of the participants is mainly between 20 and 30. It can be observed that the mean (26.36) is very close to the median (26.0). Thus, the distribution of ages among the participants are evenly divided in most participant cases with the presence of some outliers. 
-
+The distribution of age of the participants is mainly between 20 and 30. It can be observed that the mean (26.36) is very close to the median (26.0). Thus, the distribution of ages among the participants are evenly divided in most participant cases with the presence of some outliers.
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 # Age
-ggplot(df)+geom_density(aes(x=age,fill=gender))+ geom_vline(xintercept=26.36, colour="blue")+ geom_vline(xintercept=26.00,)
+ggplot(df)+geom_density(aes(x=age,fill=gender))+ geom_vline(xintercept=26.36, colour="blue")+ geom_vline(xintercept=26.00)
 
-
-```
 
 ```{r Chapter_2_Descriptive_statistics}
 # Clean the data set 
