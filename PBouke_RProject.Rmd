@@ -343,6 +343,12 @@ while (j <= totalrow) {  #repeat for each row
 }
 
 originset$gender = ifelse(originset$gender==0, "Female", "Male")
+originset$race=ifelse(originset$race==1,"Black/African",originset$race)
+originset$race=ifelse(originset$race==2,"Eurp/Cauca",originset$race)
+originset$race=ifelse(originset$race==3,"Latino/Hispan",originset$race)
+originset$race=ifelse(originset$race==4,"Asian/Pasif",originset$race)
+originset$race=ifelse(originset$race==5,"Native Amer",originset$race)
+originset$race=ifelse(originset$race==6,"Other",originset$race)
 ```
 
 ###Plots, Tests and Analysis of each Attribute by each Gender###
@@ -496,6 +502,8 @@ We attempt to create a model for the decision taken by male and female participa
 
 ###Plots and Analysis of each Attribute by each Race###
 
+In this part of the report, consistency of the answers with respect to the different races is going to be examined.
+
 ####1. Ambitious Attribute####
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
 ggplot(matchedset, aes(y=amb1_1, x=amb, color = factor(race)))+
@@ -508,11 +516,7 @@ ggplot(nomatchset, aes(y=amb1_1, x=amb, color = factor(race)))+
   labs(title="People who said 'NO' to meeting again", x="What people actually scored AMBITION on the scorecard ", y="What people intially said about AMBITION")
 ```
 
-The axes have been drawn in a way that how participants initially rate the importance of the following attributes in a potential date on a scale of 100 is on the vertical axis and  what the participants actually scored for their partners during the meeting is on the horizontal axis.
-
-In this part of the report,consistency of the answers based on the different races is going to be examined.
-
-Valuation of ambition attribute among the participants who would like to meet the person they are talking to again is parallel with what they had stated before.As it can clearly be seen that all the lines are having a positive gradiant,in this case it is possible to say that all races more or less sticked with their initial opinion on the importance of ambition attribute and thus,a positive correlation exists for those who said yes.On the other hand,the participants who rejected the contacted-person show a different pattern than those who said yes to their partners.When the green line examined,namely Latino/Hispanic Americans,it is interesting to see that even if there is a strong correlation for the importance of ambition level in their selection decisions,still they did not the chose the person they are in touch based on thier ambition score.It may be concluded that the other factors played a greater role in their choice.The same can be said for the rest of the races hovewer, the inconsistance level on what they said but they acted otherwise is less for other the other races.Overall, ambition parameter played a more significant role among the "YESSERS!" than it played among "NOERS!"
+Valuation of ambition attribute among the participants who would like to meet the person they are talking to again is parallel with what they had stated before. As it can clearly be seen that all the lines are having a positive gradiant, in this case it is possible to say that all races more or less sticked with their initial opinion on the importance of ambition attribute and thus, a positive correlation exists for those who said "Yes". On the other hand,the participants who rejected the contacted-person show a different pattern than those who said "Yes" to their partners. When the blue line examined, namely Latino/Hispanic Americans, it is interesting to see that even if there is a strong correlation for the importance of ambition level in their decisions, still they did not the chose the person they are in touch based on thier ambition score. It may be concluded that the other factors played a greater role in their choice. The same can be said for the rest of the races hovewer, the inconsistency level on what they said but acted otherwise is less for other races. Overall, ambition parameter played a more significant role among the "YESSERS!" than it played among "NOERS!"
 
 ####2. Intelligent Attribute####
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
@@ -529,7 +533,7 @@ ggplot(nomatchset, aes(y=intel1_1, x=intel, color = factor(race)))+
 
 ```
 
-When it comes to the intelligence attribute among the participants who said "YES"",it is being observed that overall, the results are approximately in a form of straight line, with a positive gradient. We therefore say that there is a positive but weak correlation within Asian/Pacific Islander Americans,blue line,and Latino/Hispanic Americans with respect to what they scored on the scorebord card.On contrast,Black Americans,red line,experienced a negative gradient which corresponds to a negative correlation.That may lead us to a conclusion that even though Black Americans did not assign a high value for intelligence parameter in the beginning,during the meeting they choosed the one with a higher intelligence capacity.For participants who said "NO", there is not a strong correlation with their choice and scorings.
+When it comes to the intelligence attribute among the participants who said "YES"", it is being observed that overall, the results are approximately in a form of straight line, with a slight positive gradient. We therefore say that there is a positive but weak correlation within Asian/Pacific Islander Americans, red line, and Latino/Hispanic Americans with respect to what they scored on the scorebord card. On contrast, Black Americans experienced a negative gradient which corresponds to a negative correlation. That may lead us to a conclusion that even though Black Americans did assigned a high value for intelligence parameter in the beginning, during the meeting they choosed the one with a higher intelligence capacity. For participants who said "NO", there is not a strong correlation with their choice and scorings.
 
 ####3. Shared Interest Attribute####
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
@@ -542,7 +546,7 @@ ggplot(nomatchset, aes(y=shar1_1, x=shar, color = factor(race)))+
   geom_smooth(method = 'lm')+labs(title="People who said 'NO' to meeting again", x="What people actually scored SHARED INTEREST on the scorecard ", y="What people intially said about SHARED INTEREST")
 ```
 
-Looking at the graph of shared interest attribute,for all the races but the Asian/Pacific Islander Americans,it can be observed that there is a strong positive correlation with their intial and scored bored evaluation.This help us draw the conclusion of shared interest played a signficant role in partner selection.Among people who refused their partner,it is interesting that although there is a strong corretaion among Latino's scorings,they still refused ther partner.
+Looking at the graph of shared interest attribute, for all the races but the Asian/Pacific Islander Americans, it can be observed that there is a strong positive correlation with their intial and scored bored evaluation. This help us draw the conclusion of shared interest played a signficant role in partner selection. Among people who refused their partner, it is interesting that although there is a strong correlation among Latino's scorings, they still refused ther partner.
 
 ####4. Fun Attribute####
 
@@ -556,7 +560,7 @@ ggplot(nomatchset, aes(y=fun1_1, x=fun, color = factor(race)))+
   geom_smooth(method = 'lm')+labs(title="People who said 'NO' to meeting again", x="What people actually scored FUN on the scorecard ", y="What people intially said about FUN")
 ```
 
-According the plot,while having a negative correlation on Fun parameter, all the races except Asian/Pacific Islander Americans agreed on going out with their partners.What can be concluded is that Fun attribute does not a play an important role in partner selection for all those races with the negative correlation.However,for those from Asian/Pacific Islander Americans race,the decison they made looks consistent with how they scored their partners.
+According the plot, while having a negative correlation on Fun parameter (all the races except Asian/Pacific Islander and European/Caucasian Americans) agreed on going out with their partners. What can be concluded is that Fun attribute does not a play an important role in partner selection for all those races with the negative correlation. However, for those from Asian/Pacific Islander and European/Caucasian Americans races, the decisons they made look consistent with how they scored their partners on the scorecard.
 
 ####5. Attractive Attribute####
 
@@ -564,13 +568,13 @@ According the plot,while having a negative correlation on Fun parameter, all the
 ggplot(matchedset, aes(y=attr1_1, x=attr, color = factor(race)))+
   geom_point(pch=5)+
   geom_smooth(method = 'lm')+
- labs(title="People who said 'YES' to meeting again", x="What people actually scored on the scorecard ", y="What people intially said about ATTRACTIVENESS")
+ labs(title="People who said 'YES' to meeting again", x="What people actually scored on the scorecard ", y="What people intially said about  ATTRACTIVENESS")
 
 ggplot(nomatchset, aes(y=attr1_1, x=attr, color = factor(race)))+
   geom_point(pch=5)+
-  geom_smooth(method = 'lm')+labs(title="People who said 'NO' to meeting again", x="What people actually scored ATTRACTIVENESS on the scorecard ", y="What people intially said about ATTRACTIVENESS")
+  geom_smooth(method = 'lm')+labs(title="People who said 'NO' to meeting again", x="What people actually scored ATTRACTIVENESS on the scorecard ", y="What people intially said about  ATTRACTIVENESS")
 ```
-Even if it is being thought as one of the most important parameters in partner selection,it is suprising that attractivess attribute has a week positive correlation gradient among the participants from different ethnicity when choosing a partner.On contrast,when refusing, it gains a slightly more importance.Thus,not while choosing but while refusing attracttivess matters for people.
+Even if it is being thought as one of the most important parameters in partner selection, it is suprising that attractivess attribute has a week positive correlation gradient among the participants from different ethnicity when choosing a partner. On contrast, when refusing, it gains a slightly more importance. Thus, not while choosing but while refusing attracttivess matters for people.
 
 ####6. Sincere Attribute####
 
@@ -584,51 +588,37 @@ ggplot(nomatchset, aes(y=sinc1_1, x=sinc, color = factor(race)))+
   geom_smooth(method = 'lm')+labs(title="People who said 'NO' to meeting again", x="What people actually scored SINCERITY on the scorecard ", y="What people intially said about SINCERITY")
 ```
 
-Last but not least,while it possible to mention a weak positive correlation on sincerity attribute for Asian/Pacific Islander Americans,Europen-Caucasion and Latino Americans,there is a relatively strong negative correlation for the remaining two nations.What we can understand from this result that,even if at the beginning sincerity was not among the the most important parameters in partner selection,in the end for those with negative correlation it played an important role.
+Last but not least,while it possible to mention a weak positive correlation on sincerity attribute for Asian/Pacific Islander Americans, Europen-Caucasion and Latino Americans, there is a relatively strong negative correlation for the remaining two nations. What we can understand from this result is that, as sincerity was not among the most important parameters in partner selection at the beginning, in the end for those with negative correlation it did not played an important role also.
 
 ###Linear Modelling of Decision###
 
+####Linear Model for Decision by Male Participants####
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
-Blck_Afr_American <- filter(originset, race=="1")
-Eurpn_Cauc_American <- filter(originset, race=="2")
-Latno_Hspanc_American<- filter(originset, race=="3")
-Asn_Pacific_American<- filter(originset, race=="4")
-Other<- filter(originset, race=="6")
-```
+Blck_Afr_American <- filter(originset, race=="Black/African")
+Eurpn_Cauc_American <- filter(originset, race=="Eurp/Cauca")
+Latno_Hspanc_American<- filter(originset, race=="Latino/Hispan")
+Asn_Pacific_American<- filter(originset, race=="Asian/Pasif")
+Other<- filter(originset, race=="Other")
 
-**Linear Model for Decision by Black/African Americans**
-```{r echo = FALSE, warning=FALSE, message=FALSE}
 m1 <- lm(formula = dec ~ attr + shar+intel, data = Blck_Afr_American)
 summary(m1)
-```
-
-**Linear Model for Decision by European/Caucasian-Americans**
-
-```{r echo = FALSE, warning=FALSE, message=FALSE}
 m2 <- lm(formula = dec ~ fun + attr + shar, data =Eurpn_Cauc_American)
 summary(m2)
-```
-
-**Linear Model for Decision by Latino/Hispanic American**
-
-```{r echo = FALSE, warning=FALSE, message=FALSE}
 m3 <- lm(formula = dec ~ fun + attr + shar+sinc, data =Latno_Hspanc_American)
 summary(m3)
-```
-**Linear Model for Decision by Asian/Pacific Islander/Asian-American**
-
-```{r echo = FALSE, warning=FALSE, message=FALSE}
 m4 <- lm(formula = dec ~ fun + attr + shar, data =Asn_Pacific_American)
 summary(m4)
-```
-**Linear Model for Decision by Other**
-
-```{r echo = FALSE, warning=FALSE, message=FALSE}
 m5 <- lm(formula = dec ~ fun + attr + shar, data =Other)
 summary(m5)
+
+
 ```
 
-According to the results obtained by running linear regression  for each race on different attributes,being fun,attractive and having shared interests play a more significant role in partner selection compare to the other attributes withing all the races except the Black African Americans where intelligence replaces the "fun" attribute.
+###Section 2 Conclusion###
+
+From the analysis of both genders, we see that there is very weak correlationship between the scores of the attributes before and after meeting their potential dates, and in deciding who they want to meet.  We can observe that 3 attributes: fun, attractive and shared interest, have some influence of their choices even thought it is very weak.  Both genders somewhat prefer the opposite sex to be fun, attractive and have shared interest but these are not the the sole determinants for their final decision.
+
+According to the results obtained by anlayzing the each race on different attributes, being fun, attractive and having shared interests play a more significant role in partner selection compare to the other attributes within all the races except the Black African Americans where intelligence replaced the "fun" attribute. It is also interesting to note that, some parameters occupied more important places among the "YESSERS!" then they did among "NOERS!". Or in a similar manner, some parameters gained more importance among different races not while choosing the partner but, while refusing them.
 
 
 **Part Louis and Marianne**
