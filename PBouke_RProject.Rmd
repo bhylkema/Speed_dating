@@ -118,10 +118,11 @@ for (i in 1:6){
   mtrx[i,3] <- mean(female[,columns[i]], na.rm=TRUE)
   mtrx[i+6,3] <- mean(male[,columns[i]], na.rm=TRUE)
 }
-kable(mtrx)
+
 
 # Plot the average attribute values per attribute by race 
 ggplot(data = mtrx) + geom_col(aes(x = Attribute, y = Score)) + facet_grid(~ Gender)
+kable(mtrx)
 ```
 
 It seems that there are some interesting differences between men and women. On average, women think the most important trait of a potential partner is intelligence, while deviding points approximately equally amongst attractiveness, sincerity, and fun. Men place very significant importance on looks, giving on average 27 points to this attribute that women gave only 18. Intelligence and fun approximately share second place, while ambition is hardly at all considered important! 
