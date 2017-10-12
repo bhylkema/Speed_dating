@@ -40,22 +40,13 @@ gend <- df["gender"]
 #levels=c(0,1)
 #labels=c("Female","Male")
 
-
-
-
-
-
 ggplot(df,aes(x=factor(1),fill=factor(gender)))+geom_bar(widght=1) +coord_polar("y")
-
-
 ```
 
 2. Race
 The pie chart illustrates the representation of races in the group examined. At first glance, it becomes very clear that a very large majorityt of the group is European/Caucasian-American. Furthermore, a around a quarter of the group is Asian/Pacific Islander/Asian-American. Finally, the other race groups have similar proportions amongs them, representing alltogether just under a quarter of the total size of the group.
 ```{r echo=FALSE, message=FALSE,warning=FALSE}
 #Race
-
-
 ggplot(df)+geom_bar(aes(x=factor(race),fill=factor(race),show.legend=FALSE))+scale_fill_discrete(name="Races",breaks=c("1","2","3","4","5","6"),labels=c("Black/African American","European/Caucasian-American","Latino/Hispanic American","Asian/Pacific Islander/Asian-American","Native American","Other"))
 
 ggplot(df,aes(x=factor(1),fill=factor(race)))+geom_bar(widght=1)+coord_polar("y",start=0)
@@ -93,9 +84,9 @@ while (j <= totalrow) {  #repeat for each row
 }
 ```
 
-###What do people want?####
+###What are the respondents looking for?####
 
-The first question that arises when questioning whether (main question) is to consider the preferences of the surveyed population in advance of the speed-dating experiment. The population is segmented based on the charactestics from the previous sections, namely: a) Gender; b) Age; c) Race; d) Dating frequency; e) Goal of dating; and f) the confidence level of participants. The preferences in these segments are evaluated and compared, to see whether there are any interesting differences between the segments. In the next section these insights will be used to evaluate the question whether people actually act on their stated preferences, or whether, generally speaking, people tend to display different behaviour once faced with actual persons.
+The first question that arises when questioning the respondents' interests is to consider the preferences of the surveyed population in advance of the speed-dating experiment. The population is segmented based on the charactestics from the previous sections, namely: a) Gender; b) Age; c) Race; d) Dating frequency; e) Goal of dating; and f) the confidence level of participants. The preferences in these segments are evaluated and compared, to see whether there are any interesting differences between the segments. In the next section these insights will be used to evaluate the question whether people actually act on their stated preferences, or whether, generally speaking, people tend to display different behaviour once faced with actual persons.
 
 The first object of interest are the preferences of men and women. 
 
@@ -118,7 +109,6 @@ for (i in 1:6){
   mtrx[i,3] <- mean(female[,columns[i]], na.rm=TRUE)
   mtrx[i+6,3] <- mean(male[,columns[i]], na.rm=TRUE)
 }
-
 
 # Plot the average attribute values per attribute by race 
 ggplot(data = mtrx) + geom_col(aes(x = Attribute, y = Score)) + facet_grid(~ Gender)
