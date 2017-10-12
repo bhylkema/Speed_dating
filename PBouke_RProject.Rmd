@@ -159,13 +159,13 @@ mtrx[1:6,1] <- 'Young'
 mtrx[7:12,1] <- 'Old' 
 
 for (i in 1:6){
-  mtrx[i,3] <- mean(young[,columns[i]], na.rm=TRUE)
-  mtrx[i+6,3] <- mean(old[,columns[i]], na.rm=TRUE)
+  mtrx[i,3] <- round(mean(young[,columns[i]], na.rm=TRUE), 2)
+  mtrx[i+6,3] <- round(mean(old[,columns[i]], na.rm=TRUE), 2)
 }
 
 # Plot the average attribute values per attribute by race 
-ggplot(data = mtrx) + geom_col(aes(x = Attribute, y = Score)) + facet_grid(~ Age_group)
-kable(mtrx)
+ggplot(data = mtrx, aes(x = Attribute, y = Score)) + geom_col() + geom_text(aes(label = Score),
+              position = position_stack(vjust = .5)) + facet_grid(~ Age_group)
 ```
 
 Does one's racial background influence their preferences for a certain partner? The next plot displays the average score of each race for each of the attributes, grouped by attribute. In this way it is easy to see which racial background places high or low importance on each of these attributes relative to the other racial backgrounds.
