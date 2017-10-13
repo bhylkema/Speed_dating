@@ -332,12 +332,13 @@ Not surprisingly, people that indicate they have a serious purpose with speed-da
 ###Section 1 Conclusion###
 
 Overall, when it comes to answer the question of what do people want we can see two clear paths:
+
 1.	There is a clear difference between preferences amongst genders and regardless of the participants ages, their preferences remain the same. In this sense, male value physical attractiveness while women value intelligence as the most important thing in their partner.
 
 2.	Race plays an important role in terms of attributes preferences accordingly to the bar graphs shown above with the different displays of attributes rating, showing the different bias that comes with every group.
 
 
-###Section 2: Do We Know What We Want In Choosing Our Dating Partners?###
+####Section 2: Do We Know What We Want In Choosing Our Dating Partners?####
 
 ###Approach###
 
@@ -494,7 +495,7 @@ ggplot(nomatchset, aes(y=shar1_1, x=shar, color = factor(gender)))+
   labs(title="People who said 'NO' to meeting again", x="What people actually scored SHARED INTERESTS on the scorecard ", y="What people intially said about SHARED INTERESTS")
 ```
 
-Resting on the scatter plots above, there seems to be  a moderate correlation for Shared Interests (Shar) attribute among female participants when choosing their dating partners.  In contrast, there is no relationship for Shared Interest attribute for male participants.  Neither is there any correlation for both male and female participants in not choosing their dating partners based on Shared Interest attribute. 
+Resting on the scatter plots above, there seems to be  a moderate correlation for Shared Interests (Shar) attribute among female participants when choosing their dating partners.  In contrast, there is no relationship for Shared Interest attribute for male participants. Also, there is no correlation between the decision of picking a partner and the shared interest attribute niether for females nor for males.
 
 ####4. Fun Attribute####
 
@@ -551,10 +552,13 @@ ggplot(matchedset, aes(y=sinc1_1, x=sinc, color = factor(gender)))+
 ggplot(nomatchset, aes(y=sinc1_1, x=sinc, color = factor(gender)))+
   geom_point()+
   geom_smooth(method = 'lm')+
-  labs(title="People who said 'YES' to meeting again", x="What people actually scored SINCERE on the scorecard ", y="What people intially said about SINCERE")
+  labs(title="People who said 'NO' to meeting again", x="What people actually scored SINCERE on the scorecard ", y="What people intially said about SINCERE")
 ```
 
 Male participants showed a slightly positive correlation between their preference and their final choice of date for those they perceived to be sincere.  Surprisingly, females are relatively indifference in their decisions based on sincerity.
+
+After analysing each attribute, an attempt can be made in order to create a model for the decision making of both male and female participants respectively.  After removing attributes with high p-values, only Fun, Attractive and Shared Interest attributes are left for both male and female participants.  However, the adjusted R-square in both models are low.  Thus, there may be other variables that determine the final decision for choosing someone to date.  A further analysis can be carried out by taking a look into the self-perception score and check how the relative score of the potential date may affect the choice and create a better model for decision.
+
 
 ###Linear Modelling of Decision###
 
@@ -571,8 +575,6 @@ summary(m)
 f <- lm(formula = dec ~ fun + attr + shar, data = femaleset)
 summary(f)
 ```
-
-After analysing each attribute, an attempt can be made in order to create a model for the decision making of both male and female participants respectively.  After removing attributes with high p-values, only Fun, Attractive and Shared Interest attributes are left for both male and female participants.  However, the adjusted R-square in both models are low.  Thus, there may be other variables that determine the final decision for choosing someone to date.  A further analysis can be carried out by taking a look into the self-perception score and check how the relative score of the potential date may affect the choice and create a better model for decision.
 
 ###Plots and Analysis of each Attribute by each Race###
 
@@ -598,16 +600,16 @@ Valuation of the ambition attribute among the participants who would like to mee
 ggplot(matchedset, aes(y=intel1_1, x=intel, color = factor(race)))+
   geom_point(pch=5)+
   geom_smooth(method = 'lm')+
-  labs(title="People who said 'YES' to meeting again", x="What people actually scored on the scorecard ", y="What people intially said about INTELLEGENCE")
+  labs(title="People who said 'YES' to meeting again", x="What people actually scored on the scorecard ", y="What people intially said about INTELLIGENCE")
   
 
 ggplot(nomatchset, aes(y=intel1_1, x=intel, color = factor(race)))+
   geom_point(pch=5)+
-  geom_smooth(method = 'lm')+labs(title="People who said 'NO' to meeting again", x="What people actually scored INTELLEGENCE on the scorecard ", y="What people intially said about INTELLEGENCE")
+  geom_smooth(method = 'lm')+labs(title="People who said 'NO' to meeting again", x="What people actually scored INTELLEGENCE on the scorecard ", y="What people intially said about INTELLIGENCE")
 
 ```
 
-When it comes to the intelligence attribute, among the participants who said "YES"", it can be observed that overall, the results are approximately in a form of straight line, with a slight positive gradient. Therefore, it can be said that there is a positive but weak correlation within Asian/Pacific Islander Americans and Latino/Hispanic Americans with respect to what they scored on the scorebord card. In contrast, Black Americans experienced a negative gradient which corresponds to a negative correlation. Having a negative correlation may lead to a conclusion that even though Black Americans did not assign a high score for the importance of the intelligence parameter during their initial scoring, throughout the meeting they chose the one with a higher intelligence capacity. For participants who said "NO", there is not a strong correlation with their choice and scorings.
+When it comes to the intelligence attribute, among the participants who said "YES"", it can be observed that overall, the results are approximately in a form of straight line, with a slight positive gradient. Therefore, it can be said that there is a positive but weak correlation within Asian/Pacific Islander Americans and Latino/Hispanic Americans with respect to what they scored on the scorecard. In contrast, Black Americans experienced a negative gradient which corresponds to a negative correlation. Having a negative correlation may lead to a conclusion that even though Black Americans did not assign a high score for the importance of the intelligence parameter during their initial scoring, throughout the meeting they chose the one with a higher intelligence capacity. In the case of participants who said "NO", there is not a strong correlation with their choice and scorings.
 
 ####3. Shared Interest Attribute####
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
@@ -662,7 +664,7 @@ ggplot(nomatchset, aes(y=sinc1_1, x=sinc, color = factor(race)))+
   geom_smooth(method = 'lm')+labs(title="People who said 'NO' to meeting again", x="What people actually scored SINCERITY on the scorecard ", y="What people intially said about SINCERITY")
 ```
 
-Last but not least, despite a weak positive correlation in sincerity attribute among Asian/Pacific Islander Americans, Europen-Caucasion and Latino Americans, it is possible to mention the existence of a relatively strong negative correlation for the remaining two nations. What we can understand from this result is that, as sincerity was not among the most important parameters in partner selection at the beginning, in the end for those with negative correlation sincerity attribute did not played an important role also.
+Last but not least, despite a weak positive correlation in sincerity attribute among Asian/Pacific Islander Americans, Europen-Caucasion and Latino Americans, it is possible to mention the existence of a relatively strong negative correlation for the remaining two nations. It can be understood from this result is that, as sincerity was not among the most important parameters in partner selection at the beginning, in the end for those with negative correlation sincerity attribute did not played an important role also.
 
 
 ###Linear Modelling of Decision###
@@ -750,7 +752,7 @@ Q4_df <- na.omit(Q4_df)
 
 ```
 
-Let us show you some primary results revealing how men and women weighted each attribute right after having speed dated.
+Here are some primary results revealing how men and women weighted each attribute right after having speed dated:
 
 
 ```{r Chapter_4: How men and women weighted each criteria after the speed-dating experience, echo=FALSE,message=FALSE,warning=FALSE}
