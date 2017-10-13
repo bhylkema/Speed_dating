@@ -1023,7 +1023,6 @@ Furthermore, we saw that people who had dates valued slightly less intelligence 
 
 Also, there are interesting results for the fun criteria as well: our previous analysis concluded that fun was higher rated by people who did not date, and this trend surprisingly lead by men.
 
-
 As a conclusion, dating or not dating will not have much influence if you are a woman. Nonetheless, if you are a man, not having the opportunity to date might create some frustration, pushing you to lower your expectations in terms of intelligence while increasing the weight you grant to fun.
 
 ###Section 4 Conclusion###
@@ -1035,25 +1034,24 @@ In summary, two main conclusions can be drawn from this chapter:
 
 ##FINAL CONCLUSIONS##
 
-All right, there has already been quite a lot of analyses so far. Not only insights on the six attributes described previously have been delivered, but also the influence of age or race when choosing partners have been revealed. So, by now it all feels like: "Great, now let's take a step back and recap each question raised at the beginning of this insightful document".
+All right, there has already been quite a lot of analyses so far. Not only insights on the six attributes described previously have been delivered, but also the influence of age or race when choosing partners have been revealed. So, by now it all feels like: "Great, now let's take a step back and recap each question raised at the beginning of this insightful document". It is time to review all the findings of this experiment in a fast-paced world where speed-dating is king.
 
-As a result, it is time to review all the findings of this fictionnal fast-paced world where speed-dating is king.
+####What are the respondents looking for?####
 
-- What are the respondents looking for? 
 Overall, when it comes to answer the question of what do people want we can see two clear paths:
 1.	There is a clear difference between preferences amongst genders and regardless of the participants ages, their preferences remain the same. In this sense, male value physical attractiveness while women value intelligence as the most important thing in their partner.
 
 2.	Race plays an important role in terms of attributes preferences accordingly to the bar graphs shown above with the different displays of attributes rating, showing the different bias that comes with every group.
 
+####Do people act on their stated preferences during the dating experiments?####
 
-- Do people act on their stated preferences during the dating experiments? (Jerry/Batu)
 Based upon the analysis of both genders, it can be seen that there is a very weak correlation between the scores of the attributes before and after meeting their potential dates, and in deciding who they want to meet.
 
 Only 3 attributes have some influence in the subject’s decision even though is very weak: fun, attractive and shared interest, however, these are not the sole determinants for their final decision. This was tru for all races except for African/American
 
 Finally, it is important to note that some parameters occupied more important places among the "YESSERS!" then they did among "NOERS!". Also, in a similar manner, some parameters gained more importance among different races not while choosing the partner but, while refusing them.
 
-- How did people follow-up and adapt to the speed-dating night?
+####How did people follow-up and adapt to the speed-dating night?####
 There is a gender difference when it comes to preferences:
 1.	Looks matter. Specifically when it comes to male choosing a partner, they will value attractiveness more than women who, in contrast, are seeking a more kind of geek profile.
 
@@ -1061,5 +1059,5 @@ There is a gender difference when it comes to preferences:
 
 In addition, further potential dating with people you matched will influence only the importance granted to intelligence and fun. On the one hand, if your conversion ratio is good, intelligence will not be a key factor. In other words, if you are a Tinder star, intelligence might not be something you really care about when dating people. On the other hand, if you were not part of the lucky ones, you will value a fun personality higher. 
 
-Eventually, if these general trends are confirmed for women, there exist some interesting and specific results when it comes to men. Not only men who do not date will give more importance to fun, but also they will decrease significantly the weight given to intelligence if they rated it high previously. In other words, if you tried speed-dating with high expectations, and then have some dating issues, chances are low that you will look for a quantum physics female researcher at M.I.T.
+Eventually, if these general trends are confirmed for women, there exist some interesting and specific results when it comes to men. Not only men who do not date will give more importance to fun, but also they will decrease significantly the weight given to intelligence if they rated it high previously. In other words, if you tried speed-dating with high expectations, and then have some dating issues, chances are low that you will look for a quantum physics female researcher at M.I.T...!
 
