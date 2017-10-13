@@ -1,0 +1,1063 @@
+---
+title: "What can be learned from speed dating data?"
+author: "Group A: Eng Kiat Siah, Jimena Zumaeta, Mehmet Batuhan Ozcan, Marianne Buck, Louis Montagut, Bouke Hylkema"
+date: "9/25/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.align="center")
+df <- read.csv("Speed_Dating_Data.csv", header = TRUE)
+library(dplyr)
+library(ggplot2)
+library(knitr)
+df <- df[!duplicated(df$iid), ]
+```
+
+##Introduction##
+In a world where people seek love yet nobody has time, speed-dating seems to be a useful outcome. As people are known to judge the feasibility of a potential romance in a span of mere moments, getting exposed for a few minutes to a large number of people allows for efficient dating. But, are people even aware of what they really want? And do they act upon their perceived preferences? Analysis of speed-dating data provides an insight into the decision-making process of potential lovers, and might be able to provide awareness of key success and failure factors in speed-dating. Ultimately, such analysis may provide for suggestions to date more effectively. 
+
+From 2002 until 2004, professors of the Columbia Business School analysed speed-daters to evaluate these questions. Respondents were asked to fill out a questionnaire in which they could divide 100 points over six attributes of a person's attractiveness, to indicate their perceived importance regarding each attribute. These attributes are: (physical) attractiveness, sincerity, intelligence, fun, ambition, and shared interests. Furthermore, respondents provided details about their demographics, the perceived importance of someone's racial background, their dating frequency, and the goal of participating in speed-dating events. Over the course of time over 550 respondents were monitored.
+  Each date lasted for four minutes, after which respondents were able to indicate whether they would match with their date or not. Moreover, each date should get assessed in terms of the six attributes of attractiveness. This allowed comparing people's stated preferences with the characteristics of partners with whom they wanted to match. Four weeks after the dating night, respondents were again asked to distribute 100 points over the six attributes of attractiveness, which provides insight into the development of our preferences as a result of speed-dating. 
+  
+The further contents of this report detail the findings of an exploratory study towards speed-dating behaviour. The objective has been to identify interesting or remarkable revelations from the dataset. The study was structured by sequentially exploring the data by the hand of the following questions: 
+1) What were the characteristics of the set of respondents - in statistics? 
+2) What do the respondents look for in their partners, and do differences exist between various demographical groups? 
+3) Do people act on their stated preferences during the dating experiments? 
+4) How did people follow-up and adapt to the speed-dating night?
+5) What lessons can be taken from this analysis? 
+
+
+##Section 1##
+###Descriptive Statistics### 
+
+The dataset contained 8378 rows, with the information gathered from each date that the subject interacted with during the experiment, so there was a need to create a data-frame that wouldn’t include all of those records and just keep the descriptive information of each subject. For that, the duplicate function was used allowing us to filter the original data-frame by a column’s factors with no repetition.
+
+Once done that, the dataset contained information about 551 subjects that formed part of the speed-dating experiment. Each one of them revealed aspects about themselves before going on the dating rounds.
+
+In order to properly analyse the data and the raised inquiries it is important to provide some context about the main characteristics of the group of subjects.
+
+Therefore, the following charts can give an illustration about the main profiles in the sample used for this dataset:
+
+1. Gender
+
+
+The proportion of males and females attending the event is proportional, as expected due to the nature of the event.
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+
+gend <- df["gender"]
+
+
+
+
+n_f=nrow(subset(df, gender == "0"))
+n_m=nrow(subset(df, gender == "1"))
+
+
+pie_df <- data.frame(
+  name = c("Female", "Male"),
+  val = c(n_f, n_m))
+
+
+pie_gender <-ggplot(pie_df,aes(x="",y=val,fill=name))+ geom_bar(width=1,stat="identity") + coord_polar("y",start=0)
+
+
+
+blank_theme <- theme_minimal()+
+  theme(
+  axis.title.x = element_blank(),
+  axis.title.y = element_blank(),
+  panel.border = element_blank(),
+  panel.grid=element_blank(),
+  axis.ticks = element_blank(),
+  plot.title=element_text(size=14, face="bold")
+  )
+
+library(scales)
+
+pie_gender2 <- pie_gender + scale_fill_brewer("Gender") +  blank_theme +   theme(axis.text.x=element_blank()) +   geom_text(aes(y = val/2 + c(0, cumsum(val)[-length(val)]), label = percent(round(val/sum(val),3))))
+pie_gender2
+
+
+
+```
+
+2. Race
+The pie chart illustrates the representation of races in the group examined. At first glance, it becomes very clear that a very large majority of the group is European/Caucasian-American. Furthermore, around a quarter of the group is Asian/Pacific Islander/Asian-American. Finally, the other race groups have similar proportions amongst them, representing all together just under a quarter of the total size of the group.
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+
+
+n_b=nrow(subset(df, race == "1"))
+n_e=nrow(subset(df, race == "2"))
+n_l=nrow(subset(df, race == "3"))
+n_a=nrow(subset(df, race == "4"))
+n_o=nrow(subset(df, race == "6"))
+
+
+pie_df_race <- data.frame(
+  name = c("Black/African American", "European/Caucasian-American","Latino/Hispanic American","Asian/Pacific Islander/Asian-American","Other"),
+  val = c(n_b,n_e,n_l,n_a,n_o))
+
+
+library(scales)
+blank_theme <- theme_minimal()+
+  theme(
+  axis.title.x = element_blank(),
+  axis.title.y = element_blank(),
+  panel.border = element_blank(),
+  panel.grid=element_blank(),
+  axis.ticks = element_blank(),
+  plot.title=element_text(size=14, face="bold")
+  )
+
+pie_races <-ggplot(pie_df_race,aes(x="",y=val,fill=name))+ geom_bar(width=1,stat="identity") + coord_polar("y",start=0)
+
+val = c(n_b,n_e,n_l,n_a,n_o)
+type<-percent(round(val/sum(val),2))
+
+pie_races2 <- pie_races + scale_fill_brewer("Races") +  blank_theme +   theme(axis.text.x=element_blank()) + geom_text(aes(y = val, label = type),position=position_stack(vjust=0.5))
+pie_races2
+
+
+```
+3. Age
+The distribution of age of the participants is mainly between 20 and 30. It can be observed that the mean or more explicitly the blue line (26.36) is very close to the median (26.0), which is the black line. Thus, the distribution of ages amongst the participants is evenly divided with the presence of some outliers posting ages around 40 of 50.
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+# Age
+ggplot(df)+geom_density(aes(x=age,fill=gender))+ geom_vline(xintercept=26.36, colour="blue")+ geom_vline(xintercept=26.00)
+
+
+```{r Chapter_2_Descriptive_statistics}
+# Clean the data set 
+# First clean our preferences data set
+columns <- c("attr1_1", "sinc1_1", "intel1_1", "fun1_1", "amb1_1", "shar1_1")
+elements <- c("attr", "sinc", "intel", "fun", "amb", "shar")
+j = 1
+totalrow = dim(df)[1]
+
+# summary(df[elements])  #check that the min and max is correct (clean)
+
+while (j <= totalrow) {  #repeat for each row
+  totalscore = 0  #compute total score for each row
+  for (i in columns){
+    totalscore = totalscore + df[j,i]
+  }
+  for (i in columns){   #compute the normalised score for each elements
+    df[j,i] = df[j,i] * 100 / totalscore
+  }  
+  j = j + 1
+}
+```
+
+###What are the respondents looking for?####
+
+The first question that arises when questioning the respondents' interests is to consider the preferences of the surveyed population in advance of the speed-dating experiment. The population is segmented based on the characteristics from the previous sections, namely: a) Gender; b) Age; c) Race; d) Dating frequency; e) Goal of dating; and f) the confidence level of participants. The preferences in these segments are evaluated and compared, to see whether there are any interesting differences between the segments. In the next section these insights will be used to evaluate the question whether people actually act on their stated preferences, or whether, generally speaking, people tend to display different behaviour once faced with actual persons.
+
+The first object of interest are the preferences of men and women. 
+
+```{r Gender}
+# Prepare data and storage method 
+female <- df[ which(df$gender == 0), ]
+male <- df[ which(df$gender == 1), ]
+
+Attribute <- c(1:12)
+Gender <- c(1:12)
+Score <- c(1:12)
+mtrx <- data.frame(Gender, Attribute, Score)
+mtrx[1:6,2] <- elements
+mtrx[7:12,2] <- elements
+mtrx[1:6,1] <- 'Female' 
+mtrx[7:12,1] <- 'Male' 
+
+# Calculate average values 
+for (i in 1:6){
+  mtrx[i,3] <- round(mean(female[,columns[i]], na.rm=TRUE), 2)
+  mtrx[i+6,3] <- round(mean(male[,columns[i]], na.rm=TRUE), 2)
+}
+
+# Plot the average attribute values per attribute by race 
+ggplot(data = mtrx, aes(x = Attribute, y = Score)) + geom_col() + geom_text(aes(label = Score),
+              position = position_stack(vjust = .5)) + facet_grid(~ Gender)
+```
+
+It seems that there are some interesting differences between men and women. On average, women think the most important trait of a potential partner is intelligence, while dividing points approximately equally amongst attractiveness, sincerity, and fun. Men place very significant importance on looks, giving on average 27 points to this attribute in contrast to  women that gave only 18. Intelligence and fun approximately shared second place, while ambition is hardly at all considered important. 
+
+Are there more differences between men and women? Do guys and girls think equally about looking for people from the same race, and are there any differences when the age is considered?
+
+```{r Gender_and_race}
+age <- 26
+y_female <- female[ which(female$age <= age), ]
+o_female <- female[ which(female$age > age), ]
+y_male <- male[ which(male$age <= age), ]
+o_male <- male[ which(male$age > age), ]
+
+racepref_matrix <- matrix(data = c(1:4), nrow = 2, ncol = 2)
+racepref_matrix[1,1] <- mean(y_female$imprace, na.rm = TRUE)
+racepref_matrix[2,1] <- mean(o_female$imprace, na.rm = TRUE)
+racepref_matrix[1,2] <- mean(y_male$imprace, na.rm = TRUE)
+racepref_matrix[2,2] <- mean(o_male$imprace, na.rm = TRUE)
+colnames(racepref_matrix) <- c('Female', 'Male')
+rownames(racepref_matrix) <- c('Young', 'Old')
+
+par(mfrow=c(1,2))
+barplot(racepref_matrix[,1], xlab = "Age", ylab = "Average score in importance of race", main = "Female", ylim = c(0,5))
+barplot(racepref_matrix[,2], xlab = "Age", ylab = "Average score in importance of race", main = "Male", ylim = c(0,5))
+kable(racepref_matrix)
+```
+
+Young females seem to have a relatively much stronger preference for partners of the same race than the rest of the surveyed population, rating this trait with a full point higher on average. 
+
+Looking at the differences in between the older and younger half of the population, it seems that age has little influence on the preferences of people:
+
+```{r Age}
+age <- 25
+young <- df[ which(df$age < age), ]
+old <- df[ which(df$age >= age), ]
+# Do people that date frequently have different preferences than people that do not ?
+Attribute <- c(1:12)
+Age_group <- c(1:12)
+Score <- c(1:12)
+mtrx <- data.frame(Age_group, Attribute, Score)
+mtrx[1:6,2] <- elements
+mtrx[7:12,2] <- elements
+mtrx[1:6,1] <- 'Young' 
+mtrx[7:12,1] <- 'Old' 
+
+for (i in 1:6){
+  mtrx[i,3] <- round(mean(young[,columns[i]], na.rm=TRUE), 2)
+  mtrx[i+6,3] <- round(mean(old[,columns[i]], na.rm=TRUE), 2)
+}
+
+# Plot the average attribute values per attribute by race 
+ggplot(data = mtrx, aes(x = Attribute, y = Score)) + geom_col() + geom_text(aes(label = Score),
+              position = position_stack(vjust = .5)) + facet_grid(~ Age_group)
+```
+
+Does one's racial background influence their preferences for a certain partner? The next plot displays the average score of each race for each of the attributes, grouped by attribute. In this way it is easy to see which racial background places high or low importance on each of these attributes relative to the other racial backgrounds.
+
+```{r Race_preferences}
+# Furthermore, we are interested in the variation in main preferences over race 
+# Generate a matrix with the mean values for attribute scores for each race 
+race_names <-  c("African", "Caucasian", "Latino", "Asian")
+race_att_matrix <- matrix(c(1:24), nrow = 6, ncol = 4)
+rownames(race_att_matrix) <- columns
+colnames(race_att_matrix) <- race_names
+
+for (y in c(1:4)){
+  race_df <- df[ which(df$race == y), ]
+  for (i in columns){
+    race_att_matrix[i,y] <- mean(race_df[,i], na.rm=TRUE)}
+}
+#print(race_att_matrix)
+
+# Plot the average attribute values per attribute by race 
+par(mfrow=c(3,2))
+for (z in c(1:6)){
+  barplot(race_att_matrix[z,], xlab = "Race", ylab = "Average score in attribute", ylim = c(0, 25), main = elements[z])
+}
+
+```
+However, to understand how each race evaluates the various attributes against other attributes it is also useful to look at the data in the following way: 
+
+```{r Race_preferences2}
+
+# Plot the average attribute values by attribute per race 
+rownames(race_att_matrix) <- elements
+par(mfrow=c(2,2))
+for (z in c(1:4)){
+  barplot(race_att_matrix[,z], xlab = "Attribute", ylab = "Average score in attribute", ylim = c(0, 25), main = race_names[z])
+}
+```
+
+Caucasian respondents are looking for partners they deem attractive and intelligent. Asians prefer attractive, but sincere partners, while Latinos above all seek intelligence and rank attractiveness second. Africans agree with Caucasians. 
+
+A more sensitive subject may be the influence of someone's race on their choices. How important is it to the respondents that their speed-dating partner has the same racial background? This opinion could be rated on a scale from 1-10. As shown in the boxplot, this seems to be an especially important condition for people with a North-American or European background, while Latinos are more indifferent. 
+
+```{r Race_importance, warning=FALSE}
+y <- df %>% select(race, imprace) %>% filter(race <= 4)
+p <- ggplot(data = y) + geom_boxplot(aes(x = race, y = imprace, group = race))
+p + scale_x_discrete(name ="Race", limits=c("African", "Caucasian", "Latino", "Asian"))
+```
+
+And does the frequency with which people go on a date matter much? For the purpose of this analysis the following definition was used: high dating frequency included all scores from 1:3, and low dating frequency all scores from 4:7.
+
+```{r Dating_rate}
+# Next plot is dating rate. 
+cut_off <- 3
+low_date <- df[ which(df$date >= cut_off), ]
+high_date <- df[ which(df$date < cut_off), ]
+# Do people that date frequently have different preferences than people that do not ?
+Attribute <- c(1:12)
+Dating_rate <- c(1:12)
+Score <- c(1:12)
+mtrx <- data.frame(Dating_rate, Attribute, Score)
+mtrx[1:6,2] <- elements
+mtrx[7:12,2] <- elements
+mtrx[1:6,1] <- 'Low_rate' 
+mtrx[7:12,1] <- 'High_rate' 
+
+for (i in 1:6){
+  mtrx[i,3] <- round(mean(low_date[,columns[i]], na.rm=TRUE), 2)
+  mtrx[i+6,3] <- round(mean(high_date[,columns[i]], na.rm=TRUE), 2)
+}
+
+# Plot the average attribute values per attribute by race 
+ggplot(data = mtrx, aes(x = Attribute, y = Score)) + geom_col() + geom_text(aes(label = Score),
+              position = position_stack(vjust = .5)) + facet_grid(~ Dating_rate)
+# 
+```
+
+Surprisingly, it could be observed that people that date often rate attractiveness a lot higher by 8 points. But what is the influence of the purpose of someone's participation? Respondents were asked to state the goal of their participation from the following list:
+
+```{r Serious_relationship}
+
+# Look for preference differences between people who say they are looking for a serious relationship goal = 4, and people who come for a fun night out (goal = 1) or for being able to say they did it (goal = 5)
+serious <- df[ which(df$goal == 4), ]
+not_serious <- df[ which(df$goal == 1), ]
+# Do people that date frequently have different preferences than people that do not ?
+serious_matrix <- matrix(c(1:12), nrow = 6, ncol = 2)
+rownames(serious_matrix) <- columns
+colnames(serious_matrix) <- c("Serious", "Not serious")
+
+for (i in columns){
+  serious_matrix[i,1] <- mean(serious[,i], na.rm=TRUE)
+  serious_matrix[i,2] <- mean(not_serious[,i], na.rm=TRUE)
+}
+kable(serious_matrix)
+# We do not see significant differences, except for a higher sincerity score of about 3. 
+```
+
+Not surprisingly, people that indicate they have a serious purpose with speed-dating are more likely to value sincerity in their partner.
+
+###Section 1 Conclusion###
+
+Overall, when it comes to answer the question of what do people want we can see two clear paths:
+
+1.	There is a clear difference between preferences amongst genders and regardless of the participants ages, their preferences remain the same. In this sense, male value physical attractiveness while women value intelligence as the most important thing in their partner.
+
+2.	Race plays an important role in terms of attributes preferences accordingly to the bar graphs shown above with the different displays of attributes rating, showing the different bias that comes with every group.
+
+
+##Section 2: Do We Know What We Want In Choosing Our Dating Partners?##
+
+###Approach###
+
+In this section an evaluation will be made to find out whether people know what they are looking for when choosing a partner.  In other words, it will be necessary to compare the responses between what the participants gave before the dating event, and what the participants chose during the actual dating event.
+
+The participants were asked what they are looking for in the opposite sex before the dating event.  They evaluated 6 attributes:  attractiveness ('attr'), sincerirty ('sinc'), intelligence ('intel'), fun ('fun'), ambition ('amb'), and shared interests ('shar').  
+
+Different waves of participants were asked to rate these 6 attributes, however, 2 different scoring methodologies were used to describe the importance of the attributes:
+
+1.  Distribution of 100 points across 6 attributes, giving more points to those attributes they deemed more important in a potential date, and fewer points to those attributes that were less important in a potential date.
+
+2.  Rating of the importance of each attribute in a potential date on a scale of 1 to 10 with 1 being not at all important and 10 being extremely important.
+
+In order to do a proper comparison, the ratings needed to be normalised by getting a Total Score which was the sum of all the scores for all 6 attributes, and by multiplying each rating by the Normalisation Ratio = 100 / Total Score.
+
+For this evaluation, 2 sets of attributes were examined:
+
+1.  Scoring before the dating event:  attr1_1, sinc1_1, intel1_1, fun1_1, amb1_1, shar1_1
+2.  Scoring after meeting each potential date:  attr, sinc, intel, fun, amb, shar
+
+In the plots below, it can be observed the comparison between the scoring before and after meeting each potential date for each attribute.
+
+In addition, a correlation test was done for each attribute to check whether there was any difference between the scoring before and after meeting each potential date.
+
+The results were investigated according to gender and race taking into account the following classifications:
+
+
+**Gender**
+
++ Male:  Gender = 1
++ Female:  Gender = 0
+
+**Race**
+
++ Black/African American: Race = 1
++ European/Caucasian-American: Race = 2
++ Latino/Hispanic American:  Race = 3
++ Asian/Pacific Islander/Asian-American:  Race = 4
++ Native American:  Race = 5
++ Other:  Race = 6
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+
+originset <- read.csv("Speed_Dating_Data.csv", header = TRUE)
+
+elements = c("attr", "sinc", "intel", "fun", "amb", "shar")
+j = 1
+totalrow = dim(originset)[1]
+
+while (j <= totalrow) {  #repeat for each row
+  totalscore = 0  #compute total score for each row
+  for (i in elements){
+    totalscore = totalscore + originset[j,i]
+  }
+  for (i in elements){   #compute the normalised score for each elements
+    originset[j,i] = originset[j,i] * 100 / totalscore
+  }  
+  j = j + 1
+}
+
+elements = c("attr1_1", "sinc1_1", "intel1_1", "fun1_1", "amb1_1", "shar1_1")
+j = 1
+totalrow = dim(originset)[1]
+
+while (j <= totalrow) {  #repeat for each row
+  totalscore = 0  #compute total score for each row
+  for (i in elements){
+    totalscore = totalscore + originset[j,i]
+  }
+  for (i in elements){   #compute the normalised score for each elements
+    originset[j,i] = originset[j,i] * 100 / totalscore
+  }  
+  j = j + 1
+}
+
+originset$gender = ifelse(originset$gender==0, "Female", "Male")
+originset$race=ifelse(originset$race==1,"Black/African",originset$race)
+originset$race=ifelse(originset$race==2,"Eurp/Cauca",originset$race)
+originset$race=ifelse(originset$race==3,"Latino/Hispan",originset$race)
+originset$race=ifelse(originset$race==4,"Asian/Pasif",originset$race)
+originset$race=ifelse(originset$race==5,"Native Amer",originset$race)
+originset$race=ifelse(originset$race==6,"Other",originset$race)
+```
+
+###Plots, Tests and Analysis of each Attribute by each Gender###
+
+```{r echo = FALSE}
+matchedset <- filter(originset, dec==1)
+nomatchset <- filter(originset, dec==0)
+
+matchedmale = filter(matchedset, gender=="Male")
+matchedfemale = filter(matchedset, gender=="Female")
+
+nomatchmale = filter(nomatchset, gender=="Male")
+nomatchfemale = filter(nomatchset, gender=="Female")
+```
+
+####1. Ambitious Attribute####
+
+**Plots of Attribute Scored by Participants for Matched (Decision = 1) and No Match Outcomes**
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(matchedset, aes(y=amb1_1, x=amb, color = factor(gender)))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title="People who said 'YES' to meeting again", x="What people actually scored AMBITIOUS on the scorecard ", y="What people intially said about AMBITIOUS")
+
+ggplot(nomatchset, aes(y=amb1_1, x=amb, color = factor(gender)))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title="People who said 'NO' to meeting again", x="What people actually scored AMBITIOUS on the scorecard ", y="What people intially said about AMBITIOUS")
+```
+
+From the plots and the correlation tests, where there is a match (decision to meet = 1), there is a positive but weak correlation for the Ambition (Amb) attribute for both genders, with female participants placing a higher weightage for Ambition compared to male participants.  However, in the plot where there is no match (decision to meet = 0), male showed that they are not meeting those who have lower Ambition score than what they were looking for but the correlation is weak.  Women show inconsistency here as they have rejected those who met their expectation but the correlation is also weak. Other attributes may have played more strongly in their decisions.
+
+####2. Intelligent Attribute####
+
+**Plots of Attribute Scored by Participants for Matched (Decision = 1) and No Match (Decision = 0) Outcomes**
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(matchedset, aes(y=intel1_1, x=intel, color = factor(gender)))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title="People who said 'YES' to meeting again", x="What people actually scored INTELLIGENT on the scorecard ", y="What people intially said about INTELLIGENT")
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(nomatchset, aes(y=intel1_1, x=intel, color = factor(gender)))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title="People who said 'NO' to meeting again", x="What people actually scored INTELLIGENT on the scorecard ", y="What people intially said about INTELLIGENT")
+```
+
+Based on the correlation tests and scatter plots for Intelligence attribute (Intel), it can be seen that all the lines are almost horizontal, meaning there is no correlation between what people wanted and what people chose.  Thus, it is logical to infer that people did not put much weight into the intelligent attribute when it came to choosing their dates.
+
+
+####3. Shared Interest Attribute####
+
+**Plots of Attribute Scored by Participants for Matched (Decision = 1) and No Match (Decision = 0) Outcomes**
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+ggplot(matchedset, aes(y=shar1_1, x=shar, color = factor(gender)))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title="People who said 'YES' to meeting again", x="What people actually scored SHARED INTERESTS on the scorecard ", y="What people intially said about SHARED INTERESTS")
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(nomatchset, aes(y=shar1_1, x=shar, color = factor(gender)))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title="People who said 'NO' to meeting again", x="What people actually scored SHARED INTERESTS on the scorecard ", y="What people intially said about SHARED INTERESTS")
+```
+
+Resting on the scatter plots above, there seems to be  a moderate correlation for Shared Interests (Shar) attribute among female participants when choosing their dating partners.  In contrast, there is no relationship for Shared Interests attribute for male participants. Also, there is no correlation between the decision of picking a partner and the Shared interests attribute neither for females nor for males.
+
+####4. Fun Attribute####
+
+**Plots of Attribute Scored by Participants for Matched (Decision = 1) and No Match (Decision = 0) Outcomes**
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+ggplot(matchedset, aes(y=fun1_1, x=fun, color = factor(gender)))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title="People who said 'YES' to meeting again", x="What people actually scored FUN on the scorecard ", y="What people intially said about FUN")
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(nomatchset, aes(y=fun1_1, x=fun, color = factor(gender)))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title="People who said 'NO' to meeting again", x="What people actually scored FUN on the scorecard ", y="What people intially said about FUN")
+```
+
+Considering the correlation tests and scatter plots, both genders showed a positive but very weak correlation between what they wanted in their partners in terms of fun and what they eventually chose. Similarly, there is a weak negative correlation in deciding not to meet a potential date. In other words, both genders showed that they are rather consistent, though weak in their choice of a potential date when the other party meets their desired level of fun.
+
+####5. Attractive Attribute####
+
+**Plots of Attribute Scored by Participants for Matched (Decision = 1) and No Match (Decision = 0) Outcomes**
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+ggplot(matchedset, aes(y=attr1_1, x=attr, color = factor(gender)))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title="People who said 'YES' to meeting again", x="What people actually scored ATTRACTIVE on the scorecard ", y="What people intially said about ATTRACTIVE")
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(nomatchset, aes(y=attr1_1, x=attr, color = factor(gender)))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title="People who said 'NO' to meeting again", x="What people actually scored ATTRACTIVE on the scorecard ", y="What people intially said about ATTRACTIVE")
+```
+
+When it comes to being attractive, male participants are rather consistent in choosing someone attractive and rejecting someone less attractive than what they preferred, nevertheless the correlation is weak.  In contrast, female participants are less concerned about their partner’s attractiveness as there is almost zero correlation showed by the relatively flat lines for both accepting or rejecting someone.
+
+####6. Sincere Attribute####
+
+**Plots of Attribute Scored by Participants for Matched (Decision = 1) and No Match (Decision = 0) Outcomes**
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+ggplot(matchedset, aes(y=sinc1_1, x=sinc, color = factor(gender)))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title="People who said 'YES' to meeting again", x="What people actually scored SINCERE on the scorecard ", y="What people intially said about SINCERE")
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(nomatchset, aes(y=sinc1_1, x=sinc, color = factor(gender)))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title="People who said 'NO' to meeting again", x="What people actually scored SINCERE on the scorecard ", y="What people intially said about SINCERE")
+```
+
+Male participants showed a slightly positive correlation between their preference and their final choice of date for those they perceived to be sincere. Surprisingly, females are relatively indifferent in their decisions based on sincerity.
+
+After analysing each attribute, an attempt can be made in order to create a model for the decision making of both male and female participants respectively.  After removing attributes with high p-values, only Fun, Attractiveness and Shared Interests attributes are left for both male and female participants.  However, the adjusted R-square in both models are low.  Thus, there may be other variables that determine the final decision for choosing someone to date.  A further analysis can be carried out by taking a look into the self-perception score and check how the relative score of the potential date may affect the choice and create a better model for decision.
+
+
+###Linear Modelling of Decision###
+
+**Linear Model for Decision by Male Participants**
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+maleset <- filter(originset, gender=="Male")
+femaleset <- filter(originset, gender=="Female")
+m <- lm(formula = dec ~ fun + attr + shar, data = maleset)
+summary(m)
+```
+
+**Linear Model for Decision by Female Participants**
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+f <- lm(formula = dec ~ fun + attr + shar, data = femaleset)
+summary(f)
+```
+
+###Plots and Analysis of each Attribute by each Race###
+
+In this part of the report, consistency of the answers with respect to the different races will be examined.
+
+####1. Ambitious Attribute####
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+ggplot(matchedset, aes(y=amb1_1, x=amb, color = factor(race)))+
+  geom_point(pch=5)+
+  geom_smooth(method = 'lm',size = 1)+labs(title="People who said 'YES' to meeting again", x="What people actually scored on the scorecard ", y="What people intially said about AMBITION")
+
+ggplot(nomatchset, aes(y=amb1_1, x=amb, color = factor(race)))+
+  geom_point(pch=5)+
+  geom_smooth(method = 'lm',size = 1)+
+  labs(title="People who said 'NO' to meeting again", x="What people actually scored AMBITION on the scorecard ", y="What people intially said about AMBITION")
+```
+
+Valuation of the ambition attribute among the participants who would like to meet the person they are talking to again is parallel with what they had stated before. As it can clearly be seen, all the lines are having a positive gradient, which makes it possible to say that all races stuck in certain level with their initials opinions regarding the importance of the ambition attribute. Therefore, a positive correlation exists for those who said "Yes". On the other hand, the participants who rejected the contacted-person show a different pattern than those who said "Yes" to their partners. When the blue line is examined, namely Latino/Hispanic Americans, it is interesting to see that even if there is a strong correlation for the importance of ambition level in their decisions, still they did not choose the person they are in touch based on their ambition score. So, it may be concluded that the other factors played a greater role in their choice. The same can be said for the rest of the races however, the inconsistency level on what they said but acted upon is less for other races. Overall, ambition parameter played a more significant role among the "YESSERS!" than it played among "NOERS!"
+
+####2. Intelligent Attribute####
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+
+ggplot(matchedset, aes(y=intel1_1, x=intel, color = factor(race)))+
+  geom_point(pch=5)+
+  geom_smooth(method = 'lm')+
+  labs(title="People who said 'YES' to meeting again", x="What people actually scored on the scorecard ", y="What people intially said about INTELLIGENCE")
+  
+
+ggplot(nomatchset, aes(y=intel1_1, x=intel, color = factor(race)))+
+  geom_point(pch=5)+
+  geom_smooth(method = 'lm')+labs(title="People who said 'NO' to meeting again", x="What people actually scored INTELLEGENCE on the scorecard ", y="What people intially said about INTELLIGENCE")
+
+```
+
+When it comes to the intelligence attribute, among the participants who said "YES"", it can be observed that overall, the results are approximately in a form of straight line, with a slight positive gradient. Therefore, it can be said that there is a positive but weak correlation within Asian/Pacific Islander Americans and Latino/Hispanic Americans with respect to what they scored on the scorecard. In contrast, Black Americans experienced a negative gradient which corresponds to a negative correlation. Having a negative correlation may lead to a conclusion that even though Black Americans did not assign a high score for the importance of the intelligence parameter during their initial scoring, throughout the meeting they chose the one with a higher intelligence capacity. In the case of participants who said "NO", there is not a strong correlation with their choice and scorings.
+
+####3. Shared Interest Attribute####
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+ggplot(matchedset, aes(y=shar1_1, x=shar, color = factor(race)))+
+  geom_point(pch=5)+
+  geom_smooth(method = 'lm')+labs(title="People who said 'YES' to meeting again", x="What people actually scored on the scorecard ", y="What people intially said about SHARED INTEREST")
+
+ggplot(nomatchset, aes(y=shar1_1, x=shar, color = factor(race)))+
+  geom_point(pch=5)+
+  geom_smooth(method = 'lm')+labs(title="People who said 'NO' to meeting again", x="What people actually scored SHARED INTEREST on the scorecard ", y="What people intially said about SHARED INTEREST")
+```
+
+Looking at the graph of shared interests attribute, for all the races but the Asian/Pacific Islander Americans, it can be observed that there is a strong positive correlation with their initial and scored bored evaluation. Hence, it can be concluded that shared interests play a significant role in partner’s selection. Among the participants who refused their partners, it is interesting that although there is a strong correlation among Latino's scorings, they still refused their partner.
+
+####4. Fun Attribute####
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+ggplot(matchedset, aes(y=fun1_1, x=fun, color = factor(race)))+
+  geom_point(pch=5)+
+  geom_smooth(method = 'lm')+labs(title="People who said 'YES' to meeting again", x="What people actually scored on the scorecard ", y="What people intially said about FUN ")
+
+ggplot(nomatchset, aes(y=fun1_1, x=fun, color = factor(race)))+
+  geom_point(pch=5)+
+  geom_smooth(method = 'lm')+labs(title="People who said 'NO' to meeting again", x="What people actually scored FUN on the scorecard ", y="What people intially said about FUN")
+```
+
+According to the plot, while having a negative correlation on Fun parameter all the races - except Asian/Pacific Islander and European/Caucasian Americans - agreed on going out with their partners. As a result, it can be inferred that the Fun attribute does not play an important role in partner’s selection for all those races with the negative correlation. However, for those from Asian/Pacific Islander and European/Caucasian Americans races, the decisions they made look consistent with how they scored their partners on the scorecard.
+
+####5. Attractive Attribute####
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+ggplot(matchedset, aes(y=attr1_1, x=attr, color = factor(race)))+
+  geom_point(pch=5)+
+  geom_smooth(method = 'lm')+
+ labs(title="People who said 'YES' to meeting again", x="What people actually scored on the scorecard ", y="What people intially said about  ATTRACTIVENESS")
+
+ggplot(nomatchset, aes(y=attr1_1, x=attr, color = factor(race)))+
+  geom_point(pch=5)+
+  geom_smooth(method = 'lm')+labs(title="People who said 'NO' to meeting again", x="What people actually scored ATTRACTIVENESS on the scorecard ", y="What people intially said about  ATTRACTIVENESS")
+```
+Even when considered one of the most important parameters in partner selection, it is surprising that the attractiveness attribute has a weak positive correlation gradient when observing the participants from different ethnicities choose a partner. In contrast, when refusing, it gains a slightly more importance. Thus, not while choosing but while refusing attractiveness matters for people.
+
+####6. Sincere Attribute####
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+ggplot(matchedset, aes(y=sinc1_1, x=sinc, color = factor(race)))+
+  geom_point(pch=5)+
+  geom_smooth(method = 'lm')+labs(title="People who said 'YES' to meeting again", x="What people actually scored on the scorecard ", y="What people intially said about SINCERITY")
+
+ggplot(nomatchset, aes(y=sinc1_1, x=sinc, color = factor(race)))+
+  geom_point(pch=5)+
+  geom_smooth(method = 'lm')+labs(title="People who said 'NO' to meeting again", x="What people actually scored SINCERITY on the scorecard ", y="What people intially said about SINCERITY")
+```
+
+Last but not least, despite a weak positive correlation in sincerity attribute among Asian/Pacific Islander Americans, European-Caucasian and Latino Americans, it is possible to mention the existence of a relatively strong negative correlation for the remaining two nations. It can be understood from this result is that, as sincerity was not among the most important parameters in partner selection at the beginning, in the end for those with negative correlation sincerity attribute did not play an important role also.
+
+
+###Linear Modelling of Decision###
+
+####Linear Model for Decision by Male Participants####
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+Blck_Afr_American <- filter(originset, race=="Black/African")
+Eurpn_Cauc_American <- filter(originset, race=="Eurp/Cauca")
+Latno_Hspanc_American<- filter(originset, race=="Latino/Hispan")
+Asn_Pacific_American<- filter(originset, race=="Asian/Pasif")
+Other<- filter(originset, race=="Other")
+
+m1 <- lm(formula = dec ~ attr + shar+intel, data = Blck_Afr_American)
+summary(m1)
+m2 <- lm(formula = dec ~ fun + attr + shar, data =Eurpn_Cauc_American)
+summary(m2)
+m3 <- lm(formula = dec ~ fun + attr + shar+sinc, data =Latno_Hspanc_American)
+summary(m3)
+m4 <- lm(formula = dec ~ fun + attr + shar, data =Asn_Pacific_American)
+summary(m4)
+m5 <- lm(formula = dec ~ fun + attr + shar, data =Other)
+summary(m5)
+
+
+```
+
+###Section 2 Conclusion###
+
+Based upon the analysis of both genders, it can be seen that there is a very weak correlation between the scores of the attributes before and after meeting their potential dates, and in deciding who they want to meet.  In summary only 3 attributes have some influence in the subject’s decision even though is very weak: fun, attractiveness and shared interests. Moreover, both genders somewhat prefer the opposite sex to be fun, attractive and have shared interests but these are not the sole determinants for their final decision.
+
+According to the results obtained by analysing each race on different attributes, being fun, attractive and having shared interests play a more significant role in partner’s selection compared to the other attributes in all the races except for the Black African American, whose preference for intelligence replaced the "fun" attribute. 
+
+Finally, it is important to note that some parameters occupied more important places among the "YESSERS!" then they did among "NOERS!". Also, in a similar manner, some parameters gained more importance among different races not while choosing the partner but, while refusing them.
+
+
+##Section 3: How did people follow-up and adapt to the speed-dating night?##
+
+###Approach### 
+
+The approach of this section will aim to examine if what people think they want can be influenced by real-life dating. Indeed, if a person is given 4 minutes to get a date, he might overvalue or undervalue some attributes. Having the opportunity, or not, to meet in a restaurant with the people a person matched for instance might lead him to reconsider his views about what you look for in the opposite sex.
+
+First, as described and executed in previous chapters a normalization of the responses was required in order to properly analyse what people look for in the opposite sex across all waves. This insures that the same total scores are being compared across the attribute columns.
+
+
+
+```{r Section_3: Normalize columns and prepare data needed for analysis,include=FALSE,message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(ggplot2)
+library(dplyr)
+originset <- read.csv("Speed_Dating_Data.csv", header = TRUE)
+summary(originset)
+
+elements_2 = c("attr1_2", "sinc1_2", "intel1_2", "fun1_2", "amb1_2", "shar1_2")
+elements_3 = c("attr1_3", "sinc1_3", "intel1_3", "fun1_3", "amb1_3", "shar1_3")
+j = 1
+totalrow = dim(originset)[1]
+
+summary(originset[elements_2])  #check that the min and max is correct (clean)
+summary(originset[elements_3])  #check that the min and max is correct (clean)
+
+# Let's normalize the variables as scoring vary for some waves
+while (j <= totalrow) {  #repeat for each row
+  totalscore = 0  #compute total score for each row
+  for (i in elements_2){
+    totalscore = totalscore + originset[j,i]
+  }
+  for (i in elements_2){   #compute the normalised score for each elements
+    originset[j,i] = originset[j,i] * 100 / totalscore
+  }
+  for (k in elements_3){
+    totalscore = totalscore + originset[j,k]
+  }
+  for (k in elements_3){   #compute the normalised score for each elements
+    originset[j,i] = originset[j,k] * 100 / totalscore
+  }  
+  j = j + 1
+}
+
+# We can create now a proper dataset for our Question 4
+
+Q4_df <- originset[, c("gender", "samerace", "income", "attr1_2", "sinc1_2", "intel1_2", "fun1_2", "amb1_2", "shar1_2", "attr1_3", "sinc1_3", "intel1_3", "fun1_3", "amb1_3", "shar1_3", "date_3")]
+
+Q4_df <- na.omit(Q4_df)
+
+```
+
+Here are some primary results revealing how men and women weighted each attribute right after having speed dated:
+
+
+```{r Chapter_4: How men and women weighted each criteria after the speed-dating experience, echo=FALSE,message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(echo=FALSE)
+
+#Intelligence: how is it weighted right after speed-dating for men vs. women
+ggplot(Q4_df, aes(x = factor(gender), y = intel1_2, fill = factor(gender))) +
+  geom_boxplot() +
+  scale_fill_hue(l=60, c=40) +
+    scale_y_continuous(limits = c(0,100)) +
+  labs(x = "Gender", y = "Intelligence", title = "Intelligence criteria after speed-dating: men vs. women")
+
+#Fun: how is it weighted right after speed-dating for men vs. women
+ggplot(Q4_df, aes(x = factor(gender), y = fun1_2, fill = factor(gender))) +
+  geom_boxplot() +
+  scale_fill_hue(l=60, c=40) +
+    scale_y_continuous(limits = c(0,100)) +
+  labs(x = "Gender", y = "Fun", title = "Fun criteria after speed-dating: men vs. women")
+
+#Shared Interests: how is it weighted right after speed-dating for men vs. women
+ggplot(Q4_df, aes(x = factor(gender), y = shar1_2, fill = factor(gender))) +
+  geom_boxplot() +
+  scale_fill_hue(l=60, c=40) +
+    scale_y_continuous(limits = c(0,100)) +
+  labs(x = "Gender", y = "Shared Interests", title = "Shared Interests criteria after speed-dating: men vs. women")
+
+#Sincerity: how is it weighted right after speed-dating for men vs. women
+ggplot(Q4_df, aes(x = factor(gender), y = sinc1_2, fill = factor(gender))) +
+  geom_boxplot() +
+  scale_fill_hue(l=60, c=40) +
+    scale_y_continuous(limits = c(0,100)) +
+  labs(x = "Gender", y = "Sincerity", title = "Sincerity criteria after speed-dating: men vs. women")
+
+```
+
+
+```{r Chapter_4: How men and women weighted each criteria after the speed-dating experience (significant differences), echo=TRUE,message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(echo=TRUE)
+
+#Attractiveness: how is it weighted right after speed-dating for men vs. women
+ggplot(Q4_df, aes(x = factor(gender), y = attr1_2, fill = factor(gender))) +
+  geom_boxplot() +
+  scale_fill_hue(l=60, c=40) +
+  scale_y_continuous(limits = c(0,100)) +
+  labs(x = "Gender", y = "Attractiveness", title = "Attractiveness criteria after speed-dating: men vs. women")
+
+#Ambition: how is it weighted right after speed-dating for men vs. women
+ggplot(Q4_df, aes(x = factor(gender), y = amb1_2, fill = factor(gender))) +
+  geom_boxplot() +
+  scale_fill_hue(l=60, c=40) +
+    scale_y_continuous(limits = c(0,100)) +
+  labs(x = "Gender", y = "Ambition", title = "Ambition criteria after speed-dating: men vs. women")
+
+```
+
+
+Right after the speed-dating, when asked about what they looked for in the opposite sex:
+- Men and women gave similar results for Intelligence, Fun, Sincerity and Shared Interests 
+- But significant differences remained for Attractiveness and Ambition 
+  
+Indeed, for Attractiveness, the 25% most demanding men gave at least a 35/100 grade for attractiveness vs. 25/100 for women.
+  
+Something even more striking is that 25% of men gave a 0/100 grade for ambition after the speed-dating experience. 
+
+Even though it looked a bit "cliché", the speed-dating experience confirms it: men are more demanding than women when it comes to physical attributes, and they do not fancy ambitious women particularly.
+
+So, recapitulating:
+If a man is trying to speed-date, chances are he would rank the following attributes in this order when it comes to the women he would like to meet:
+1) Physical attractiveness
+2) Fun
+3) Intelligence
+4) Sincerity
+5) Ambition
+6) Shared Interests
+
+If a woman is trying to speed-date, below are the attributes that she would found most desired in male partner:
+1) Intelligence
+2) Sincerity
+3) Physical attractiveness
+4) Fun
+5) Ambition
+6) Shared Interests
+
+In other words, if a woman walks into a speed-dating event, she better be Jessica Alba-like: attractive, fun and intelligent (yes, she founded the Honest Company that is now worth more than $1B).
+If a man walked into a speed-dating event, being an attractive and sincere geek should be enough to get some matches. 
+A very curious statement from Sheryl Sandberg may help to explain this high contrast: "You should marry the nerds and the good guys".
+
+Now, it is time to see whether dating in real-life (meaning after the speed-dating experience) influences the genders differently.
+
+
+**3.1 How is what we believe we want influenced by real-life dating?**
+
+In order to examine if what people want remains consistent over a longer period of time, the Hypothesis is that what you look for in the opposite sex doesn't change over time depending on if you went on dates or not.
+
+Therefore, the data set is divided into two groups of people who dated after the speed-dating and those who didn't.
+
+```{r Section_3: Prepare two sub datasets for further analysis,include=FALSE,message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# Let's split our new dataset in 2 parts: people who dated (yes) vs. those who didn't (no)
+Q4_df_yes <- subset(Q4_df, date_3 == "1")
+Q4_df_yes <- na.omit(Q4_df_yes) #removes NA
+
+Q4_df_no <- subset(Q4_df, date_3 == "0")
+Q4_df_no <- na.omit(Q4_df_no) #removes NA
+
+```
+
+For both of those subsets a T-Test was implemented to check, whether the means for both data sets of people who went to dates and people who didn't go on dates are the same before the 4 week period and after the 4 week period.  
+
+
+```{r Section_3: T-Test for attributes over time before,include=FALSE,message=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(ggplot2)
+
+#two sided means that the sample mean is different from 0 (checking on both sides of 0)
+#if I get a p-value below 0.05, I reject the 0 hypothesis - meaning that the means are different
+#if I get a p-value above 0.05, I fail to reject the 0 hypothesis 
+
+#starting values: not different for sinc, fun and attr - different for: shar,amb and intel
+t.test(Q4_df_yes$attr1_2,Q4_df_no$attr1_2,alternative = "two.sided")
+t.test(Q4_df_yes$shar1_2,Q4_df_no$shar1_2,alternative = "two.sided")
+t.test(Q4_df_yes$amb1_2,Q4_df_no$amb1_2,alternative = "two.sided")
+t.test(Q4_df_yes$sinc1_2,Q4_df_no$sinc1_2,alternative = "two.sided")
+```
+
+```{r Section_3: T-Test for attributes over time for significant attributes before,message=FALSE,echo=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+t.test(Q4_df_yes$intel1_2,Q4_df_no$intel1_2,alternative = "two.sided")
+t.test(Q4_df_yes$fun1_2,Q4_df_no$fun1_2,alternative = "two.sided")
+```
+
+```{r Section_3: T-Test for attributes over time after,include=FALSE,message=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+#same means: attr,sinc, intel - means are different for: pos: fun,shar neg:amb
+#since we only had same means to begin with for sinc, fun and attr, there are only changes in intel and fun
+
+t.test(Q4_df_yes$attr1_3,Q4_df_no$attr1_3,alternative = "two.sided")
+t.test(Q4_df_yes$shar1_3,Q4_df_no$shar1_3,alternative = "two.sided")
+t.test(Q4_df_yes$amb1_3,Q4_df_no$amb1_3,alternative = "two.sided")
+t.test(Q4_df_yes$sinc1_3,Q4_df_no$sinc1_3,alternative = "two.sided")
+```
+
+```{r Section_3: T-Test for attributes over time for significant attributes after,message=FALSE,echo=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+t.test(Q4_df_yes$intel1_3,Q4_df_no$intel1_3,alternative = "two.sided")
+t.test(Q4_df_yes$fun1_3,Q4_df_no$fun1_3,alternative = "two.sided")
+```
+
+It was found out that before the 4-week period the T-Test confirms same means for both subsets in regard to the attributes of attractiveness, fun and sincerity.
+However, for shared interests, ambition and intelligence, the mean of the two subsets of people who went on dates and those who didn't is not the same to begin with.
+
+When comparing the means of the different attributes after 4 weeks, depending on whether someone has dated or not with a T-Test, it was founds that the means were at this point different for intelligence (vs. the same before) and the same for fun (vs. different before).
+So, what this showed was that the means for what people look for in the opposite sex changes when dating beyond the speed-dating event for the attributes of intelligence and a fun personality.
+
+
+The following chart makes these results more visible:
+
+By plotting the data, it is clear that people who have gone on dates tend to value intelligence less, and a fun personality will be more important for people who did not go on dates within the 4-week period.
+
+
+
+```{r Section_3: Plotting the affected attributes,echo=FALSE,message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(echo=FALSE)
+
+
+
+#for those going on a date: importance of intelligence decreases and importance of fun increases if you went on a date
+ggplot(Q4_df,aes(x=fun1_2,y=fun1_3,colour=factor(date_3)))+geom_point(alpha=0.1)+
+  geom_smooth(data=Q4_df_no, aes(x=fun1_2, y=fun1_3), color='#FD5A31')+
+  geom_smooth(data=Q4_df_yes, aes(x=fun1_2, y=fun1_3), color='#4FCDE1')+
+  labs(title = "How important is a fun personality to you?", x = "After speeddating", y = "Four weeks later")+
+  scale_colour_discrete(name  ="Dating",
+                        breaks=c("0", "1"),
+                        labels=c("Have not dated", "Have dated"))
+
+
+ggplot(Q4_df,aes(x=intel1_2,y=intel1_3,colour=factor(date_3)))+geom_point(alpha=0.1)+
+  geom_smooth(data=Q4_df_no, aes(x=intel1_2, y=intel1_3), color='#FD5A31')+
+  geom_smooth(data=Q4_df_yes, aes(x=intel1_2, y=intel1_3), color='#4FCDE1')+
+  labs(title = "How important is intelligence to you?", x = "After speeddating", y = "Four weeks later")+
+  scale_colour_discrete(name  ="Dating",
+                        breaks=c("0", "1"),
+                        labels=c("Have not dated", "Have dated"))
+
+```
+
+
+The graph indicates that dating might help people reflect on what they really look for in their possible partners and therefore help bring them closer to understand what they really want.
+
+To better understand these results and explore what it can be derived from them it is necessary to look at how this differs depending on the gender.
+
+
+**3.2 Does dating influence the genders differently?**
+
+Overall, the analysis revealed that:
+- physical attractiveness, ambition, sincerity and shared interests are not altered by real-life dating
+- intelligence is slightly less valued by people going on dates
+- fun is higher valued by people who did not date
+
+In order to see if these global conclusions are applicable to both men and women a deeper dive is presented below in the form of plotting.
+
+```{r Section_3: Do men and women change their minds whether they date or not, echo=FALSE,message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(echo=FALSE)
+
+dating <- c("0" = "Did not date",
+            "1" = "Dated")
+
+#Attractiveness after speed-dating vs. 4 weeks later
+ggplot(Q4_df, aes(x = attr1_2, y = attr1_3, col = factor(gender))) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  labs(x = "Attractiveness after speed-dating", y = "Attractiveness 4 weeks later", col = "Gender") +
+  facet_grid(~date_3, labeller = as_labeller(dating))
+
+#Ambition after speed-dating vs. 4 weeks later
+ggplot(Q4_df, aes(x = amb1_2, y = amb1_3, col = factor(gender))) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  labs(x = "Ambition after speed-dating", y = "Ambition 4 weeks later", col = "Gender") +
+  facet_grid(~date_3, labeller = as_labeller(dating))
+
+#Shared Interests after speed-dating vs. 4 weeks later
+ggplot(Q4_df, aes(x = shar1_2, y = shar1_3, col = factor(gender))) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  labs(x = "Shared Interests after speed-dating", y = "Shared Interests 4 weeks later", col = "Gender") +
+  facet_grid(~date_3, labeller = as_labeller(dating))
+
+#Sincerity after speed-dating vs. 4 weeks later
+ggplot(Q4_df, aes(x = sinc1_2, y = sinc1_3, col = factor(gender))) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  labs(x = "Sincerity after speed-dating", y = "Sincerity 4 weeks later", col = "Gender") +
+  facet_grid(~date_3, labeller = as_labeller(dating))
+
+```
+
+```{r Section_3: Do men and women change their minds whether they date or not (significant changes), echo=FALSE,message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(echo=FALSE)
+
+#Intelligence after speed-dating vs. 4 weeks later
+ggplot(Q4_df, aes(x = intel1_2, y = intel1_3, col = factor(gender))) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  labs(x = "Intelligence after speed-dating", y = "Intelligence 4 weeks later", col = "Gender") +
+  facet_grid(~date_3, labeller = as_labeller(dating))
+
+#Fun after speed-dating vs. 4 weeks later
+ggplot(Q4_df, aes(x = fun1_2, y = fun1_3, col = factor(gender))) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  labs(x = "Fun after speed-dating", y = "Fun 4 weeks later", col = "Gender") +
+  facet_grid(~date_3, labeller = as_labeller(dating))
+
+```
+
+For both men and women, whether you dated or not does not have a perceptible influence on attractiveness, ambition, sincerity and shared interests.
+
+However, there are some significant changes for intelligence and fun... though not the way expected it!
+
+Indeed, the results show that:
+- Men who did not date put more weight on intelligence if they previously rated it low (<20/100)
+- However, men who did not date rated intelligence significantly lower if they previously rated it high (>20/100). This means that demanding men who did not have the opportunity to date chose to sacrifice intelligence first.
+- Overall, men who dated gave more importance to intelligence than those who did not, while women who dated gave less importance to intelligence than those who did not.
+Furthermore, we saw that people who had dates valued slightly less intelligence than those who did not, and this is something applicable to women too. However, it is worth noticing that this trend is reversed for men.
+
+Also, there are interesting results for the fun criteria as well: our previous analysis concluded that fun was higher rated by people who did not date, and this trend surprisingly lead by men.
+
+As a conclusion, dating or not dating will not have much influence if you are a woman. Nonetheless, if you are a man, not having the opportunity to date might create some frustration, pushing you to lower your expectations in terms of intelligence while increasing the weight you grant to fun.
+
+###Section 4 Conclusion###
+
+In summary, two main conclusions can be drawn from this chapter:
+1.	Looks matter. Specifically when it comes to male choosing a partner, they will value attractiveness more than women who, in contrast, are seeking a more kind of geek profile.
+2.	Dating or not dating will not have much influence weather the subject is a male or a female. Nonetheless, if a male does not have the opportunity to date, it might create some frustration pushing him to lower his expectations in terms of intelligence while increasing the weight he grants to fun.
+
+
+###Final Conclusions###
+
+All right, there has already been quite a lot of analyses so far. Not only insights on the six attributes described previously have been delivered, but also the influence of age or race when choosing partners have been revealed. So, by now it all feels like: "Great, now let's take a step back and recap each question raised at the beginning of this insightful document". It is time to review all the findings of this experiment in a fast-paced world where speed-dating is king.
+
+####What are the respondents looking for?####
+
+Overall, when it comes to answer the question of what do people want we can see two clear paths:
+1.	There is a clear difference between preferences amongst genders and regardless of the participants ages, their preferences remain the same. In this sense, male value physical attractiveness while women value intelligence as the most important thing in their partner.
+
+2.	Race plays an important role in terms of attributes preferences accordingly to the bar graphs shown above with the different displays of attributes rating, showing the different bias that comes with every group.
+
+####Do people act on their stated preferences during the dating experiments?####
+
+Based upon the analysis of both genders, it can be seen that there is a very weak correlation between the scores of the attributes before and after meeting their potential dates, and in deciding who they want to meet.
+
+Only 3 attributes have some influence in the subject’s decision even though is very weak: fun, attractive and shared interest, however, these are not the sole determinants for their final decision. This was tru for all races except for African/American
+
+Finally, it is important to note that some parameters occupied more important places among the "YESSERS!" then they did among "NOERS!". Also, in a similar manner, some parameters gained more importance among different races not while choosing the partner but, while refusing them.
+
+####How did people follow-up and adapt to the speed-dating night?####
+There is a gender difference when it comes to preferences:
+1.	Looks matter. Specifically when it comes to male choosing a partner, they will value attractiveness more than women who, in contrast, are seeking a more kind of geek profile.
+
+2.	Dating or not dating will not have much influence weather the subject is a male or a female. Nonetheless, if a male does not have the opportunity to date, it might create some frustration pushing him to lower his expectations in terms of intelligence while increasing the weight he grants to fun.
+
+In addition, further potential dating with people you matched will influence only the importance granted to intelligence and fun. On the one hand, if your conversion ratio is good, intelligence will not be a key factor. In other words, if you are a Tinder star, intelligence might not be something you really care about when dating people. On the other hand, if you were not part of the lucky ones, you will value a fun personality higher. 
+
+Eventually, if these general trends are confirmed for women, there exist some interesting and specific results when it comes to men. Not only men who do not date will give more importance to fun, but also they will decrease significantly the weight given to intelligence if they rated it high previously. In other words, if you tried speed-dating with high expectations, and then have some dating issues, chances are low that you will look for a quantum physics female researcher at M.I.T...!
+
