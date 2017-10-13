@@ -607,7 +607,7 @@ ggplot(nomatchset, aes(y=intel1_1, x=intel, color = factor(race)))+
 
 ```
 
-When it comes to the intelligence attribute, among the participants who said "YES"", it can be observed that overall, the results are approximately in a form of straight line, with a slight positive gradient. Therefore, it can be said that there is a positive but weak correlation within Asian/Pacific Islander Americans, red line, and Latino/Hispanic Americans with respect to what they scored on the scorebord card. In contrast, Black Americans experienced a negative gradient which corresponds to a negative correlation. That may lead to a conclusion that even though Black Americans did assign a high value for intelligence parameter in the beginning, during the meeting they choose the one with a higher intelligence capacity. For participants who said "NO", there is not a strong correlation with their choice and scorings.
+When it comes to the intelligence attribute, among the participants who said "YES"", it can be observed that overall, the results are approximately in a form of straight line, with a slight positive gradient. Therefore, it can be said that there is a positive but weak correlation within Asian/Pacific Islander Americans and Latino/Hispanic Americans with respect to what they scored on the scorebord card. In contrast, Black Americans experienced a negative gradient which corresponds to a negative correlation. Having a negative correlation may lead to a conclusion that even though Black Americans did not assign a high score for the importance of the intelligence parameter during their initial scoring, throughout the meeting they chose the one with a higher intelligence capacity. For participants who said "NO", there is not a strong correlation with their choice and scorings.
 
 ####3. Shared Interest Attribute####
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
@@ -662,7 +662,7 @@ ggplot(nomatchset, aes(y=sinc1_1, x=sinc, color = factor(race)))+
   geom_smooth(method = 'lm')+labs(title="People who said 'NO' to meeting again", x="What people actually scored SINCERITY on the scorecard ", y="What people intially said about SINCERITY")
 ```
 
-Last but not least, while it possible to mention a weak positive correlation on sincerity attribute for Asian/Pacific Islander Americans, Europen-Caucasion and Latino Americans, there is a relatively strong negative correlation for the remaining two nations. What we can understand from this result is that, as sincerity was not among the most important parameters in partner selection at the beginning, in the end for those with negative correlation it did not played an important role also.
+Last but not least, despite a weak positive correlation in sincerity attribute among Asian/Pacific Islander Americans, Europen-Caucasion and Latino Americans, it is possible to mention the existence of a relatively strong negative correlation for the remaining two nations. What we can understand from this result is that, as sincerity was not among the most important parameters in partner selection at the beginning, in the end for those with negative correlation sincerity attribute did not played an important role also.
 
 
 ###Linear Modelling of Decision###
