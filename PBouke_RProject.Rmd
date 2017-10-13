@@ -61,7 +61,7 @@ pie_df <- data.frame(
 
 pie_gender <-ggplot(pie_df,aes(x="",y=val,fill=name))+ geom_bar(width=1,stat="identity") + coord_polar("y",start=0)
 
-pie_gender
+
 
 blank_theme <- theme_minimal()+
   theme(
@@ -338,7 +338,7 @@ Overall, when it comes to answer the question of what do people want we can see 
 2.	Race plays an important role in terms of attributes preferences accordingly to the bar graphs shown above with the different displays of attributes rating, showing the different bias that comes with every group.
 
 
-####Section 2: Do We Know What We Want In Choosing Our Dating Partners?####
+##Section 2: Do We Know What We Want In Choosing Our Dating Partners?##
 
 ###Approach###
 
@@ -1033,7 +1033,7 @@ In summary, two main conclusions can be drawn from this chapter:
 2.	Dating or not dating will not have much influence weather the subject is a male or a female. Nonetheless, if a male does not have the opportunity to date, it might create some frustration pushing him to lower his expectations in terms of intelligence while increasing the weight he grants to fun.
 
 
-** CONCLUSION **
+##FINAL CONCLUSIONS##
 
 All right, there has already been quite a lot of analyses so far. Not only insights on the six attributes described previously have been delivered, but also the influence of age or race when choosing partners have been revealed. So, by now it all feels like: "Great, now let's take a step back and recap each question raised at the beginning of this insightful document".
 
