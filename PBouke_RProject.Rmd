@@ -273,7 +273,7 @@ Caucasian respondents are looking for partners they deem attractive and intellig
 
 A more sensitive subject may be the influence of someone's race on their choices. How important is it to the respondents that their speed-dating partner has the same racial background? This opinion could be rated on a scale from 1-10. As shown in the boxplot, this seems to be an especially important condition for people with a North-American or European background, while Latinos are more indifferent. 
 
-```{r Race_importance}
+```{r Race_importance, warning=FALSE}
 y <- df %>% select(race, imprace) %>% filter(race <= 4)
 p <- ggplot(data = y) + geom_boxplot(aes(x = race, y = imprace, group = race))
 p + scale_x_discrete(name ="Race", limits=c("African", "Caucasian", "Latino", "Asian"))
@@ -1032,7 +1032,7 @@ In summary, two main conclusions can be drawn from this chapter:
 2.	Dating or not dating will not have much influence weather the subject is a male or a female. Nonetheless, if a male does not have the opportunity to date, it might create some frustration pushing him to lower his expectations in terms of intelligence while increasing the weight he grants to fun.
 
 
-##FINAL CONCLUSIONS##
+###Final Conclusions###
 
 All right, there has already been quite a lot of analyses so far. Not only insights on the six attributes described previously have been delivered, but also the influence of age or race when choosing partners have been revealed. So, by now it all feels like: "Great, now let's take a step back and recap each question raised at the beginning of this insightful document". It is time to review all the findings of this experiment in a fast-paced world where speed-dating is king.
 
