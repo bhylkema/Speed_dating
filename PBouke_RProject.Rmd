@@ -37,7 +37,7 @@ Once done that, the dataset contained information about 551 subjects that formed
 
 In order to properly analyse the data and the raised inquiries it is important to provide some context about the main characteristics of the group of subjects.
 
-Therefore, the following charts can give an illustration about the main profile in the sample used for this dataset:
+Therefore, the following charts can give an illustration about the main profiles in the sample used for this dataset:
 
 1. Gender
 
@@ -344,7 +344,7 @@ Overall, when it comes to answer the question of what do people want we can see 
 
 In this section an evaluation will be made to find out whether people know what they are looking for when choosing a partner.  In other words, it will be necessary to compare the responses between what the participants gave before the dating event, and what the participants chose during the actual dating event.
 
-The participants were asked what they are looking for in the opposite sex before the dating event.  They evaluated 6 attributes:  attractive ('attr'), sincere ('sinc'), intellent ('intel'), fun ('fun'), ambitious ('amb'), and shared interests ('shar').  
+The participants were asked what they are looking for in the opposite sex before the dating event.  They evaluated 6 attributes:  attractiveness ('attr'), sincerirty ('sinc'), intelligence ('intel'), fun ('fun'), ambition ('amb'), and shared interests ('shar').  
 
 Different waves of participants were asked to rate these 6 attributes, however, 2 different scoring methodologies were used to describe the importance of the attributes:
 
@@ -359,9 +359,9 @@ For this evaluation, 2 sets of attributes were examined:
 1.  Scoring before the dating event:  attr1_1, sinc1_1, intel1_1, fun1_1, amb1_1, shar1_1
 2.  Scoring after meeting each potential date:  attr, sinc, intel, fun, amb, shar
 
-In the plots below , it can be observed the comparison between the scoring before and after meeting each potential date for each attribute.
+In the plots below, it can be observed the comparison between the scoring before and after meeting each potential date for each attribute.
 
-In addition,, a correlation test was done for each attribute to check whether there was any difference between the scoring before and after meeting each potential date.
+In addition, a correlation test was done for each attribute to check whether there was any difference between the scoring before and after meeting each potential date.
 
 The results were investigated according to gender and race taking into account the following classifications:
 
@@ -454,7 +454,7 @@ ggplot(nomatchset, aes(y=amb1_1, x=amb, color = factor(gender)))+
   labs(title="People who said 'NO' to meeting again", x="What people actually scored AMBITIOUS on the scorecard ", y="What people intially said about AMBITIOUS")
 ```
 
-From the plots and the correlation tests, where there is a match (decision to meet = 1), there is a positive but weak correlation for the Ambitious (Amb) attribute for both genders, with female placing a higher weightage for Ambitious compared to male.  However, in the plot where there is no match (decision to meet = 0), male showed that they are not meeting those who have lower Ambitious score than what they were looking for but the correlation is weak.  Female is not consistent here as they have rejected those who met their expectation but the correlation is also weak.  Other attributes may have played more strongly in their decisions.
+From the plots and the correlation tests, where there is a match (decision to meet = 1), there is a positive but weak correlation for the Ambition (Amb) attribute for both genders, with female participants placing a higher weightage for Ambition compared to male participants.  However, in the plot where there is no match (decision to meet = 0), male showed that they are not meeting those who have lower Ambition score than what they were looking for but the correlation is weak.  Women show inconsistency here as they have rejected those who met their expectation but the correlation is also weak. Other attributes may have played more strongly in their decisions.
 
 ####2. Intelligent Attribute####
 
@@ -474,7 +474,7 @@ ggplot(nomatchset, aes(y=intel1_1, x=intel, color = factor(gender)))+
   labs(title="People who said 'NO' to meeting again", x="What people actually scored INTELLIGENT on the scorecard ", y="What people intially said about INTELLIGENT")
 ```
 
-Based on the correlation tests and scatter plots for Intelligent attribute (Intel), it can be seen that all the lines are almost horizontal, meaning there is no correlation between what people wanted and what people chose.  Thus, it is logical to infer that people did not put much weight into the intelligent attribute when it came to choosing their dates.
+Based on the correlation tests and scatter plots for Intelligence attribute (Intel), it can be seen that all the lines are almost horizontal, meaning there is no correlation between what people wanted and what people chose.  Thus, it is logical to infer that people did not put much weight into the intelligent attribute when it came to choosing their dates.
 
 
 ####3. Shared Interest Attribute####
@@ -495,7 +495,7 @@ ggplot(nomatchset, aes(y=shar1_1, x=shar, color = factor(gender)))+
   labs(title="People who said 'NO' to meeting again", x="What people actually scored SHARED INTERESTS on the scorecard ", y="What people intially said about SHARED INTERESTS")
 ```
 
-Resting on the scatter plots above, there seems to be  a moderate correlation for Shared Interests (Shar) attribute among female participants when choosing their dating partners.  In contrast, there is no relationship for Shared Interest attribute for male participants. Also, there is no correlation between the decision of picking a partner and the shared interest attribute niether for females nor for males.
+Resting on the scatter plots above, there seems to be  a moderate correlation for Shared Interests (Shar) attribute among female participants when choosing their dating partners.  In contrast, there is no relationship for Shared Interests attribute for male participants. Also, there is no correlation between the decision of picking a partner and the Shared interests attribute neither for females nor for males.
 
 ####4. Fun Attribute####
 
@@ -515,7 +515,7 @@ ggplot(nomatchset, aes(y=fun1_1, x=fun, color = factor(gender)))+
   labs(title="People who said 'NO' to meeting again", x="What people actually scored FUN on the scorecard ", y="What people intially said about FUN")
 ```
 
-Considering the correlation tests and scatter plots, both genders showed a positive but very weak correlation between what they wanted in their partners in terms of fun and what they eventually chose.  Similarly, there is a weak negative correlation in deciding not to meet a potential date.  In other words, both genders showed that they are rather consistent, thought weak in their choice of a potential date when the other party meets their desired level of fun.
+Considering the correlation tests and scatter plots, both genders showed a positive but very weak correlation between what they wanted in their partners in terms of fun and what they eventually chose. Similarly, there is a weak negative correlation in deciding not to meet a potential date. In other words, both genders showed that they are rather consistent, though weak in their choice of a potential date when the other party meets their desired level of fun.
 
 ####5. Attractive Attribute####
 
@@ -555,9 +555,9 @@ ggplot(nomatchset, aes(y=sinc1_1, x=sinc, color = factor(gender)))+
   labs(title="People who said 'NO' to meeting again", x="What people actually scored SINCERE on the scorecard ", y="What people intially said about SINCERE")
 ```
 
-Male participants showed a slightly positive correlation between their preference and their final choice of date for those they perceived to be sincere.  Surprisingly, females are relatively indifference in their decisions based on sincerity.
+Male participants showed a slightly positive correlation between their preference and their final choice of date for those they perceived to be sincere. Surprisingly, females are relatively indifferent in their decisions based on sincerity.
 
-After analysing each attribute, an attempt can be made in order to create a model for the decision making of both male and female participants respectively.  After removing attributes with high p-values, only Fun, Attractive and Shared Interest attributes are left for both male and female participants.  However, the adjusted R-square in both models are low.  Thus, there may be other variables that determine the final decision for choosing someone to date.  A further analysis can be carried out by taking a look into the self-perception score and check how the relative score of the potential date may affect the choice and create a better model for decision.
+After analysing each attribute, an attempt can be made in order to create a model for the decision making of both male and female participants respectively.  After removing attributes with high p-values, only Fun, Attractiveness and Shared Interests attributes are left for both male and female participants.  However, the adjusted R-square in both models are low.  Thus, there may be other variables that determine the final decision for choosing someone to date.  A further analysis can be carried out by taking a look into the self-perception score and check how the relative score of the potential date may affect the choice and create a better model for decision.
 
 
 ###Linear Modelling of Decision###
@@ -592,7 +592,7 @@ ggplot(nomatchset, aes(y=amb1_1, x=amb, color = factor(race)))+
   labs(title="People who said 'NO' to meeting again", x="What people actually scored AMBITION on the scorecard ", y="What people intially said about AMBITION")
 ```
 
-Valuation of the ambition attribute among the participants who would like to meet the person they are talking to again is parallel with what they had stated before. As it can clearly be seen, all the lines are having a positive gradiant, which makes it possible to say that all races sticked in certain level with their initials opinions regarding the importance of the ambition attribute. Therefore, a positive correlation exists for those who said "Yes". On the other hand, the participants who rejected the contacted-person show a different pattern than those who said "Yes" to their partners. When the blue line is examined, namely Latino/Hispanic Americans, it is interesting to see that even if there is a strong correlation for the importance of ambition level in their decisions, still they did not choose the person they are in touch based on their ambition score. So, it may be concluded that the other factors played a greater role in their choice. The same can be said for the rest of the races however, the inconsistency level on what they said but acted upon is less for other races. Overall, ambition parameter played a more significant role among the "YESSERS!" than it played among "NOERS!"
+Valuation of the ambition attribute among the participants who would like to meet the person they are talking to again is parallel with what they had stated before. As it can clearly be seen, all the lines are having a positive gradient, which makes it possible to say that all races stuck in certain level with their initials opinions regarding the importance of the ambition attribute. Therefore, a positive correlation exists for those who said "Yes". On the other hand, the participants who rejected the contacted-person show a different pattern than those who said "Yes" to their partners. When the blue line is examined, namely Latino/Hispanic Americans, it is interesting to see that even if there is a strong correlation for the importance of ambition level in their decisions, still they did not choose the person they are in touch based on their ambition score. So, it may be concluded that the other factors played a greater role in their choice. The same can be said for the rest of the races however, the inconsistency level on what they said but acted upon is less for other races. Overall, ambition parameter played a more significant role among the "YESSERS!" than it played among "NOERS!"
 
 ####2. Intelligent Attribute####
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
@@ -622,7 +622,7 @@ ggplot(nomatchset, aes(y=shar1_1, x=shar, color = factor(race)))+
   geom_smooth(method = 'lm')+labs(title="People who said 'NO' to meeting again", x="What people actually scored SHARED INTEREST on the scorecard ", y="What people intially said about SHARED INTEREST")
 ```
 
-Looking at the graph of shared interest attribute, for all the races but the Asian/Pacific Islander Americans, it can be observed that there is a strong positive correlation with their initial and scored bored evaluation. Hence, it can be concluded that shared interest plays a significant role in partner’s selection. Among the participants who refused their partners, it is interesting that although there is a strong correlation among Latino's scorings, they still refused their partner.
+Looking at the graph of shared interests attribute, for all the races but the Asian/Pacific Islander Americans, it can be observed that there is a strong positive correlation with their initial and scored bored evaluation. Hence, it can be concluded that shared interests play a significant role in partner’s selection. Among the participants who refused their partners, it is interesting that although there is a strong correlation among Latino's scorings, they still refused their partner.
 
 ####4. Fun Attribute####
 
@@ -636,7 +636,7 @@ ggplot(nomatchset, aes(y=fun1_1, x=fun, color = factor(race)))+
   geom_smooth(method = 'lm')+labs(title="People who said 'NO' to meeting again", x="What people actually scored FUN on the scorecard ", y="What people intially said about FUN")
 ```
 
-According the plot, while having a negative correlation on Fun parameter (all the races except Asian/Pacific Islander and European/Caucasian Americans) agreed on going out with their partners. As a result, it can be inferred that the Fun attribute does not play an important role in partner’s selection for all those races with the negative correlation. However, for those from Asian/Pacific Islander and European/Caucasian Americans races, the decisions they made look consistent with how they scored their partners on the scorecard.
+According to the plot, while having a negative correlation on Fun parameter all the races - except Asian/Pacific Islander and European/Caucasian Americans - agreed on going out with their partners. As a result, it can be inferred that the Fun attribute does not play an important role in partner’s selection for all those races with the negative correlation. However, for those from Asian/Pacific Islander and European/Caucasian Americans races, the decisions they made look consistent with how they scored their partners on the scorecard.
 
 ####5. Attractive Attribute####
 
@@ -650,7 +650,7 @@ ggplot(nomatchset, aes(y=attr1_1, x=attr, color = factor(race)))+
   geom_point(pch=5)+
   geom_smooth(method = 'lm')+labs(title="People who said 'NO' to meeting again", x="What people actually scored ATTRACTIVENESS on the scorecard ", y="What people intially said about  ATTRACTIVENESS")
 ```
-Even when considered one of the most important parameters in partner selection, it is surprising that the attractive attribute has a weak positive correlation gradient when observing the participants from different ethnicities choose a partner. In contrast, when refusing, it gains a slightly more importance. Thus, not while choosing but while refusing attractiveness matters for people.
+Even when considered one of the most important parameters in partner selection, it is surprising that the attractiveness attribute has a weak positive correlation gradient when observing the participants from different ethnicities choose a partner. In contrast, when refusing, it gains a slightly more importance. Thus, not while choosing but while refusing attractiveness matters for people.
 
 ####6. Sincere Attribute####
 
@@ -664,7 +664,7 @@ ggplot(nomatchset, aes(y=sinc1_1, x=sinc, color = factor(race)))+
   geom_smooth(method = 'lm')+labs(title="People who said 'NO' to meeting again", x="What people actually scored SINCERITY on the scorecard ", y="What people intially said about SINCERITY")
 ```
 
-Last but not least, despite a weak positive correlation in sincerity attribute among Asian/Pacific Islander Americans, Europen-Caucasion and Latino Americans, it is possible to mention the existence of a relatively strong negative correlation for the remaining two nations. It can be understood from this result is that, as sincerity was not among the most important parameters in partner selection at the beginning, in the end for those with negative correlation sincerity attribute did not played an important role also.
+Last but not least, despite a weak positive correlation in sincerity attribute among Asian/Pacific Islander Americans, European-Caucasian and Latino Americans, it is possible to mention the existence of a relatively strong negative correlation for the remaining two nations. It can be understood from this result is that, as sincerity was not among the most important parameters in partner selection at the beginning, in the end for those with negative correlation sincerity attribute did not play an important role also.
 
 
 ###Linear Modelling of Decision###
@@ -693,7 +693,7 @@ summary(m5)
 
 ###Section 2 Conclusion###
 
-Based upon the analysis of both genders, it can be seen that there is a very weak correlation between the scores of the attributes before and after meeting their potential dates, and in deciding who they want to meet.  In summary only 3 attributes have some influence in the subject’s decision even though is very weak: fun, attractive and shared interest. Moreover, both genders somewhat prefer the opposite sex to be fun, attractive and have shared interest but these are not the sole determinants for their final decision.
+Based upon the analysis of both genders, it can be seen that there is a very weak correlation between the scores of the attributes before and after meeting their potential dates, and in deciding who they want to meet.  In summary only 3 attributes have some influence in the subject’s decision even though is very weak: fun, attractiveness and shared interests. Moreover, both genders somewhat prefer the opposite sex to be fun, attractive and have shared interests but these are not the sole determinants for their final decision.
 
 According to the results obtained by analysing each race on different attributes, being fun, attractive and having shared interests play a more significant role in partner’s selection compared to the other attributes in all the races except for the Black African American, whose preference for intelligence replaced the "fun" attribute. 
 
@@ -836,7 +836,7 @@ If a woman is trying to speed-date, below are the attributes that she would foun
 5) Ambition
 6) Shared Interests
 
-In other words, if a woman walks in into a speed-dating event, she better be Jessica Alba-like: attractive, fun and intelligent (yes, she founded the Honest Company that is now worth more than $1B).
+In other words, if a woman walks into a speed-dating event, she better be Jessica Alba-like: attractive, fun and intelligent (yes, she founded the Honest Company that is now worth more than $1B).
 If a man walked into a speed-dating event, being an attractive and sincere geek should be enough to get some matches. 
 A very curious statement from Sheryl Sandberg may help to explain this high contrast: "You should marry the nerds and the good guys".
 
@@ -1037,7 +1037,7 @@ In summary, two main conclusions can be drawn from this chapter:
 
 All right, there has already been quite a lot of analyses so far. Not only insights on the six attributes described previously have been delivered, but also the influence of age or race when choosing partners have been revealed. So, by now it all feels like: "Great, now let's take a step back and recap each question raised at the beginning of this insightful document".
 
-As a result, is time to review all the findings of this fictionnal fast-paced world where speed-dating is king.
+As a result, it is time to review all the findings of this fictionnal fast-paced world where speed-dating is king.
 
 - What are the respondents looking for? 
 Overall, when it comes to answer the question of what do people want we can see two clear paths:
